@@ -9,9 +9,7 @@ let player1 : Types.player = {name = "Connor"; children = 0; so = false; deck = 
 
 let () = print_endline (string_of_int player1.account_balance)
 
-let add_money (player : Types.player) (amount : int) : Types.player = 
-  {player with account_balance = player.account_balance + amount}
-let player1 = add_money player1 100
+let player1 = Bank.add_money player1 100
 
 let () = print_endline (string_of_int player1.account_balance)
 
