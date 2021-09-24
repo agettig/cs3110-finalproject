@@ -1,0 +1,22 @@
+(** @canonical Source.Bank *)
+module Bank = Source__Bank
+
+
+(** @canonical Source.Board *)
+module Board = Source__Board
+
+
+(** @canonical Source.Cards *)
+module Cards = Source__Cards
+
+
+(** @canonical Source.Players *)
+module Players = Source__Players
+
+
+(** @canonical Source.Tiles *)
+module Tiles = Source__Tiles
+
+
+(** @canonical Source.Types *)
+module Types = Source__Types
