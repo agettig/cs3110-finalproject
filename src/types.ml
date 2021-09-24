@@ -6,4 +6,14 @@ type cards =
 |Life_Tiles of int
 
 type player = {name: string; children: int; so: bool; deck: cards list; 
+
+type tiles =
+| PayTile
+| DebtTile
+| LifeTile
+| CareerTile
+| FamilyTile
+| HouseTile
+
+
 account_balance: int; debt:int; pay_raise:int; college: bool}
