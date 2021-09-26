@@ -3,7 +3,7 @@ open OUnit2
 open Source
 
 let test_player : Types.player = {name = "test player"; children = 0; so = false;
-deck = []; account_balance = 0; debt = 0; pay_raise = 0}
+deck = []; account_balance = 0; debt = 0; pay_raise = 0; college = false}
 
 let test_player_add = Bank.add_balance test_player 100
 
