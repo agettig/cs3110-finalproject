@@ -62,7 +62,7 @@ let rec calculate_loans (player : player) =
 (** [pay_college player] returns a [player] with 50,000 added to their
     current debt *)
 let pay_college (player : player) : player =
-  { player with debt = player.debt + 50000 }
+  { player with debt = player.debt + 100000; college = true }
 
 (** [payday player] returns a [player] with their current career's pay
     and the player's pay_raise (pay + pay_raise is limited at their
