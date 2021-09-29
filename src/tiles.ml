@@ -1,5 +1,4 @@
-open Bank
-open Cards
+open Players
 
 type tiles =
   | PayTile of {
@@ -16,7 +15,7 @@ type tiles =
       name : string;
       account_change : int;
       loans : int;
-      player_sued : Types.player;
+      player_sued : player;
       index_tile : int;
     }
   | LifeTile
