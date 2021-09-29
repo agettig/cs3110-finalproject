@@ -43,6 +43,7 @@ let tests =
          ( "Bank operation pay_college" >:: fun _ ->
            assert_equal 50000 test_player_college.debt );
          (* Havent tested bank operations payday, tax, final_balance *)
+         (* Havent tested card operations add_card, remove_card, exchange_cards *)
        ]
 
 let _ = run_test_tt_main tests
