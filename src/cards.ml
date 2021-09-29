@@ -1,4 +1,3 @@
-(*These are all the career options in our game*)
 type cards =
   | House of {
       name : string;
@@ -16,7 +15,7 @@ type cards =
   | Share_the_Wealth
   | Long_Term_Investment of int
   | Life_Tiles of int
-
+  
 (*These are all the career options in our game*)
 
 let police_officer =
