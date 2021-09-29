@@ -34,4 +34,31 @@ let add_children (player : player) (num_children : int) =
 
 let add_significant_other (player : player) = { player with so = true }
 
+let rec remove_from_deck
+    (deck : cards list)
+    (card : cards)
+    (acc : cards list) =
+  match deck with
+  | [] -> acc
+  | h :: t ->
+      if h = card then remove_from_deck t card acc
+      else remove_from_deck t card (h :: acc)
 
+(** [add_card player card] returns a [player] with [card] added to their
+    current deck *)
+let add_card (card : cards) (player : player) : player =
+  { player with deck = card :: player.deck }
+
+(** [remove_card player card] returns a [player] with [card] removed
+    from their current deck *)
+let remove_card (card : cards) (player : player) : player =
+  { player with deck = remove_from_deck player.deck card [] }
+
+(** [exchange_card player card_to_add card_to_remove] returns a [player]
+    with [card_to_add] added to their current deck and [card_to_remove]
+    removed from their current deck *)
+let exchange_card
+    (player : player)
+    (card_to_add : cards)
+    (card_to_remove : cards) =
+  player |> add_card card_to_add |> remove_card card_to_remove
