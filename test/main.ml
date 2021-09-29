@@ -1,9 +1,14 @@
 open OUnit2
 open Source
+<<<<<<< Updated upstream
 open Players
 open Bank
 
 let test_player : player =
+=======
+
+let test_player : Types.player =
+>>>>>>> Stashed changes
   {
     name = "test player";
     children = 0;
@@ -15,6 +20,7 @@ let test_player : player =
     college = false;
   }
 
+<<<<<<< Updated upstream
 let test_player_add = add_balance test_player 100
 
 let test_player_payraise = payraise test_player
@@ -22,6 +28,15 @@ let test_player_payraise = payraise test_player
 let test_player_debt = add_balance test_player (-25000)
 
 let test_player_college = pay_college test_player
+=======
+let test_player_add = Bank.add_balance test_player 100
+
+let test_player_payraise = Bank.payraise test_player
+
+let test_player_debt = Bank.add_balance test_player (-25000)
+
+let test_player_college = Bank.pay_college test_player
+>>>>>>> Stashed changes
 
 let tests =
   "test suite for sum"
