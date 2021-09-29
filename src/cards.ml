@@ -1,4 +1,3 @@
-(*These are all the career options in our game*)
 type cards =
   | House of {
       name : string;
