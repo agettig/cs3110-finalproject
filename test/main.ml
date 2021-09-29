@@ -41,7 +41,7 @@ let tests =
            assert_equal 50000
              (Bank.calculate_loans test_player_debt).debt );
          ( "Bank operation pay_college" >:: fun _ ->
-           assert_equal 50000 test_player_college.debt );
+           assert_equal 100000 test_player_college.debt );
          (* Havent tested bank operations payday, tax, final_balance *)
          (* Havent tested card operations add_card, remove_card, exchange_cards *)
        ]
