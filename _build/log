@@ -1,10 +1,10 @@
-# dune build
+# dune exec test/main.exe
 # OCAMLPARAM: unset
 # Workspace root: /Users/eshitasangani/3110/cs3110-finalproject
-$ /usr/local/bin/nproc > /var/folders/ls/brrtxb1508vc0x3wf84j2mmh0000gn/T/dune727985.output 2> /dev/null
+$ /usr/local/bin/nproc > /var/folders/ls/brrtxb1508vc0x3wf84j2mmh0000gn/T/dune570c79.output 2> /dev/null
 # Auto-detected concurrency: 4
 # disable binary cache
-$ /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlc.opt -config > /var/folders/ls/brrtxb1508vc0x3wf84j2mmh0000gn/T/dune23aaea.output
+$ /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlc.opt -config > /var/folders/ls/brrtxb1508vc0x3wf84j2mmh0000gn/T/dune44049b.output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -43,6 +43,8 @@ $ /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlc.opt -config > /var/folders
 #            "/Users/eshitasangani/3110/cs3110-finalproject/_build/install/default/lib"
 #        ; "OCAMLTOP_INCLUDE_PATH" :
 #            "/Users/eshitasangani/3110/cs3110-finalproject/_build/install/default/lib/toplevel"
+#        ; "OCAML_COLOR" : "always"
+#        ; "OPAMCOLOR" : "always"
 #        }
 #  ; findlib_path = [ External "/Users/eshitasangani/.opam/cs3110-2021fa/lib" ]
 #  ; arch_sixtyfour = true
@@ -117,26 +119,11 @@ $ /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlc.opt -config > /var/folders
 #      ; windows_unicode = false
 #      }
 #  }
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -49 -nopervasives -nostdlib -g -bin-annot -I src/.source.objs/byte -no-alias-deps -opaque -o src/.source.objs/byte/source.cmo -c -impl src/source.ml-gen)
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamldep.opt -modules -impl src/bank.ml) > _build/default/src/.source.objs/bank.ml.d
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamldep.opt -modules -impl src/board.ml) > _build/default/src/.source.objs/board.ml.d
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamldep.opt -modules -impl src/cards.ml) > _build/default/src/.source.objs/cards.ml.d
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamldep.opt -modules -impl src/players.ml) > _build/default/src/.source.objs/players.ml.d
+# Workspace root: /Users/eshitasangani/3110/cs3110-finalproject
 $ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamldep.opt -modules -impl src/tiles.ml) > _build/default/src/.source.objs/tiles.ml.d
-> File "src/tiles.ml", line 1, characters 14-15:
-> 1 | let taxes = { } 
->                   ^
-> Error: Syntax error
-[2]
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamldep.opt -modules -impl src/types.ml) > _build/default/src/.source.objs/types.ml.d
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.source.objs/byte -no-alias-deps -opaque -open Source -o src/.source.objs/byte/source__Board.cmo -c -impl src/board.ml)
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.source.objs/byte -no-alias-deps -opaque -open Source -o src/.source.objs/byte/source__Players.cmo -c -impl src/players.ml)
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.source.objs/byte -no-alias-deps -opaque -open Source -o src/.source.objs/byte/source__Types.cmo -c -impl src/types.ml)
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.source.objs/byte -no-alias-deps -opaque -open Source -o src/.source.objs/byte/source__Cards.cmo -c -impl src/cards.ml)
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -49 -nopervasives -nostdlib -g -I src/.source.objs/byte -I src/.source.objs/native -intf-suffix .ml-gen -no-alias-deps -opaque -o src/.source.objs/native/source.cmx -c -impl src/source.ml-gen)
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.source.objs/byte -I src/.source.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Source -o src/.source.objs/native/source__Board.cmx -c -impl src/board.ml)
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.source.objs/byte -I src/.source.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Source -o src/.source.objs/native/source__Players.cmx -c -impl src/players.ml)
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.source.objs/byte -I src/.source.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Source -o src/.source.objs/native/source__Types.cmx -c -impl src/types.ml)
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.source.objs/byte -no-alias-deps -opaque -open Source -o src/.source.objs/byte/source__Bank.cmo -c -impl src/bank.ml)
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.source.objs/byte -I src/.source.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Source -o src/.source.objs/native/source__Cards.cmx -c -impl src/cards.ml)
-$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.source.objs/byte -I src/.source.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Source -o src/.source.objs/native/source__Bank.cmx -c -impl src/bank.ml)
+$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.source.objs/byte -no-alias-deps -opaque -open Source -o src/.source.objs/byte/source__Tiles.cmo -c -impl src/tiles.ml)
+$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.source.objs/byte -I src/.source.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Source -o src/.source.objs/native/source__Tiles.cmx -c -impl src/tiles.ml)
+$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o src/source.cmxa src/.source.objs/native/source.cmx src/.source.objs/native/source__Types.cmx src/.source.objs/native/source__Tiles.cmx src/.source.objs/native/source__Cards.cmx src/.source.objs/native/source__Players.cmx src/.source.objs/native/source__Board.cmx src/.source.objs/native/source__Bank.cmx)
+$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I test/.main.eobjs/byte -I /Users/eshitasangani/.opam/cs3110-2021fa/lib/bytes -I /Users/eshitasangani/.opam/cs3110-2021fa/lib/ounit2 -I /Users/eshitasangani/.opam/cs3110-2021fa/lib/ounit2/advanced -I /Users/eshitasangani/.opam/cs3110-2021fa/lib/stdlib-shims -I src/.source.objs/byte -no-alias-deps -opaque -o test/.main.eobjs/byte/dune__exe__Main.cmo -c -impl test/main.ml)
+$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I test/.main.eobjs/byte -I test/.main.eobjs/native -I /Users/eshitasangani/.opam/cs3110-2021fa/lib/bytes -I /Users/eshitasangani/.opam/cs3110-2021fa/lib/ounit2 -I /Users/eshitasangani/.opam/cs3110-2021fa/lib/ounit2/advanced -I /Users/eshitasangani/.opam/cs3110-2021fa/lib/stdlib-shims -I src/.source.objs/byte -I src/.source.objs/native -intf-suffix .ml -no-alias-deps -opaque -o test/.main.eobjs/native/dune__exe__Main.cmx -c -impl test/main.ml)
+$ (cd _build/default && /Users/eshitasangani/.opam/cs3110-2021fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o test/main.exe src/source.cmxa /Users/eshitasangani/.opam/cs3110-2021fa/lib/ocaml/unix.cmxa -I /Users/eshitasangani/.opam/cs3110-2021fa/lib/ocaml /Users/eshitasangani/.opam/cs3110-2021fa/lib/stdlib-shims/stdlib_shims.cmxa /Users/eshitasangani/.opam/cs3110-2021fa/lib/ounit2/advanced/oUnitAdvanced.cmxa /Users/eshitasangani/.opam/cs3110-2021fa/lib/ounit2/oUnit.cmxa test/.main.eobjs/native/dune__exe__Main.cmx)

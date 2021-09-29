@@ -33,3 +33,5 @@ let add_children (player : player) (num_children : int) =
   { player with children = player.children + num_children }
 
 let add_significant_other (player : player) = { player with so = true }
+
+
