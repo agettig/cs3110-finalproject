@@ -26,6 +26,27 @@ let test_player_remove_card =
 let test_player_exchange_card =
   exchange_card test_player_add_card veterinarian police_officer
 
+let test_player_payday = payday test_player_add_card
+
+let test_player_tax = tax test_player_payday
+
+let test_player_tax_debt = tax test_player_add_card
+
+let test_player_payday_cap =
+  payday
+    (test_player_add_card |> payraise |> payraise |> payraise
+   |> payraise |> payraise)
+
+let test_player_payday_raise_no_cap =
+  payday (test_player_add_card |> payraise)
+
+let test_player_final_balance =
+  final_balance
+    (test_player_tax_debt |> add_card mobile_home
+   |> add_card dbl_wide_rv
+    |> add_card (Life_Tiles 10000)
+    |> add_card (Life_Tiles 40000))
+
 let tests =
   "test suite for sum"
   >::: [
@@ -45,6 +66,21 @@ let tests =
              (Bank.calculate_loans test_player_debt).debt );
          ( "Bank operation pay_college" >:: fun _ ->
            assert_equal 100000 test_player_college.debt );
+         ( "Bank operation payday no payraise" >:: fun _ ->
+           assert_equal 40000 test_player_payday.account_balance );
+         ( "Bank operation payday payraise" >:: fun _ ->
+           assert_equal 50000
+             test_player_payday_raise_no_cap.account_balance );
+         ( "Bank operation payday salary max cap" >:: fun _ ->
+           assert_equal 70000 test_player_payday_cap.account_balance );
+         ( "Bank operation tax no debt" >:: fun _ ->
+           assert_equal 25000 test_player_tax.account_balance );
+         ( "Bank operation tax debt check balance" >:: fun _ ->
+           assert_equal 5000 test_player_tax_debt.account_balance );
+         ( "Bank operation tax debt check debt" >:: fun _ ->
+           assert_equal 25000 test_player_tax_debt.debt );
+         ( "Bank operation final balance" >:: fun _ ->
+           assert_equal 410000 test_player_final_balance );
          ( "Player operation add_children" >:: fun _ ->
            assert_equal 2 test_player_children.children );
          ( "Player operation add_significant_other" >:: fun _ ->
@@ -58,7 +94,6 @@ let tests =
          >:: fun _ ->
            assert_equal [ veterinarian ] test_player_exchange_card.deck
          );
-         (* Havent tested bank operations payday, tax, final_balance *)
        ]
 
 let _ = run_test_tt_main tests
