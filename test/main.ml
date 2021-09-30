@@ -2,19 +2,9 @@ open OUnit2
 open Source
 open Players
 open Bank
+open Cards
 
-let test_player : player =
-  {
-    name = "test player";
-    children = 0;
-    so = false;
-    deck = [];
-    account_balance = 0;
-    debt = 0;
-    pay_raise = 0;
-    college = false;
-    index_on_board = 0;
-  }
+let test_player = add_player "test player" [] 0 0 0 false
 
 let test_player_add = add_balance test_player 100
 
@@ -23,6 +13,18 @@ let test_player_payraise = payraise test_player
 let test_player_debt = add_balance test_player (-25000)
 
 let test_player_college = pay_college test_player
+
+let test_player_children = add_children test_player 2
+
+let test_player_so = add_significant_other test_player
+
+let test_player_add_card = add_card police_officer test_player
+
+let test_player_remove_card =
+  remove_card police_officer test_player_add_card
+
+let test_player_exchange_card =
+  exchange_card test_player_add_card veterinarian police_officer
 
 let tests =
   "test suite for sum"
@@ -43,8 +45,20 @@ let tests =
              (Bank.calculate_loans test_player_debt).debt );
          ( "Bank operation pay_college" >:: fun _ ->
            assert_equal 100000 test_player_college.debt );
+         ( "Player operation add_children" >:: fun _ ->
+           assert_equal 2 test_player_children.children );
+         ( "Player operation add_significant_other" >:: fun _ ->
+           assert_equal true test_player_so.so );
+         ( "Player operation add_card police_officer" >:: fun _ ->
+           assert_equal [ police_officer ] test_player_add_card.deck );
+         ( "Player operation remove_card police_officer" >:: fun _ ->
+           assert_equal [] test_player_remove_card.deck );
+         ( "Player operation exchange_card veterinarian for \
+            police_officer"
+         >:: fun _ ->
+           assert_equal [ veterinarian ] test_player_exchange_card.deck
+         );
          (* Havent tested bank operations payday, tax, final_balance *)
-         (* Havent tested card operations add_card, remove_card, exchange_cards *)
        ]
 
 let _ = run_test_tt_main tests

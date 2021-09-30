@@ -12,6 +12,8 @@ type player = {
   index_on_board : int;
 }
 
+(** [add_player player_name player_deck player_acct_balance player_pay_raise attended_college]
+    returns a [player] with initialized parameters *)
 let add_player
     (player_name : string)
     (player_deck : cards list)
@@ -31,9 +33,13 @@ let add_player
     index_on_board = 0;
   }
 
+(** [add_children player num_children] returns a [player] with
+    [num_children] added to their children count *)
 let add_children (player : player) (num_children : int) =
   { player with children = player.children + num_children }
 
+(** [add_significant_other player] returns a [player] with significant
+    other set to true *)
 let add_significant_other (player : player) = { player with so = true }
 
 let rec remove_from_deck
