@@ -1,3 +1,1 @@
-let spinner = Random.int 10  
-
-
+let spinner = Random.int 11 + 1

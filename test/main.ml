@@ -13,6 +13,7 @@ let test_player : player =
     debt = 0;
     pay_raise = 0;
     college = false;
+    index_on_board = 0;
   }
 
 let test_player_add = add_balance test_player 100

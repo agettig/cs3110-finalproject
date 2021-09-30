@@ -9,6 +9,7 @@ type player = {
   debt : int;
   pay_raise : int;
   college : bool;
+  index_on_board : int;
 }
 
 let add_player
@@ -27,6 +28,7 @@ let add_player
     debt = player_debt;
     pay_raise = player_pay_raise;
     college = attended_college;
+    index_on_board = 0;
   }
 
 let add_children (player : player) (num_children : int) =
