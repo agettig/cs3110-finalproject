@@ -1,6 +1,7 @@
 open Players
 open Tiles
 open Cards
+open Bank
 
 type gamestate = {
   current_player : player;
@@ -71,6 +72,5 @@ let rec player_winner player_lst player =
   match player_lst with
   | [] -> player
   | h :: t ->
-      if h.account_balance > player.account_balance then
-        player_winner t h
+      if final_balance h > final_balance player then player_winner t h
       else player_winner t player
