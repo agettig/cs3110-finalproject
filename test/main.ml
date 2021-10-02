@@ -48,10 +48,28 @@ let test_player_final_balance =
     |> add_card (Life_Tiles 10000)
     |> add_card (Life_Tiles 40000))
 
-(* Need to test functions in gamestate - current_player - next_player -
-   finished - get_tile - index_in_list_next - next_player - gameover -
-   player_winner *)
+(* Need to test functions in gamestate - get_tile - player_winner - turn
+   - player_turn *)
+
 let test_player_index_change = change_index_board test_player
+
+let test_player_finished = { test_player with index_on_board = 100 }
+
+let test_gamestate =
+  {
+    current_player = test_player;
+    players = [ test_player; test_player_add ];
+    tiles = [];
+    deck = [];
+  }
+
+let test_gamestate_finished =
+  {
+    current_player = test_player_finished;
+    players = [ test_player_finished ];
+    tiles = [];
+    deck = [];
+  }
 
 let tests =
   "test suite for sum"
@@ -63,7 +81,7 @@ let tests =
          ( "Bank operation payraise" >:: fun _ ->
            assert_equal 10000 test_player_payraise.pay_raise );
          ( "Bank operation add_balance negative" >:: fun _ ->
-           assert_equal (-25000) test_player_debt.account_balance );
+           assert_equal 15000 test_player_debt.account_balance );
          ( "Bank operation calculate_loans balance" >:: fun _ ->
            assert_equal 15000
              (Bank.calculate_loans test_player_debt).account_balance );
@@ -104,6 +122,23 @@ let tests =
            assert_equal false
              (test_player_index_change.index_on_board
             = test_player.index_on_board) );
+         ( "Gamestate operation current_player" >:: fun _ ->
+           assert_equal test_player (current_player test_gamestate) );
+         ( "Gamestate operation finished false" >:: fun _ ->
+           assert_equal false (finished test_player) );
+         ( "Gamestate operation finished true" >:: fun _ ->
+           assert_equal true (finished test_player_finished) );
+         ( "Gamestate operation next_player" >:: fun _ ->
+           assert_equal test_player_add
+             (next_player test_player test_gamestate.players) );
+         ( "Gamestate operation next_player wrap" >:: fun _ ->
+           assert_equal test_player
+             (next_player test_player_add test_gamestate.players) );
+         ( "Gamestate operation gameover false" >:: fun _ ->
+           assert_equal false (gameover test_gamestate.players) );
+         ( "Gamestate operation gameover true" >:: fun _ ->
+           assert_equal true (gameover test_gamestate_finished.players)
+         );
        ]
 
 let _ = run_test_tt_main tests
