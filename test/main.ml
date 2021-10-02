@@ -3,6 +3,7 @@ open Source
 open Players
 open Bank
 open Cards
+open Gamestate
 
 let test_player = add_player "test player" [] 0 0 0 false
 
@@ -46,6 +47,11 @@ let test_player_final_balance =
    |> add_card dbl_wide_rv
     |> add_card (Life_Tiles 10000)
     |> add_card (Life_Tiles 40000))
+
+(* Need to test functions in gamestate - current_player - next_player -
+   finished - get_tile - index_in_list_next - next_player - gameover -
+   player_winner *)
+let test_player_index_change = change_index_board test_player
 
 let tests =
   "test suite for sum"
@@ -94,6 +100,10 @@ let tests =
          >:: fun _ ->
            assert_equal [ veterinarian ] test_player_exchange_card.deck
          );
+         ( "Gamestate operation change_index_board" >:: fun _ ->
+           assert_equal false
+             (test_player_index_change.index_on_board
+            = test_player.index_on_board) );
        ]
 
 let _ = run_test_tt_main tests
