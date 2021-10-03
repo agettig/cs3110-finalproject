@@ -3,6 +3,7 @@ open Source
 open Players
 open Bank
 open Cards
+open Gamestate
 
 let test_player = add_player "test player" [] 0 0 0 false
 
@@ -47,6 +48,44 @@ let test_player_final_balance =
     |> add_card (Life_Tiles 10000)
     |> add_card (Life_Tiles 40000))
 
+let test_player_final_balance1 =
+  test_player_tax_debt |> add_card mobile_home |> add_card dbl_wide_rv
+  |> add_card (Life_Tiles 10000)
+  |> add_card (Life_Tiles 40000)
+
+let test_player_final_balance2 =
+  test_player_tax_debt |> add_card mobile_home |> add_card dbl_wide_rv
+  |> add_card (Life_Tiles 10000)
+  |> add_card (Life_Tiles 50000)
+
+let test_player_final_balance3 =
+  test_player_tax_debt |> add_card mobile_home |> add_card dbl_wide_rv
+  |> add_card (Life_Tiles 40000)
+  |> add_card (Life_Tiles 40000)
+
+(* Need to test functions in gamestate - get_tile - turn -
+   player_turn *)
+
+let test_player_index_change = change_index_board test_player
+
+let test_player_finished = { test_player with index_on_board = 100 }
+
+let test_gamestate =
+  {
+    current_player = test_player;
+    players = [ test_player; test_player_add ];
+    tiles = [];
+    deck = [];
+  }
+
+let test_gamestate_finished =
+  {
+    current_player = test_player_finished;
+    players = [ test_player_finished ];
+    tiles = [];
+    deck = [];
+  }
+
 let tests =
   "test suite for sum"
   >::: [
@@ -57,7 +96,7 @@ let tests =
          ( "Bank operation payraise" >:: fun _ ->
            assert_equal 10000 test_player_payraise.pay_raise );
          ( "Bank operation add_balance negative" >:: fun _ ->
-           assert_equal (-25000) test_player_debt.account_balance );
+           assert_equal 15000 test_player_debt.account_balance );
          ( "Bank operation calculate_loans balance" >:: fun _ ->
            assert_equal 15000
              (Bank.calculate_loans test_player_debt).account_balance );
@@ -94,6 +133,36 @@ let tests =
          >:: fun _ ->
            assert_equal [ veterinarian ] test_player_exchange_card.deck
          );
+         ( "Gamestate operation change_index_board" >:: fun _ ->
+           assert_equal false
+             (test_player_index_change.index_on_board
+            = test_player.index_on_board) );
+         ( "Gamestate operation current_player" >:: fun _ ->
+           assert_equal test_player (current_player test_gamestate) );
+         ( "Gamestate operation finished false" >:: fun _ ->
+           assert_equal false (finished test_player) );
+         ( "Gamestate operation finished true" >:: fun _ ->
+           assert_equal true (finished test_player_finished) );
+         ( "Gamestate operation next_player" >:: fun _ ->
+           assert_equal test_player_add
+             (next_player test_player test_gamestate.players) );
+         ( "Gamestate operation next_player wrap" >:: fun _ ->
+           assert_equal test_player
+             (next_player test_player_add test_gamestate.players) );
+         ( "Gamestate operation gameover false" >:: fun _ ->
+           assert_equal false (gameover test_gamestate.players) );
+         ( "Gamestate operation gameover true" >:: fun _ ->
+           assert_equal true (gameover test_gamestate_finished.players)
+         );
+         ( "Gamestate operation player_winner" >:: fun _ ->
+           assert_equal test_player_final_balance3
+             (player_winner
+                [
+                  test_player_final_balance1;
+                  test_player_final_balance2;
+                  test_player_final_balance3;
+                ]
+                test_player_final_balance1) );
        ]
 
 let _ = run_test_tt_main tests

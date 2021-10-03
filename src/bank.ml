@@ -40,17 +40,6 @@ let rec add_houses_and_life_tiles (deck : cards list) (acc : int) =
       | House ho -> add_houses_and_life_tiles t (acc + ho.selling_price)
       | Life_Tiles lt -> add_houses_and_life_tiles t (acc + lt)
       | _ -> add_houses_and_life_tiles t acc)
-(* ---------- helper functions end ----------*)
-
-(** [add_balance player amount] returns a [player] with [amount] added
-    to their current balance *)
-let add_balance (player : player) (amount : int) : player =
-  { player with account_balance = player.account_balance + amount }
-
-(** [payraise player] returns a [player] with $10,000 added to their
-    current pay_raise *)
-let payraise (player : player) : player =
-  { player with pay_raise = player.pay_raise + 10000 }
 
 (** [calculate_loans player] returns a [player] with continous loans
     (loans are 20,000 added to their current balance and 25,000 added to
@@ -58,8 +47,20 @@ let payraise (player : player) : player =
 let rec calculate_loans (player : player) =
   if player.account_balance >= 0 then player
   else calculate_loans (loan player)
+(* ---------- helper functions end ----------*)
 
-(** [pay_college player] returns a [player] with 50,000 added to their
+(** [add_balance player amount] returns a [player] with [amount] added
+    to their current balance *)
+let add_balance (player : player) (amount : int) : player =
+  calculate_loans
+    { player with account_balance = player.account_balance + amount }
+
+(** [payraise player] returns a [player] with $10,000 added to their
+    current pay_raise *)
+let payraise (player : player) : player =
+  { player with pay_raise = player.pay_raise + 10000 }
+
+(** [pay_college player] returns a [player] with 100,000 added to their
     current debt *)
 let pay_college (player : player) : player =
   { player with debt = player.debt + 100000; college = true }
