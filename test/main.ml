@@ -48,8 +48,23 @@ let test_player_final_balance =
     |> add_card (Life_Tiles 10000)
     |> add_card (Life_Tiles 40000))
 
-(* Need to test functions in gamestate - get_tile - player_winner - turn
-   - player_turn *)
+let test_player_final_balance1 =
+  test_player_tax_debt |> add_card mobile_home |> add_card dbl_wide_rv
+  |> add_card (Life_Tiles 10000)
+  |> add_card (Life_Tiles 40000)
+
+let test_player_final_balance2 =
+  test_player_tax_debt |> add_card mobile_home |> add_card dbl_wide_rv
+  |> add_card (Life_Tiles 10000)
+  |> add_card (Life_Tiles 50000)
+
+let test_player_final_balance3 =
+  test_player_tax_debt |> add_card mobile_home |> add_card dbl_wide_rv
+  |> add_card (Life_Tiles 40000)
+  |> add_card (Life_Tiles 40000)
+
+(* Need to test functions in gamestate - get_tile - turn -
+   player_turn *)
 
 let test_player_index_change = change_index_board test_player
 
@@ -139,6 +154,15 @@ let tests =
          ( "Gamestate operation gameover true" >:: fun _ ->
            assert_equal true (gameover test_gamestate_finished.players)
          );
+         ( "Gamestate operation player_winner" >:: fun _ ->
+           assert_equal test_player_final_balance3
+             (player_winner
+                [
+                  test_player_final_balance1;
+                  test_player_final_balance2;
+                  test_player_final_balance3;
+                ]
+                test_player_final_balance1) );
        ]
 
 let _ = run_test_tt_main tests
