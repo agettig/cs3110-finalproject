@@ -18,10 +18,12 @@ let empty_board = BoardMap.empty
 
 let pos_to_tuple index_on_board =
   match index_on_board with
+  | index when index > -1 && index < 130 ->
+      (index, List.nth gold_tiles index)
   | index ->
       if index > 0 then
         if index > 129 then raise (Failure "out of bounds position")
-        else (index, List.nth gold_tiles index)
+        else (129, List.nth gold_tiles 129)
       else raise (Failure "out of bounds position")
 
 let make_board =
