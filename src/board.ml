@@ -21,8 +21,8 @@ let pos_to_tuple index_on_board =
   | index ->
       if index > 0 then
         if index > 129 then raise (Failure "out of bounds position")
-        else (index, List.nth gold_tiles index)
-      else raise (Failure "out of bounds position")
+        else (129, List.nth gold_tiles 129)
+      else (index, List.nth gold_tiles index)
 
 let make_board =
   empty_board
