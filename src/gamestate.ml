@@ -10,6 +10,38 @@ type gamestate = {
   deck : cards list;
 }
 
+(** [num_players] equals the number of players in the game*)
+let num_players =
+  let () = print_string "Enter number of players: " in
+  read_int ()
+
+(** [new_player] constructs a new player with a user inputted name and
+    whether or not they are going to college*)
+let new_player () =
+  let () = print_string "Enter Player Name: " in
+  let name = read_line () in
+  let () = print_string "Do you want to to college? Input yes or no " in
+  let college = read_line () in
+  let bool_college =
+    if String.equal college "yes" then true
+    else if String.equal college "no" then false
+    else failwith "invalid input"
+  in
+  add_player name [] 0 0 0 bool_college
+
+(** [get_players number_players acc] recursively constructs the list of
+    players in the game*)
+let rec get_players num_players acc =
+  match num_players with
+  | 0 -> acc
+  | h -> get_players (h - 1) (acc @ [ new_player () ])
+
+(** [players] *)
+let players = get_players num_players []
+
+let init_state tiles deck players =
+  { tiles; deck; current_player = List.nth players 0; players }
+
 (** [current_player gamestate] is the identifier of the player whose
     turn it is in which the in gamestate [st]. *)
 let current_player st = st.current_player
