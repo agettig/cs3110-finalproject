@@ -1,7 +1,7 @@
 open Players
 open Tiles
 
-let spinner = Random.int 11 + 1
+let spinner = Random.int 10 + 1
 
 module IntTilesTupl = struct
   type t = int * tiles
@@ -16,142 +16,143 @@ module BoardMap = Map.Make (IntTilesTupl)
 
 let empty_board = BoardMap.empty
 
-(*Need to talk about how to instantiate everything like all the tile
-  types*)
-let pos_to_tuple pos =
-  match pos with
-  | 0 -> (0, List.nth gold_tiles 0)
-  | 1 -> (1, List.nth gold_tiles 1)
-  | 2 -> (2, List.nth gold_tiles 2)
-  | 3 -> (3, List.nth gold_tiles 3)
-  | 4 -> (4, List.nth gold_tiles 4)
-  | 5 -> (5, List.nth gold_tiles 5)
-  | 6 -> (6, List.nth gold_tiles 6)
-  | 7 -> (7, List.nth gold_tiles 7)
-  | 8 -> (8, List.nth gold_tiles 8)
-  | 9 -> (9, List.nth gold_tiles 9)
-  | 10 -> (10, List.nth gold_tiles 10)
-  | 11 -> (11, List.nth gold_tiles 11)
-  | 12 -> (12, List.nth gold_tiles 12)
-  | 13 -> (13, List.nth gold_tiles 13)
-  | 14 -> (14, List.nth gold_tiles 14)
-  | 15 -> (1, List.nth gold_tiles 1)
-  | 16 -> (16, List.nth gold_tiles 16)
-  | 17 -> (17, List.nth gold_tiles 17)
-  | 18 -> (18, List.nth gold_tiles 18)
-  | 19 -> (19, List.nth gold_tiles 19)
-  | 20 -> (20, List.nth gold_tiles 20)
-  | 21 -> (21, List.nth gold_tiles 21)
-  | 22 -> (22, List.nth gold_tiles 22)
-  | 23 -> (23, List.nth gold_tiles 23)
-  | 24 -> (24, List.nth gold_tiles 24)
-  | 25 -> (25, List.nth gold_tiles 25)
-  | 26 -> (26, List.nth gold_tiles 26)
-  | 27 -> (27, List.nth gold_tiles 27)
-  | 28 -> (28, List.nth gold_tiles 28)
-  | 29 -> (29, List.nth gold_tiles 29)
-  | 30 -> (30, List.nth gold_tiles 30)
-  | 31 -> (31, List.nth gold_tiles 31)
-  | 32 -> (32, List.nth gold_tiles 32)
-  | 33 -> (33, List.nth gold_tiles 33)
-  | 34 -> (34, List.nth gold_tiles 34)
-  | 35 -> (35, List.nth gold_tiles 35)
-  | 36 -> (36, List.nth gold_tiles 36)
-  | 37 -> (37, List.nth gold_tiles 37)
-  | 38 -> (38, List.nth gold_tiles 38)
-  | 39 -> (39, List.nth gold_tiles 39)
-  | 40 -> (40, List.nth gold_tiles 40)
-  | 41 -> (41, List.nth gold_tiles 41)
-  | 42 -> (42, List.nth gold_tiles 42)
-  | 43 -> (43, List.nth gold_tiles 43)
-  | 44 -> (44, List.nth gold_tiles 44)
-  | 45 -> (45, List.nth gold_tiles 45)
-  | 46 -> (46, List.nth gold_tiles 46)
-  | 47 -> (47, List.nth gold_tiles 47)
-  | 48 -> (48, List.nth gold_tiles 48)
-  | 49 -> (49, List.nth gold_tiles 49)
-  | 50 -> (50, List.nth gold_tiles 50)
-  | 51 -> (51, List.nth gold_tiles 51)
-  | 52 -> (52, List.nth gold_tiles 52)
-  | 53 -> (53, List.nth gold_tiles 53)
-  | 54 -> (54, List.nth gold_tiles 54)
-  | 55 -> (55, List.nth gold_tiles 55)
-  | 56 -> (56, List.nth gold_tiles 56)
-  | 57 -> (57, List.nth gold_tiles 57)
-  | 58 -> (58, List.nth gold_tiles 58)
-  | 59 -> (59, List.nth gold_tiles 59)
-  | 60 -> (60, List.nth gold_tiles 60)
-  | 61 -> (61, List.nth gold_tiles 61)
-  | 62 -> (62, List.nth gold_tiles 62)
-  | 63 -> (63, List.nth gold_tiles 63)
-  | 64 -> (64, List.nth gold_tiles 64)
-  | 65 -> (65, List.nth gold_tiles 65)
-  | 66 -> (66, List.nth gold_tiles 66)
-  | 67 -> (67, List.nth gold_tiles 67)
-  | 68 -> (68, List.nth gold_tiles 68)
-  | 69 -> (69, List.nth gold_tiles 69)
-  | 70 -> (70, List.nth gold_tiles 70)
-  | 71 -> (71, List.nth gold_tiles 71)
-  | 72 -> (72, List.nth gold_tiles 72)
-  | 73 -> (73, List.nth gold_tiles 73)
-  | 74 -> (74, List.nth gold_tiles 74)
-  | 75 -> (75, List.nth gold_tiles 75)
-  | 76 -> (76, List.nth gold_tiles 76)
-  | 77 -> (77, List.nth gold_tiles 77)
-  | 78 -> (78, List.nth gold_tiles 78)
-  | 79 -> (79, List.nth gold_tiles 79)
-  | 80 -> (80, List.nth gold_tiles 80)
-  | 81 -> (81, List.nth gold_tiles 81)
-  | 82 -> (82, List.nth gold_tiles 82)
-  | 83 -> (83, List.nth gold_tiles 83)
-  | 84 -> (84, List.nth gold_tiles 84)
-  | 85 -> (85, List.nth gold_tiles 85)
-  | 86 -> (86, List.nth gold_tiles 86)
-  | 87 -> (87, List.nth gold_tiles 87)
-  | 88 -> (88, List.nth gold_tiles 88)
-  | 89 -> (89, List.nth gold_tiles 89)
-  | 90 -> (90, List.nth gold_tiles 90)
-  | 91 -> (91, List.nth gold_tiles 91)
-  | 92 -> (92, List.nth gold_tiles 92)
-  | 93 -> (93, List.nth gold_tiles 93)
-  | 94 -> (94, List.nth gold_tiles 94)
-  | 95 -> (95, List.nth gold_tiles 95)
-  | 96 -> (96, List.nth gold_tiles 96)
-  | 97 -> (97, List.nth gold_tiles 97)
-  | 98 -> (98, List.nth gold_tiles 98)
-  | 99 -> (99, List.nth gold_tiles 99)
-  | 100 -> (100, List.nth gold_tiles 100)
-  | 101 -> (101, List.nth gold_tiles 101)
-  | 102 -> (102, List.nth gold_tiles 102)
-  | 103 -> (103, List.nth gold_tiles 103)
-  | 104 -> (104, List.nth gold_tiles 104)
-  | 105 -> (105, List.nth gold_tiles 105)
-  | 106 -> (106, List.nth gold_tiles 106)
-  | 107 -> (107, List.nth gold_tiles 107)
-  | 108 -> (108, List.nth gold_tiles 108)
-  | 109 -> (109, List.nth gold_tiles 109)
-  | 110 -> (110, List.nth gold_tiles 110)
-  | 111 -> (111, List.nth gold_tiles 111)
-  | 112 -> (112, List.nth gold_tiles 112)
-  | 113 -> (113, List.nth gold_tiles 113)
-  | 114 -> (114, List.nth gold_tiles 114)
-  | 115 -> (115, List.nth gold_tiles 115)
-  | 116 -> (116, List.nth gold_tiles 116)
-  | 117 -> (117, List.nth gold_tiles 117)
-  | 118 -> (118, List.nth gold_tiles 118)
-  | 119 -> (119, List.nth gold_tiles 119)
-  | 120 -> (120, List.nth gold_tiles 120)
-  | 121 -> (121, List.nth gold_tiles 121)
-  | 122 -> (122, List.nth gold_tiles 122)
-  | 123 -> (123, List.nth gold_tiles 123)
-  | 124 -> (124, List.nth gold_tiles 124)
-  | 125 -> (125, List.nth gold_tiles 125)
-  | 126 -> (126, List.nth gold_tiles 126)
-  | 127 -> (127, List.nth gold_tiles 127)
-  | 128 -> (128, List.nth gold_tiles 128)
-  | 129 -> (129, List.nth gold_tiles 129)
-  | num ->
-      if num > 0 then
-        if num > 129 then raise (Failure "out of bounds position")
-        else (129, List.nth gold_tiles 129)
+let pos_to_tuple index_on_board =
+  match index_on_board with
+  | index ->
+      if index > 0 then
+        if index > 129 then raise (Failure "out of bounds position")
+        else (index, List.nth gold_tiles index)
       else raise (Failure "out of bounds position")
+
+let make_board =
+  empty_board
+  |> BoardMap.add (pos_to_tuple 0) "|  0  |"
+  |> BoardMap.add (pos_to_tuple 1) "|  1  |"
+  |> BoardMap.add (pos_to_tuple 2) "|  2  |"
+  |> BoardMap.add (pos_to_tuple 3) "|  3  |"
+  |> BoardMap.add (pos_to_tuple 4) "|  4  |"
+  |> BoardMap.add (pos_to_tuple 5) "|  5  |"
+  |> BoardMap.add (pos_to_tuple 6) "|  6  |"
+  |> BoardMap.add (pos_to_tuple 7) "|  7  |"
+  |> BoardMap.add (pos_to_tuple 8) "|  8  |"
+  |> BoardMap.add (pos_to_tuple 9) "|  9  |"
+  |> BoardMap.add (pos_to_tuple 10) "|  10 |"
+  |> BoardMap.add (pos_to_tuple 11) "|  11 |"
+  |> BoardMap.add (pos_to_tuple 12) "|  12 |"
+  |> BoardMap.add (pos_to_tuple 13) "|  13 |"
+  |> BoardMap.add (pos_to_tuple 14) "|  14 |"
+  |> BoardMap.add (pos_to_tuple 15) "|  15 |"
+  |> BoardMap.add (pos_to_tuple 16) "|  16 |"
+  |> BoardMap.add (pos_to_tuple 17) "|  17 |"
+  |> BoardMap.add (pos_to_tuple 18) "|  18 |"
+  |> BoardMap.add (pos_to_tuple 19) "|  19 |"
+  |> BoardMap.add (pos_to_tuple 20) "|  20 |"
+  |> BoardMap.add (pos_to_tuple 21) "|  21 |"
+  |> BoardMap.add (pos_to_tuple 22) "|  22 |"
+  |> BoardMap.add (pos_to_tuple 23) "|  23 |"
+  |> BoardMap.add (pos_to_tuple 24) "|  24 |"
+  |> BoardMap.add (pos_to_tuple 25) "|  25 |"
+  |> BoardMap.add (pos_to_tuple 26) "|  26 |"
+  |> BoardMap.add (pos_to_tuple 27) "|  27 |"
+  |> BoardMap.add (pos_to_tuple 28) "|  28 |"
+  |> BoardMap.add (pos_to_tuple 29) "|  29 |"
+  |> BoardMap.add (pos_to_tuple 30) "|  30 |"
+  |> BoardMap.add (pos_to_tuple 31) "|  31 |"
+  |> BoardMap.add (pos_to_tuple 32) "|  32 |"
+  |> BoardMap.add (pos_to_tuple 33) "|  33 |"
+  |> BoardMap.add (pos_to_tuple 34) "|  34 |"
+  |> BoardMap.add (pos_to_tuple 35) "|  35 |"
+  |> BoardMap.add (pos_to_tuple 36) "|  36 |"
+  |> BoardMap.add (pos_to_tuple 37) "|  37 |"
+  |> BoardMap.add (pos_to_tuple 38) "|  38 |"
+  |> BoardMap.add (pos_to_tuple 39) "|  39 |"
+  |> BoardMap.add (pos_to_tuple 40) "|  40 |"
+  |> BoardMap.add (pos_to_tuple 41) "|  41 |"
+  |> BoardMap.add (pos_to_tuple 42) "|  42 |"
+  |> BoardMap.add (pos_to_tuple 43) "|  43 |"
+  |> BoardMap.add (pos_to_tuple 44) "|  44 |"
+  |> BoardMap.add (pos_to_tuple 45) "|  45 |"
+  |> BoardMap.add (pos_to_tuple 46) "|  46 |"
+  |> BoardMap.add (pos_to_tuple 47) "|  47 |"
+  |> BoardMap.add (pos_to_tuple 48) "|  48 |"
+  |> BoardMap.add (pos_to_tuple 49) "|  49 |"
+  |> BoardMap.add (pos_to_tuple 50) "|  50 |"
+  |> BoardMap.add (pos_to_tuple 51) "|  51 |"
+  |> BoardMap.add (pos_to_tuple 52) "|  52 |"
+  |> BoardMap.add (pos_to_tuple 53) "|  53 |"
+  |> BoardMap.add (pos_to_tuple 54) "|  54 |"
+  |> BoardMap.add (pos_to_tuple 55) "|  55 |"
+  |> BoardMap.add (pos_to_tuple 56) "|  56 |"
+  |> BoardMap.add (pos_to_tuple 57) "|  57 |"
+  |> BoardMap.add (pos_to_tuple 58) "|  58 |"
+  |> BoardMap.add (pos_to_tuple 59) "|  59 |"
+  |> BoardMap.add (pos_to_tuple 60) "|  60 |"
+  |> BoardMap.add (pos_to_tuple 61) "|  61 |"
+  |> BoardMap.add (pos_to_tuple 62) "|  62 |"
+  |> BoardMap.add (pos_to_tuple 63) "|  63 |"
+  |> BoardMap.add (pos_to_tuple 64) "|  64 |"
+  |> BoardMap.add (pos_to_tuple 65) "|  65 |"
+  |> BoardMap.add (pos_to_tuple 66) "|  66 |"
+  |> BoardMap.add (pos_to_tuple 67) "|  67 |"
+  |> BoardMap.add (pos_to_tuple 68) "|  68 |"
+  |> BoardMap.add (pos_to_tuple 69) "|  69 |"
+  |> BoardMap.add (pos_to_tuple 70) "|  70 |"
+  |> BoardMap.add (pos_to_tuple 71) "|  71 |"
+  |> BoardMap.add (pos_to_tuple 72) "|  72 |"
+  |> BoardMap.add (pos_to_tuple 73) "|  73 |"
+  |> BoardMap.add (pos_to_tuple 74) "|  74 |"
+  |> BoardMap.add (pos_to_tuple 75) "|  75 |"
+  |> BoardMap.add (pos_to_tuple 76) "|  76 |"
+  |> BoardMap.add (pos_to_tuple 77) "|  77 |"
+  |> BoardMap.add (pos_to_tuple 78) "|  78 |"
+  |> BoardMap.add (pos_to_tuple 79) "|  79 |"
+  |> BoardMap.add (pos_to_tuple 80) "|  80 |"
+  |> BoardMap.add (pos_to_tuple 81) "|  81 |"
+  |> BoardMap.add (pos_to_tuple 82) "|  82 |"
+  |> BoardMap.add (pos_to_tuple 83) "|  83 |"
+  |> BoardMap.add (pos_to_tuple 84) "|  84 |"
+  |> BoardMap.add (pos_to_tuple 85) "|  85 |"
+  |> BoardMap.add (pos_to_tuple 86) "|  86 |"
+  |> BoardMap.add (pos_to_tuple 87) "|  87 |"
+  |> BoardMap.add (pos_to_tuple 88) "|  88 |"
+  |> BoardMap.add (pos_to_tuple 89) "|  89 |"
+  |> BoardMap.add (pos_to_tuple 90) "|  90 |"
+  |> BoardMap.add (pos_to_tuple 91) "|  91 |"
+  |> BoardMap.add (pos_to_tuple 92) "|  92 |"
+  |> BoardMap.add (pos_to_tuple 93) "|  93 |"
+  |> BoardMap.add (pos_to_tuple 94) "|  94 |"
+  |> BoardMap.add (pos_to_tuple 95) "|  95 |"
+  |> BoardMap.add (pos_to_tuple 96) "|  96 |"
+  |> BoardMap.add (pos_to_tuple 97) "|  97 |"
+  |> BoardMap.add (pos_to_tuple 98) "|  98 |"
+  |> BoardMap.add (pos_to_tuple 99) "|  99 |"
+  |> BoardMap.add (pos_to_tuple 100) "| 100 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 101 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 102 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 103 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 104 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 105 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 106 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 107 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 108 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 109 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 110 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 111 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 112 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 113 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 114 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 115 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 116 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 117 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 118 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 119 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 120 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 121 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 122 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 123 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 124 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 125 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 126 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 127 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 128 |"
+  |> BoardMap.add (pos_to_tuple 1) "| 129 |"

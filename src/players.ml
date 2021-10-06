@@ -42,7 +42,8 @@ let add_player
     (player_acct_balance : int)
     (player_debt : int)
     (player_pay_raise : int)
-    (attended_college : bool) =
+    (attended_college : bool)
+    (index : int) =
   {
     name = player_name;
     children = 0;
@@ -52,7 +53,7 @@ let add_player
     debt = player_debt;
     pay_raise = player_pay_raise;
     college = attended_college;
-    index_on_board = 0;
+    index_on_board = index;
   }
 
 (** [add_children player num_children] returns a [player] with
