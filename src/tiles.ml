@@ -422,6 +422,7 @@ let gold_tiles =
         account_change = -35000;
         index_tile = 128;
       };
-    (* (Figure out # of spimns here) *)
-    PayTile { name = "Pension"; account_change = 10000; index_tile = 4 };
+    (* (Figure out # of spins here) *)
+    PayTile
+      { name = "Pension"; account_change = 10000; index_tile = 129 };
   ]
