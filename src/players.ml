@@ -12,6 +12,28 @@ type player = {
   index_on_board : int;
 }
 
+let rec deck_string_helper (deck : cards list) (acc : string) =
+  match deck with
+  | [] -> acc
+  | [ h ] -> (
+      match h with
+      | House c -> acc ^ "House: " ^ c.name
+      | Career c -> acc ^ "Career: " ^ c.name
+      | Long_Term_Investment c ->
+          acc ^ "Long Term Investments: " ^ string_of_int c
+      | Life_Tiles _ -> acc ^ "LifeTile"
+      | _ -> acc)
+  | h :: t -> (
+      match h with
+      | House c -> deck_string_helper t (acc ^ "House: " ^ c.name ^ ", ")
+      | Career c ->
+          deck_string_helper t (acc ^ "Career: " ^ c.name ^ ", ")
+      | Long_Term_Investment c ->
+          deck_string_helper t
+            (acc ^ "Long Term Investments: " ^ string_of_int c ^ ", ")
+      | Life_Tiles _ -> deck_string_helper t (acc ^ "LifeTile" ^ ", ")
+      | _ -> deck_string_helper t acc)
+
 (** [add_player player_name player_deck player_acct_balance player_pay_raise attended_college]
     returns a [player] with initialized parameters *)
 let add_player
@@ -70,3 +92,29 @@ let exchange_card
     (card_to_add : cards)
     (card_to_remove : cards) =
   player |> add_card card_to_add |> remove_card card_to_remove
+
+(** [player_to_string player] returns a string containing all info of
+    the player including name, deck, balance, debt, payraise, college,
+    and index on board *)
+let player_to_string (player : player) =
+  let () = print_endline ("Name: " ^ player.name) in
+  let () =
+    print_endline ("# of Children: " ^ string_of_int player.children)
+  in
+  let () = print_endline ("Married: " ^ string_of_bool player.so) in
+  let () =
+    print_endline ("Deck: " ^ deck_string_helper player.deck "")
+  in
+  let () =
+    print_endline
+      ("Account Balance: $" ^ string_of_int player.account_balance)
+  in
+  let () = print_endline ("Debt: $" ^ string_of_int player.debt) in
+  let () =
+    print_endline ("Pay Raise: $" ^ string_of_int player.pay_raise)
+  in
+  let () =
+    print_endline ("Went to College: " ^ string_of_bool player.college)
+  in
+  print_endline
+    ("Index on board: " ^ string_of_int player.index_on_board)

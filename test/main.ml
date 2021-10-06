@@ -63,8 +63,12 @@ let test_player_final_balance3 =
   |> add_card (Life_Tiles 40000)
   |> add_card (Life_Tiles 40000)
 
+(* let print_terminal = test_player_final_balance3 |>
+   player_to_string *)
+
 (* Need to test functions in gamestate - get_tile - turn -
    player_turn *)
+(* Need to test functions in player - player_to_string *)
 
 let test_player_index_change = change_index_board test_player
 
