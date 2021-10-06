@@ -52,7 +52,7 @@ let rec index_in_list_helper player lst c =
     [player]. Postcondition: [index_in_lst] returns an int between 0 and
     (list length -1)*)
 let index_in_list_next (player : player) (lst : player list) : int =
-  index_in_list_helper player lst 0 mod List.length lst
+  (index_in_list_helper player lst 0 + 1) mod List.length lst
 
 (** [next_player current_player players] returns the player whose turn
     is after [current_player]*)
