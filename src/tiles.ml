@@ -55,6 +55,8 @@ type tiles =
 let gold_tiles =
   [
     PayTile
+      { name = "Initial State!"; account_change = 0; index_tile = 0 };
+    PayTile
       {
         name = "START COLLEGE!";
         account_change = -100000;
