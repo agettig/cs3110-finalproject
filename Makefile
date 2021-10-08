@@ -21,3 +21,6 @@ zip:
 clean:
 	dune clean
 	rm -f enigma.zip
+
+play:
+	OCAMLRUNPARAM=b dune exec bin/main.exe
