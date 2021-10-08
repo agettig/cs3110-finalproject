@@ -5,7 +5,7 @@ open Bank
 open Cards
 open Gamestate
 
-let test_player = add_player "test player" [] 0 0 0 false
+let test_player = add_player "test player" [] 0 0 0 false 0
 
 let test_player_add = add_balance test_player 100
 
