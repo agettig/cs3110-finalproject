@@ -36,11 +36,10 @@ let rec deck_string_helper (deck : cards list) (acc : string) =
       | Life_Tiles _ -> deck_string_helper t (acc ^ "LifeTile" ^ ", ")
       | _ -> deck_string_helper t acc)
 
-(** [add_player player_name player_deck player_acct_balance player_pay_raise attended_college]
-    returns a [player] with initialized parameters *)
-
 let college_loans_value att_coll = if att_coll then 100000 else 0
 
+(** [add_player player_name attended_college] returns a [player] with
+    initialized parameters *)
 let add_player (player_name : string) (attended_college : bool) =
   {
     name = player_name;
