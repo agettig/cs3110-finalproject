@@ -2,6 +2,7 @@ open Players
 open Tiles
 open Cards
 open Bank
+open Board
 
 type gamestate = {
   current_player : player;
@@ -27,7 +28,7 @@ let new_player () =
     else if String.equal college "no" then false
     else failwith "invalid input"
   in
-  add_player name [] 0 0 0 bool_college
+  add_player name bool_college
 
 (** [get_players number_players acc] recursively constructs the list of
     players in the game*)
@@ -48,28 +49,62 @@ let current_player st = st.current_player
 
 (** [final_tile_index] is the last tile on the path of life which
     signifies retirement*)
-let final_tile_index = 100
+let final_tile_index = 130
 
 (** [finished player] returns true if the player has reached the end of
     the board and has retired and returns false if player is still
     playing.*)
 let finished player = player.index_on_board >= final_tile_index
 
-(* Not implemented yet
-
-   let turn gamestate : gamestate = gamestate
-
-   let player_turn player tile = player *)
-
-(** [change_index_board player] returns the new position of the player
-    after they move a given number of spaces determined by the spinner*)
-let change_index_board (player : player) : player =
-  { player with index_on_board = player.index_on_board + Board.spinner }
+let turn gamestate : gamestate = gamestate
 
 (** [get_tile] returns the tile in [tiles] at given index [index].
     Raises : Failure if list is too short and Invalid Argument if n is
     negative. *)
 let get_tile index tiles : tiles = List.nth tiles index
+
+(** [change_index_board player] returns the new position of the player
+    after they move a given number of spaces determined by the spinner*)
+let married_index, starter_home_index, house_index, retirement =
+  (25, 33, 97, 130)
+
+let change_index_board (player : player) : player =
+  let current_index = player.index_on_board in
+  let spinner = spinner () in
+  let player_index_spinner = current_index + spinner in
+  let new_index =
+    if player.college && current_index < 10 then
+      if player_index_spinner > 10 then 10 else current_index
+    else if player.college && current_index = 10 then
+      4 + player_index_spinner
+    else if current_index < married_index then
+      if player_index_spinner > married_index then married_index
+      else player_index_spinner
+    else if
+      current_index >= married_index
+      && current_index < starter_home_index
+    then
+      if player_index_spinner > starter_home_index then
+        starter_home_index
+      else player_index_spinner
+    else if
+      current_index >= starter_home_index && current_index < house_index
+    then
+      if player_index_spinner > house_index then house_index
+      else player_index_spinner
+    else if player_index_spinner > 130 then 130
+    else player_index_spinner
+  in
+  { player with index_on_board = new_index }
+
+(* change empty list later*)
+(* let player_turn player : player= let tile = get_tile
+   player.index_on_board [] in match tile with | PayTile {name;
+   index_tile; account_change} -> add_balance player account_change; |
+   TaxesTile {name; account_change; index_tile} -> add_balance player
+   (get_taxes player) | LifeTile {name; index_tile} -> | CareerTile |
+   FamilyTile | HouseTile | TakeTile | ActionTile | SpinToWinTile |
+   LawsuitTile *)
 
 (** [index_in_list_helper player lst c] returns an int that represents
     the index of [player] in list [lst]. Raises: Failswith "Not found"
