@@ -1,4 +1,4 @@
-open Players
+(* open Players *)
 open Tiles
 
 let spinner = Random.int 10 + 1
@@ -16,6 +16,8 @@ module BoardMap = Map.Make (IntTilesTupl)
 
 let empty_board = BoardMap.empty
 
+(**[pos_to_tuple index_on_board] maps the position index to the specific
+   tile that the player is on *)
 let pos_to_tuple index_on_board =
   match index_on_board with
   | index when index > -1 && index < 130 ->
@@ -26,6 +28,8 @@ let pos_to_tuple index_on_board =
         else (129, List.nth gold_tiles 129)
       else raise (Failure "out of bounds position")
 
+(**[make_board] maps each position to a specific binding associated with
+   the tile *)
 let make_board =
   empty_board
   |> BoardMap.add (pos_to_tuple 0) "|  0  |"
@@ -129,32 +133,46 @@ let make_board =
   |> BoardMap.add (pos_to_tuple 98) "|  98 |"
   |> BoardMap.add (pos_to_tuple 99) "|  99 |"
   |> BoardMap.add (pos_to_tuple 100) "| 100 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 101 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 102 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 103 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 104 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 105 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 106 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 107 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 108 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 109 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 110 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 111 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 112 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 113 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 114 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 115 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 116 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 117 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 118 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 119 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 120 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 121 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 122 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 123 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 124 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 125 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 126 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 127 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 128 |"
-  |> BoardMap.add (pos_to_tuple 1) "| 129 |"
+  |> BoardMap.add (pos_to_tuple 101) "| 101 |"
+  |> BoardMap.add (pos_to_tuple 102) "| 102 |"
+  |> BoardMap.add (pos_to_tuple 103) "| 103 |"
+  |> BoardMap.add (pos_to_tuple 104) "| 104 |"
+  |> BoardMap.add (pos_to_tuple 105) "| 105 |"
+  |> BoardMap.add (pos_to_tuple 106) "| 106 |"
+  |> BoardMap.add (pos_to_tuple 107) "| 107 |"
+  |> BoardMap.add (pos_to_tuple 108) "| 108 |"
+  |> BoardMap.add (pos_to_tuple 109) "| 109 |"
+  |> BoardMap.add (pos_to_tuple 110) "| 110 |"
+  |> BoardMap.add (pos_to_tuple 111) "| 111 |"
+  |> BoardMap.add (pos_to_tuple 112) "| 112 |"
+  |> BoardMap.add (pos_to_tuple 113) "| 113 |"
+  |> BoardMap.add (pos_to_tuple 114) "| 114 |"
+  |> BoardMap.add (pos_to_tuple 115) "| 115 |"
+  |> BoardMap.add (pos_to_tuple 116) "| 116 |"
+  |> BoardMap.add (pos_to_tuple 117) "| 117 |"
+  |> BoardMap.add (pos_to_tuple 118) "| 118 |"
+  |> BoardMap.add (pos_to_tuple 119) "| 119 |"
+  |> BoardMap.add (pos_to_tuple 120) "| 120 |"
+  |> BoardMap.add (pos_to_tuple 121) "| 121 |"
+  |> BoardMap.add (pos_to_tuple 122) "| 122 |"
+  |> BoardMap.add (pos_to_tuple 123) "| 123 |"
+  |> BoardMap.add (pos_to_tuple 124) "| 124 |"
+  |> BoardMap.add (pos_to_tuple 125) "| 125 |"
+  |> BoardMap.add (pos_to_tuple 126) "| 126 |"
+  |> BoardMap.add (pos_to_tuple 127) "| 127 |"
+  |> BoardMap.add (pos_to_tuple 128) "| 128 |"
+  |> BoardMap.add (pos_to_tuple 129) "| 129 |"
+
+let make_color pos board =
+  match pos with
+  | pos ->
+      ANSITerminal.(
+        print_string [ white; on_black ] (BoardMap.find pos board))
+
+let rec init_board pos board =
+  match pos with
+  | pos ->
+      if not (BoardMap.mem (pos_to_tuple pos) board) then
+        failwith "invalid position"
+      else make_color (pos_to_tuple pos) board;
+      init_board (pos + 1) board
