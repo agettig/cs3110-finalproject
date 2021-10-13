@@ -20,4 +20,7 @@ zip:
 
 clean:
 	dune clean
-	rm -f enigma.zip
+	rm -f cs3110-finalproject.zip
+
+play:
+	OCAMLRUNPARAM=b dune exec bin/main.exe

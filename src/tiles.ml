@@ -54,6 +54,9 @@ type tiles =
 (* initializing all of the pay/collect tiles *)
 let gold_tiles =
   [
+    (* 0 - 10 College Career Path*)
+    PayTile
+      { name = "Initial State!"; account_change = 0; index_tile = 0 };
     PayTile
       {
         name = "START COLLEGE!";
@@ -80,20 +83,23 @@ let gold_tiles =
       };
     LifeTile { name = "Honor Roll"; index_tile = 8 };
     LifeTile { name = "Graduation"; index_tile = 9 };
-    CareerTile { name = "Choose Career"; index_tile = 10 };
+    CareerTile { name = "Choose College Career"; index_tile = 10 };
+    (*end College Path*)
+    (*Career Path 11-14*)
+    CareerTile { name = "START CAREER"; index_tile = 11 };
     PayTile
-      { name = "PAYDAY!"; account_change = 10000; index_tile = 11 };
-    CareerTile { name = "START CAREER"; index_tile = 12 };
-    PayTile
-      { name = "PAYDAY!"; account_change = 10000; index_tile = 13 };
+      { name = "PAYDAY!"; account_change = 10000; index_tile = 12 };
     PayTile
       {
         name = "Rent Apartment";
         account_change = 5000;
-        index_tile = 14;
+        index_tile = 13;
       };
     PayTile
-      { name = "Inheritance"; account_change = 20000; index_tile = 15 };
+      { name = "Inheritance"; account_change = 20000; index_tile = 14 };
+    (* end Career path*)
+    PayTile
+      { name = "PAYDAY!"; account_change = 10000; index_tile = 15 };
     LifeTile
       { name = "Adopt a Pet from Animal Shelter"; index_tile = 16 };
     TakeTile { name = "Take a Share the Wealth card"; index_tile = 17 };
@@ -113,7 +119,12 @@ let gold_tiles =
     PayTile
       { name = "Win a Race"; account_change = 10000; index_tile = 24 };
     LifeTile { name = "Get Married"; index_tile = 25 };
-    LifeTile { name = "Engagement Party!"; index_tile = 26 };
+    PayTile
+      {
+        name = "You won! Collect $10,000";
+        account_change = 10000;
+        index_tile = 26;
+      };
     PayTile
       {
         name = "Wedding Reception";
@@ -429,4 +440,5 @@ let gold_tiles =
     (* (Figure out # of spins here) *)
     PayTile
       { name = "Pension"; account_change = 10000; index_tile = 129 };
+    TakeTile { name = "Retirement"; index_tile = 130 };
   ]
