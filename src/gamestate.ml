@@ -11,6 +11,8 @@ type gamestate = {
   deck : cards list;
 }
 
+exception Invalid_Input
+
 (** [num_players] equals the number of players in the game*)
 let num_players =
   let () = print_string "Enter number of players: " in
@@ -71,15 +73,23 @@ let married_index, starter_home_index, house_index, retirement =
 let change_index_board (player : player) : player =
   let current_index = player.index_on_board in
   let spinner = spinner () in
+  (* player position before adjustment*)
   let player_index_spinner = current_index + spinner in
+
   let new_index =
+    (* makes college player stop at tile 10 to get college career*)
     if player.college && current_index < 10 then
-      if player_index_spinner > 10 then 10 else current_index
+      if player_index_spinner > 10 then 10
+      else current_index
+        (* maintains order for college player jumping from tile 10 to
+           tile 15 to stay on main path *)
     else if player.college && current_index = 10 then
       4 + player_index_spinner
+      (* makes each player stop at the marriage tile *)
     else if current_index < married_index then
       if player_index_spinner > married_index then married_index
       else player_index_spinner
+        (* makes each player stop to buy a starter home *)
     else if
       current_index >= married_index
       && current_index < starter_home_index
@@ -87,11 +97,14 @@ let change_index_board (player : player) : player =
       if player_index_spinner > starter_home_index then
         starter_home_index
       else player_index_spinner
+        (* makes each player stop to buy a house *)
     else if
       current_index >= starter_home_index && current_index < house_index
     then
       if player_index_spinner > house_index then house_index
       else player_index_spinner
+        (* makes sure player cannot make illegal moves past final
+           tile *)
     else if player_index_spinner > 130 then 130
     else player_index_spinner
   in
