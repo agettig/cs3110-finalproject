@@ -1,7 +1,7 @@
 (* open Players *)
 open Tiles
 
-let spinner = Random.int 10 + 1
+let spinner () = Random.int 10 + 1
 
 module IntTilesTupl = struct
   type t = int * tiles
