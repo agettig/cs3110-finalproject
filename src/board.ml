@@ -159,12 +159,16 @@ let make_board =
   |> BoardMap.add (pos_to_tuple 127) "| 128 |"
   |> BoardMap.add (pos_to_tuple 128) "| 129 |"
 
+(**[make_color] prints the board in color based on [pos] and the
+   associated binding [board]*)
 let make_color pos board =
   match pos with
   | pos ->
       ANSITerminal.(
         print_string [ white; on_black ] (BoardMap.find pos board))
 
+(**[init_board] initializes each position of the board and prepares them
+   to be printed to the terminal*)
 let rec init_board pos board =
   match pos with
   | pos when pos = 129 -> print_endline ""
@@ -174,4 +178,5 @@ let rec init_board pos board =
         make_color (pos_to_tuple pos) board;
       init_board (pos + 1) board
 
+(**[print_board] prints the initialized board to the terminal*)
 let print_board = init_board 0 make_board
