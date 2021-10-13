@@ -64,7 +64,10 @@ let finished player = player.index_on_board >= final_tile_index
 (** [change_index_board player] returns the new position of the player
     after they move a given number of spaces determined by the spinner*)
 let change_index_board (player : player) : player =
-  { player with index_on_board = player.index_on_board + Board.spinner }
+  {
+    player with
+    index_on_board = player.index_on_board + Board.spinner ();
+  }
 
 (** [get_tile] returns the tile in [tiles] at given index [index].
     Raises : Failure if list is too short and Invalid Argument if n is
