@@ -187,6 +187,7 @@ let gold_tiles =
     (* LawsuitTile {name = "Lawsuit!"; player_sued = player.name;
        index_tile = 50}; *)
     SpinToWinTile { name = "Spin to Win!"; index_tile = 51 };
+    SpinToWinTile { name = "Spin to Win!"; index_tile = 51 };
     TakeTile
       { name = "Lose your job: Take a Career Card"; index_tile = 52 };
     ActionTile
@@ -195,6 +196,7 @@ let gold_tiles =
         index_tile = 53;
         position_change = 54;
       };
+    SpinToWinTile { name = "Spin to Win!"; index_tile = 51 };
     PayTile
       {
         name = "House Flooded";
@@ -212,12 +214,14 @@ let gold_tiles =
       { name = "Taxes"; account_change = -10000; index_tile = 61 };
     (* LawsuitTile {name = "Lawsuit!"; player_sued = player.name;
        index_tile = 62}; *)
+    SpinToWinTile { name = "Spin to Win!"; index_tile = 51 };
     LifeTile { name = "Run for Congress!"; index_tile = 63 };
     PayTile
       { name = "PAYDAY!"; account_change = 10000; index_tile = 64 };
     LifeTile { name = "Baby Boy!"; index_tile = 65 };
     (* FamilyTile { name = "Take Family Cruise Vacation!"; player =
        account_change = 5000 * player.children; index_tile = 66; }; *)
+    SpinToWinTile { name = "Spin to Win!"; index_tile = 51 };
     TakeTile { name = "Take a Share the Wealth card"; index_tile = 67 };
     PayTile
       {
