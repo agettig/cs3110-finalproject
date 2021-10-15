@@ -163,6 +163,10 @@ let make_board =
    associated binding [board]*)
 let make_color pos board =
   match pos with
+  | index, _ when index mod 30 = 0 ->
+      print_endline "";
+      ANSITerminal.(
+        print_string [ white; on_black ] (BoardMap.find pos board))
   | pos ->
       ANSITerminal.(
         print_string [ white; on_black ] (BoardMap.find pos board))
@@ -177,6 +181,8 @@ let rec init_board pos board =
       else if BoardMap.mem (pos_to_tuple pos) board then
         make_color (pos_to_tuple pos) board;
       init_board (pos + 1) board
+
+(*let rec update_board pos board =*)
 
 (**[print_board] prints the initialized board to the terminal*)
 let print_board = init_board 0 make_board
