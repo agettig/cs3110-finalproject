@@ -85,11 +85,105 @@ let get_tile index tiles : tiles = List.nth tiles index
 
 (** [change_index_board player] returns the new position of the player
     after they move a given number of spaces determined by the spinner*)
-let married_index, starter_home_index, house_index, retirement =
-  (25, 33, 97, 130)
+let married_index, starter_home_index, house_index, retirement, elope =
+  (25, 33, 97, 130, 20)
 
 (** [change_index_board player] returns a player with their new position
     after that have spun the spinner and moved appropriately*)
+let rec possible_career_choices
+    (isCollege : bool)
+    (deck : cards list)
+    (acc : cards list) =
+  match deck with
+  | [] -> acc
+  | h :: t -> (
+      match h with
+      | Career x ->
+          if x.college_career = isCollege then
+            possible_career_choices isCollege t (h :: acc)
+          else possible_career_choices isCollege t acc
+      | _ -> possible_career_choices isCollege t acc)
+
+let rec has_house (player : player) =
+  player.index_on_board > starter_home_index
+
+let rec possible_house_choices
+    (player : player)
+    (hasHouse : bool)
+    (deck : cards list)
+    (acc : cards list) =
+  match deck with
+  | [] -> acc
+  | h :: t -> (
+      match h with
+      | House y ->
+          if hasHouse && y.price <= player.account_balance then
+            possible_house_choices player hasHouse t (h :: acc)
+          else possible_house_choices player hasHouse t acc
+      | _ -> possible_house_choices player hasHouse deck acc)
+
+let print_career_card (card : cards) =
+  match card with
+  | Career x ->
+      print_endline
+        (x.name ^ " " ^ string_of_int x.salary ^ " "
+        ^ string_of_int x.salary_max
+        ^ " "
+        ^ string_of_int x.taxes_due)
+  | _ -> failwith "passed in card that isn't a career"
+
+let rec print_houses houses : unit =
+  match houses with
+  | [] -> print_endline ""
+  | h :: t -> (
+      print_string "{";
+      match h with
+      | House house ->
+          print_endline ("Name: " ^ house.name);
+          print_endline ("Price: " ^ string_of_int house.price);
+          print_endline
+            ("Selling Price: " ^ string_of_int house.selling_price)
+      | _ -> print_houses t)
+
+let rec match_card_by_name (name : string) (cards : cards list) : cards
+    =
+  match cards with
+  | [] -> failwith "no card found by that name"
+  | h :: t -> (
+      match h with
+      | Career x ->
+          if name = x.name then h else match_card_by_name name t
+      | House x ->
+          if name = x.name then h else match_card_by_name name t
+      | _ -> match_card_by_name name t)
+
+let choose_career (player : player) (deck : cards list) : cards =
+  let possible_careers =
+    possible_career_choices player.college deck []
+  in
+  let first_career =
+    List.nth possible_careers
+      (Random.int (List.length possible_careers))
+  in
+  let second_career =
+    List.nth possible_careers
+      (Random.int (List.length possible_careers))
+  in
+  let () = print_career_card first_career in
+  let () = print_career_card second_career in
+  let () = print_string "Enter Desired Career Name: " in
+  let career_name = read_line () in
+  match_card_by_name career_name possible_careers
+
+let choose_houses (player : player) (deck : cards list) =
+  let possible_houses =
+    possible_house_choices player (has_house player) deck []
+  in
+  let () = print_houses possible_houses in
+  let () = print_string "Enter which house you'd like to buy: " in
+  let house_name = read_line () in
+  match_card_by_name house_name possible_houses
+
 let change_index_board (player : player) : player =
   let current_index = player.index_on_board in
   let spinner = spinner () in
@@ -157,13 +251,34 @@ let turn gamestate : gamestate =
           List.nth life_tiles (Random.int (List.length life_tiles))
         in
         (add_card rand_lf_tile player_moved, Some rand_lf_tile)
-    | CareerTile _ -> (player_moved, None)
-    | FamilyTile _ -> (player_moved, None)
-    | HouseTile _ -> (player_moved, None)
-    | TakeTile _ -> (player_moved, None)
+    | CareerTile _ ->
+        let career_chosen = choose_career player_moved gamestate.deck in
+        (add_card career_chosen player_moved, Some career_chosen)
+    | FamilyTile c ->
+        if c.index_tile = married_index then
+          ({ player_moved with so = true }, None)
+        else if c.index_tile = elope then
+          ( {
+              player_moved with
+              so = true;
+              index_on_board = married_index;
+            },
+            None )
+        else
+          ( {
+              player_moved with
+              children = player_moved.children (*+ c.children *);
+            },
+            None )
+    | HouseTile _ ->
+        let chosen_house = choose_houses player_moved gamestate.deck in
+        (add_card chosen_house player_moved, Some chosen_house)
+    | TakeTile _ -> (player_moved, None) (* not implemented in ms1*)
     | ActionTile _ -> (player_moved, None)
-    | SpinToWinTile _ -> (player_moved, None)
+    | SpinToWinTile _ ->
+        (player_moved, None) (* not implemented in ms1*)
     | LawsuitTile _ -> (player_moved, None)
+    (* not implemented in ms1*)
   in
   (*[new_play_list] is the updated player list after the current
     player's turn*)
