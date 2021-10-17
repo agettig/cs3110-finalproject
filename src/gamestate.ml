@@ -90,6 +90,60 @@ let married_index, starter_home_index, house_index, retirement, elope =
 
 (** [change_index_board player] returns a player with their new position
     after that have spun the spinner and moved appropriately*)
+let rec possible_career_choices
+    (isCollege : bool)
+    (deck : cards list)
+    (acc : cards list) =
+  match deck with
+  | [] -> acc
+  | h :: t -> (
+      match h with
+      | Career x ->
+          if x.college_career = isCollege then
+            possible_career_choices isCollege t (h :: acc)
+          else possible_career_choices isCollege t acc
+      | _ -> possible_career_choices isCollege t acc)
+
+let print_career_card (card : cards) =
+  match card with
+  | Career x ->
+      print_endline
+        (x.name ^ " " ^ string_of_int x.salary ^ " "
+        ^ string_of_int x.salary_max
+        ^ " "
+        ^ string_of_int x.taxes_due)
+  | _ -> failwith "passed in card that isn't a career"
+
+let rec match_card_by_name (name : string) (cards : cards list) : cards
+    =
+  match cards with
+  | [] -> failwith "no card found by that name"
+  | h :: t -> (
+      match h with
+      | Career x ->
+          if name = x.name then h else match_card_by_name name t
+      | House x ->
+          if name = x.name then h else match_card_by_name name t
+      | _ -> match_card_by_name name t)
+
+let choose_career (player : player) (deck : cards list) : cards =
+  let possible_careers =
+    possible_career_choices player.college deck []
+  in
+  let first_career =
+    List.nth possible_careers
+      (Random.int (List.length possible_careers))
+  in
+  let second_career =
+    List.nth possible_careers
+      (Random.int (List.length possible_careers))
+  in
+  let () = print_career_card first_career in
+  let () = print_career_card second_career in
+  let () = print_string "Enter Desired Career Name: " in
+  let career_name = read_line () in
+  match_card_by_name career_name possible_careers
+
 let change_index_board (player : player) : player =
   let current_index = player.index_on_board in
   let spinner = spinner () in
@@ -157,7 +211,9 @@ let turn gamestate : gamestate =
           List.nth life_tiles (Random.int (List.length life_tiles))
         in
         (add_card rand_lf_tile player_moved, Some rand_lf_tile)
-    | CareerTile _ -> (player_moved, None)
+    | CareerTile _ ->
+        let career_chosen = choose_career player_moved gamestate.deck in
+        (add_card career_chosen player_moved, Some career_chosen)
     | FamilyTile c ->
         if c.index_tile = married_index then
           ({ player_moved with so = true }, None)
