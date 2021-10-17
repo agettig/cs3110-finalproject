@@ -85,8 +85,8 @@ let get_tile index tiles : tiles = List.nth tiles index
 
 (** [change_index_board player] returns the new position of the player
     after they move a given number of spaces determined by the spinner*)
-let married_index, starter_home_index, house_index, retirement =
-  (25, 33, 97, 130)
+let married_index, starter_home_index, house_index, retirement, elope =
+  (25, 33, 97, 130, 20)
 
 (** [change_index_board player] returns a player with their new position
     after that have spun the spinner and moved appropriately*)
@@ -158,12 +158,29 @@ let turn gamestate : gamestate =
         in
         (add_card rand_lf_tile player_moved, Some rand_lf_tile)
     | CareerTile _ -> (player_moved, None)
-    | FamilyTile _ -> (player_moved, None)
+    | FamilyTile c ->
+        if c.index_tile = married_index then
+          ({ player_moved with so = true }, None)
+        else if c.index_tile = elope then
+          ( {
+              player_moved with
+              so = true;
+              index_on_board = married_index;
+            },
+            None )
+        else
+          ( {
+              player_moved with
+              children = player_moved.children (*+ c.children *);
+            },
+            None )
     | HouseTile _ -> (player_moved, None)
-    | TakeTile _ -> (player_moved, None)
+    | TakeTile _ -> (player_moved, None) (* not implemented in ms1*)
     | ActionTile _ -> (player_moved, None)
-    | SpinToWinTile _ -> (player_moved, None)
+    | SpinToWinTile _ ->
+        (player_moved, None) (* not implemented in ms1*)
     | LawsuitTile _ -> (player_moved, None)
+    (* not implemented in ms1*)
   in
   (*[new_play_list] is the updated player list after the current
     player's turn*)
