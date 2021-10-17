@@ -163,7 +163,7 @@ let gold_tiles =
       };
     PayTile
       { name = "Win Lottery"; account_change = 50000; index_tile = 34 };
-    TakeTile
+    CareerTile
       { name = "Lose your job: Take a Career Card"; index_tile = 35 };
     PayTile
       {
@@ -204,7 +204,7 @@ let gold_tiles =
     LifeTile { name = "Learn sign language!"; index_tile = 49 };
     LawsuitTile { name = "Lawsuit!"; index_tile = 50 };
     SpinToWinTile { name = "Spin to Win!"; index_tile = 51 };
-    TakeTile
+    CareerTile
       { name = "Lose your job: Take a Career Card"; index_tile = 52 };
     ActionTile
       {
@@ -212,7 +212,7 @@ let gold_tiles =
         index_tile = 53;
         position_change = 54;
       };
-    SpinToWinTile { name = "Spin to Win!"; index_tile = 51 };
+    LawsuitTile { name = "Lawsuit!"; index_tile = 54 };
     PayTile
       {
         name = "House Flooded";
@@ -285,7 +285,7 @@ let gold_tiles =
       { name = "Buy an SUV"; account_change = -40000; index_tile = 78 };
     PayTile
       { name = "PAYDAY!"; account_change = 10000; index_tile = 79 };
-    TakeTile
+    CareerTile
       { name = "Lose your job: Take a Career Card"; index_tile = 80 };
     TakeTile { name = "Take a Share the Wealth card"; index_tile = 81 };
     PayTile
