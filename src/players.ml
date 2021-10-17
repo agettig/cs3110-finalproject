@@ -12,7 +12,17 @@ type player = {
   index_on_board : int;
 }
 
-(* let get_taxes player = failwith "unimplemented" *)
+let rec taxes_aux lst =
+  match lst with
+  | [] -> raise Not_found
+  | h :: t -> (
+      match h with
+      | Career c -> c.taxes_due
+      | _ -> taxes_aux t)
+
+(** [get_taxes player] returns the amount of taxes for [player] based on
+    their career. Requires [Player] has a career.*)
+let get_taxes player = taxes_aux player.deck
 
 let rec deck_string_helper (deck : cards list) (acc : string) =
   match deck with
