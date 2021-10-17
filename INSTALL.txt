@@ -1,0 +1,10 @@
+Hi Game of Life player!
+
+To run this game:
+
+1) Unzip the folder
+2) Open it in VSCode
+3) Run 'make build'
+4) Run 'make play'
+
+To run test files, run 'make test'
