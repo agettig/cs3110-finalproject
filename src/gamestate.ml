@@ -270,6 +270,7 @@ let turn gamestate : gamestate =
               children = player_moved.children (*+ c.children *);
             },
             None )
+
     | HouseTile _ ->
         let chosen_house = choose_houses player_moved gamestate.deck in
         (add_card chosen_house player_moved, Some chosen_house)

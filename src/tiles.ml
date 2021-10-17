@@ -22,14 +22,12 @@ type tiles =
     }
   | FamilyTile of {
       name : string;
-      player : player;
       account_change : int;
-      (* account_change : int; *)
       index_tile : int;
+      children : int;
     }
   | HouseTile of {
       name : string;
-      house_chosen : Cards.cards;
       index_tile : int;
     }
   | TakeTile of {
@@ -43,7 +41,6 @@ type tiles =
     }
   | LawsuitTile of {
       name : string;
-      player_sued : Players.player;
       index_tile : int;
     }
   | SpinToWinTile of {
@@ -110,15 +107,26 @@ let gold_tiles =
         account_change = -5000;
         index_tile = 19;
       };
-    ActionTile
-      { name = "Elope!"; index_tile = 20; position_change = 15 };
+    FamilyTile
+      {
+        name = "Elope!";
+        account_change = 0;
+        index_tile = 20;
+        children = 0;
+      };
     LifeTile { name = "Volunteer at Soup Kitchen"; index_tile = 21 };
     LifeTile { name = "Engagement Party!"; index_tile = 22 };
     PayTile
       { name = "PAYDAY!"; account_change = 10000; index_tile = 23 };
     PayTile
       { name = "Win a Race"; account_change = 10000; index_tile = 24 };
-    LifeTile { name = "Get Married"; index_tile = 25 };
+    FamilyTile
+      {
+        name = "Get Married";
+        account_change = 0;
+        index_tile = 25;
+        children = 0;
+      };
     PayTile
       {
         name = "You won! Collect $10,000";
@@ -151,12 +159,11 @@ let gold_tiles =
       {
         name = "Buy a Starter Home";
         (* need to figure out what to put here *)
-        house_chosen = condo;
         index_tile = 33;
       };
     PayTile
       { name = "Win Lottery"; account_change = 50000; index_tile = 34 };
-    TakeTile
+    CareerTile
       { name = "Lose your job: Take a Career Card"; index_tile = 35 };
     PayTile
       {
@@ -195,11 +202,9 @@ let gold_tiles =
     PayTile
       { name = "PAYDAY!"; account_change = 10000; index_tile = 48 };
     LifeTile { name = "Learn sign language!"; index_tile = 49 };
-    (* LawsuitTile {name = "Lawsuit!"; player_sued = player.name;
-       index_tile = 50}; *)
+    LawsuitTile { name = "Lawsuit!"; index_tile = 50 };
     SpinToWinTile { name = "Spin to Win!"; index_tile = 51 };
-    SpinToWinTile { name = "Spin to Win!"; index_tile = 51 };
-    TakeTile
+    CareerTile
       { name = "Lose your job: Take a Career Card"; index_tile = 52 };
     ActionTile
       {
@@ -207,7 +212,7 @@ let gold_tiles =
         index_tile = 53;
         position_change = 54;
       };
-    SpinToWinTile { name = "Spin to Win!"; index_tile = 51 };
+    LawsuitTile { name = "Lawsuit!"; index_tile = 54 };
     PayTile
       {
         name = "House Flooded";
@@ -218,20 +223,34 @@ let gold_tiles =
     PayTile
       { name = "PAYDAY!"; account_change = 10000; index_tile = 57 };
     LifeTile { name = "Coach children's sport team"; index_tile = 58 };
-    LifeTile { name = "Adopt Twins!"; index_tile = 59 };
-    TakeTile
+    FamilyTile
+      {
+        name = "Adopt Twins!";
+        account_change = 0;
+        index_tile = 59;
+        children = 2;
+      };
+    CareerTile
       { name = "Lose your job: Take a Career Card"; index_tile = 60 };
     TaxesTile
       { name = "Taxes"; account_change = -10000; index_tile = 61 };
-    (* LawsuitTile {name = "Lawsuit!"; player_sued = player.name;
-       index_tile = 62}; *)
-    SpinToWinTile { name = "Spin to Win!"; index_tile = 51 };
+    LawsuitTile { name = "Lawsuit!"; index_tile = 62 };
     LifeTile { name = "Run for Congress!"; index_tile = 63 };
     PayTile
       { name = "PAYDAY!"; account_change = 10000; index_tile = 64 };
-    LifeTile { name = "Baby Boy!"; index_tile = 65 };
-    (* FamilyTile { name = "Take Family Cruise Vacation!"; player =
-       account_change = 5000 * player.children; index_tile = 66; }; *)
+    FamilyTile
+      {
+        name = "Baby Boy!";
+        account_change = 0;
+        index_tile = 65;
+        children = 1;
+      };
+    PayTile
+      {
+        name = "Take Family Cruise Vacation!";
+        account_change = 10000;
+        index_tile = 66;
+      };
     SpinToWinTile { name = "Spin to Win!"; index_tile = 51 };
     TakeTile { name = "Take a Share the Wealth card"; index_tile = 67 };
     PayTile
@@ -240,9 +259,7 @@ let gold_tiles =
         account_change = 100000;
         index_tile = 68;
       };
-    (* LawsuitTile {name = "Lawsuit!"; player_sued = player.name;
-       index_tile = 69}; *)
-    LifeTile { name = "Run for Congress!"; index_tile = 63 };
+    LawsuitTile { name = "Lawsuit!"; index_tile = 69 };
     PayTile
       { name = "Art Auction"; account_change = -20000; index_tile = 70 };
     PayTile
@@ -250,7 +267,6 @@ let gold_tiles =
     LifeTile { name = "Visit Grand Canyon!"; index_tile = 72 };
     TaxesTile
       { name = "Taxes"; account_change = -10000; index_tile = 73 };
-    (* (need to add child multplier) *)
     PayTile
       {
         name = "Sports Camp for the Kids";
@@ -263,15 +279,13 @@ let gold_tiles =
         account_change = -40000;
         index_tile = 75;
       };
-    (* LawsuitTile {name = "Lawsuit!"; player_sued = player.name;
-       index_tile = 76}; *)
-    LifeTile { name = "Run for Congress!"; index_tile = 63 };
+    LawsuitTile { name = "Lawsuit!"; index_tile = 76 };
     SpinToWinTile { name = "Spin to Win!"; index_tile = 77 };
     PayTile
       { name = "Buy an SUV"; account_change = -40000; index_tile = 78 };
     PayTile
       { name = "PAYDAY!"; account_change = 10000; index_tile = 79 };
-    TakeTile
+    CareerTile
       { name = "Lose your job: Take a Career Card"; index_tile = 80 };
     TakeTile { name = "Take a Share the Wealth card"; index_tile = 81 };
     PayTile
@@ -280,10 +294,7 @@ let gold_tiles =
         account_change = 100000;
         index_tile = 82;
       };
-    (* LawsuitTile {name = "Lawsuit!"; player_sued = player.name;
-       index_tile = 83}; *)
-    LifeTile { name = "Run for Congress!"; index_tile = 63 };
-    (* (need to add child multplier) *)
+    LawsuitTile { name = "Lawsuit!"; index_tile = 83 };
     PayTile
       {
         name = "Summer School!";
@@ -312,7 +323,13 @@ let gold_tiles =
         account_change = 500000;
         index_tile = 90;
       };
-    LifeTile { name = "Baby Boy!"; index_tile = 91 };
+    FamilyTile
+      {
+        name = "Baby Boy!";
+        account_change = 0;
+        index_tile = 91;
+        children = 1;
+      };
     PayTile
       { name = "PAYDAY!"; account_change = 10000; index_tile = 92 };
     PayTile
@@ -321,9 +338,7 @@ let gold_tiles =
         account_change = 120000;
         index_tile = 93;
       };
-    (* LawsuitTile {name = "Lawsuit!"; player_sued = player.name;
-       index_tile = 94}; *)
-    LifeTile { name = "Run for Congress!"; index_tile = 63 };
+    LawsuitTile { name = "Lawsuit!"; index_tile = 94 };
     LifeTile
       { name = "Adopt Pet from Animal Shelter!"; index_tile = 95 };
     PayTile
@@ -332,13 +347,7 @@ let gold_tiles =
         account_change = 100000;
         index_tile = 96;
       };
-    (* (need to figure out how to add different houses) *)
-    HouseTile
-      {
-        name = "Choose a House!";
-        house_chosen = mobile_home;
-        index_tile = 97;
-      };
+    HouseTile { name = "Choose a House!"; index_tile = 97 };
     PayTile
       {
         name = "Tornado hits house!";
@@ -355,12 +364,9 @@ let gold_tiles =
         account_change = 200000;
         index_tile = 101;
       };
-    (* figure out how to multiply child *)
     PayTile
       { name = "College"; account_change = -50000; index_tile = 102 };
-    (* LawsuitTile {name = "Lawsuit!"; player_sued = player.name;
-       index_tile = 103}; *)
-    LifeTile { name = "Run for Congress!"; index_tile = 63 };
+    LawsuitTile { name = "Lawsuit!"; index_tile = 103 };
     PayTile
       {
         name = "Buy Sailboat!";
@@ -371,11 +377,10 @@ let gold_tiles =
       { name = "PAYDAY!"; account_change = 10000; index_tile = 105 };
     TaxesTile
       { name = "Taxes"; account_change = 10000; index_tile = 106 };
-    (* (need to add child multplier) *)
     PayTile
       {
         name = "Take family on theme park vacation";
-        account_change = -25000 * 5000;
+        account_change = -22000;
         index_tile = 107;
       };
     LifeTile { name = "Visit Pyramids in Egypt"; index_tile = 108 };
@@ -419,8 +424,7 @@ let gold_tiles =
         account_change = -50000;
         index_tile = 123;
       };
-    (* LawsuitTile {name = "Lawsuit!"; player_sued = player.name;
-       index_tile = 124}; *)
+    LawsuitTile { name = "Lawsuit!"; index_tile = 124 };
     LifeTile { name = "Run for Congress!"; index_tile = 63 };
     PayTile
       {
