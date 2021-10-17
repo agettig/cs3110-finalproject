@@ -39,7 +39,7 @@ let rec get_players num_players acc =
   | 0 -> acc
   | h -> get_players (h - 1) (acc @ [ new_player () ])
 
-(** [players] *)
+(** [players] represents the players in life. *)
 let players = get_players num_players []
 
 let init_state tiles deck players =
@@ -53,12 +53,30 @@ let current_player st = st.current_player
     signifies retirement*)
 let final_tile_index = 130
 
+(** [index_in_list_helper player lst c] returns an int that represents
+    the index of [player] in list [lst]. Raises: Failswith "Not found"
+    if [player] is not in [lst].*)
+let rec index_in_list_helper player lst c =
+  match lst with
+  | [] -> failwith "Not found"
+  | h :: t ->
+      if h = player then c else index_in_list_helper player t (c + 1)
+
+(** [index_in_list_next] returns the index of the next player after
+    [player]. Postcondition: [index_in_lst] returns an int between 0 and
+    (list length -1)*)
+let index_in_list_next (player : player) (lst : player list) : int =
+  (index_in_list_helper player lst 0 + 1) mod List.length lst
+
+(** [next_player current_player players] returns the player whose turn
+    is after [current_player]*)
+let next_player current_player players =
+  List.nth players (index_in_list_next current_player players)
+
 (** [finished player] returns true if the player has reached the end of
     the board and has retired and returns false if player is still
     playing.*)
 let finished player = player.index_on_board >= final_tile_index
-
-let turn gamestate : gamestate = gamestate
 
 (** [get_tile] returns the tile in [tiles] at given index [index].
     Raises : Failure if list is too short and Invalid Argument if n is
@@ -70,12 +88,13 @@ let get_tile index tiles : tiles = List.nth tiles index
 let married_index, starter_home_index, house_index, retirement =
   (25, 33, 97, 130)
 
+(** [change_index_board player] returns a player with their new position
+    after that have spun the spinner and moved appropriately*)
 let change_index_board (player : player) : player =
   let current_index = player.index_on_board in
   let spinner = spinner () in
   (* player position before adjustment*)
   let player_index_spinner = current_index + spinner in
-
   let new_index =
     (* makes college player stop at tile 10 to get college career*)
     if player.college && current_index < 10 then
@@ -110,34 +129,61 @@ let change_index_board (player : player) : player =
   in
   { player with index_on_board = new_index }
 
-(* change empty list later*)
-(* let player_turn player : player= let tile = get_tile
-   player.index_on_board [] in match tile with | PayTile {name;
-   index_tile; account_change} -> add_balance player account_change; |
-   TaxesTile {name; account_change; index_tile} -> add_balance player
-   (get_taxes player) | LifeTile {name; index_tile} -> | CareerTile |
-   FamilyTile | HouseTile | TakeTile | ActionTile | SpinToWinTile |
-   LawsuitTile *)
+(** [new_players_lst] returns an updated player with the current players
+    record updated*)
+let new_players_list current_lst updated_player =
+  List.map
+    (fun x ->
+      if x.name = updated_player.name then updated_player else x)
+    current_lst
 
-(** [index_in_list_helper player lst c] returns an int that represents
-    the index of [player] in list [lst]. Raises: Failswith "Not found"
-    if [player] is not in [lst].*)
-let rec index_in_list_helper player lst c =
-  match lst with
-  | [] -> failwith "Not found"
-  | h :: t ->
-      if h = player then c else index_in_list_helper player t (c + 1)
+let turn gamestate : gamestate =
+  (*player with new index*)
+  let player_moved = change_index_board gamestate.current_player in
 
-(** [index_in_list_next] returns the index of the next player after
-    [player]. Postcondition: [index_in_lst] returns an int between 0 and
-    (list length -1)*)
-let index_in_list_next (player : player) (lst : player list) : int =
-  (index_in_list_helper player lst 0 + 1) mod List.length lst
+  (*tile on which [player_moved] is on*)
+  let tile = get_tile player_moved.index_on_board [] in
 
-(** [next_player current_player players] returns the player whose turn
-    is after [current_player]*)
-let next_player current_player players =
-  List.nth players (index_in_list_next current_player players)
+  (* [new_player] returns a tuple with an updated player and None if the
+     game deck does not need to be altered and Some card if card has to
+     be removed from the game deck*)
+  let new_player : player * cards option =
+    match tile with
+    | PayTile c -> (add_balance player_moved c.account_change, None)
+    | TaxesTile _ ->
+        (add_balance player_moved (-1 * get_taxes player_moved), None)
+    | LifeTile _ ->
+        let rand_lf_tile =
+          List.nth life_tiles (Random.int (List.length life_tiles))
+        in
+        (add_card rand_lf_tile player_moved, Some rand_lf_tile)
+    | CareerTile _ -> (player_moved, None)
+    | FamilyTile _ -> (player_moved, None)
+    | HouseTile _ -> (player_moved, None)
+    | TakeTile _ -> (player_moved, None)
+    | ActionTile _ -> (player_moved, None)
+    | SpinToWinTile _ -> (player_moved, None)
+    | LawsuitTile _ -> (player_moved, None)
+  in
+  (*[new_play_list] is the updated player list after the current
+    player's turn*)
+  let new_play_list =
+    new_players_list gamestate.players (fst new_player)
+  in
+  (* [new_deck] is the new game deck*)
+  let new_deck =
+    match snd new_player with
+    | None -> gamestate.deck
+    | Some x -> remove_from_deck gamestate.deck x []
+  in
+  (* returns new gamestate with updated records*)
+  {
+    gamestate with
+    current_player =
+      next_player gamestate.current_player gamestate.players;
+    players = new_play_list;
+    deck = new_deck;
+  }
 
 (** [gameover players] returns true if all players in the game have
     retired and returns false if anyone is still playing.*)
