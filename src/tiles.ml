@@ -1,6 +1,3 @@
-open Players
-open Cards
-
 type tiles =
   | PayTile of {
       name : string;
