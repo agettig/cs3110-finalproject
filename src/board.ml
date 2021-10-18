@@ -21,7 +21,7 @@ let empty_board = BoardMap.empty
 let pos_to_tuple index_on_board =
   match index_on_board with
   | index ->
-      if index > -1 && index < 129 then
+      if index > -1 && index < 131 then
         (index, List.nth gold_tiles index)
       else failwith "out of bounds position"
 
@@ -158,6 +158,8 @@ let make_board =
   |> BoardMap.add (pos_to_tuple 126) "| 127 |"
   |> BoardMap.add (pos_to_tuple 127) "| 128 |"
   |> BoardMap.add (pos_to_tuple 128) "| 129 |"
+  |> BoardMap.add (pos_to_tuple 129) "| 130 |"
+  |> BoardMap.add (pos_to_tuple 130) "| 131 |"
 
 (**[make_color] prints the board in color based on [pos] and the
    associated binding [board]*)
@@ -175,9 +177,9 @@ let make_color pos board =
    to be printed to the terminal*)
 let rec init_board pos board =
   match pos with
-  | pos when pos = 129 -> print_endline ""
+  | pos when pos = 130 -> print_endline ""
   | pos ->
-      if not (pos > -1 && pos < 129) then failwith "invalid position"
+      if not (pos > -1 && pos < 131) then failwith "invalid position"
       else if BoardMap.mem (pos_to_tuple pos) board then
         make_color (pos_to_tuple pos) board;
       init_board (pos + 1) board
