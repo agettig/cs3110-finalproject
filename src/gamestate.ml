@@ -94,6 +94,25 @@ let rec possible_career_choices
           else possible_career_choices isCollege t acc
       | _ -> possible_career_choices isCollege t acc)
 
+let rec has_house (player : player) =
+  player.index_on_board > starter_home_index
+
+let rec possible_house_choices
+    (player : player)
+    (hasHouse : bool)
+    (deck : cards list)
+    (acc : cards list) =
+  match deck with
+  | [] -> acc
+  | h :: t -> (
+      match h with
+      | House y ->
+          if hasHouse && y.price <= player.account_balance then
+            possible_house_choices player hasHouse t (h :: acc)
+          else possible_house_choices player hasHouse t acc
+      | _ -> possible_house_choices player hasHouse deck acc)
+
+
 let print_career_card (card : cards) =
   match card with
   | Career x ->
@@ -103,6 +122,19 @@ let print_career_card (card : cards) =
         ^ " "
         ^ string_of_int x.taxes_due)
   | _ -> failwith "passed in card that isn't a career"
+
+let rec print_houses houses : unit =
+  match houses with
+  | [] -> print_endline ""
+  | h :: t -> (
+      print_string "{";
+      match h with
+      | House house ->
+          print_endline ("Name: " ^ house.name);
+          print_endline ("Price: " ^ string_of_int house.price);
+          print_endline
+            ("Selling Price: " ^ string_of_int house.selling_price)
+      | _ -> print_houses t)
 
 let rec match_card_by_name (name : string) (cards : cards list) : cards
     =
@@ -133,6 +165,15 @@ let choose_career (player : player) (deck : cards list) : cards =
   let () = print_string "Enter Desired Career Name: " in
   let career_name = read_line () in
   match_card_by_name career_name possible_careers
+
+let choose_houses (player : player) (deck : cards list) =
+  let possible_houses =
+    possible_house_choices player (has_house player) deck []
+  in
+  let () = print_houses possible_houses in
+  let () = print_string "Enter which house you'd like to buy: " in
+  let house_name = read_line () in
+  match_card_by_name house_name possible_houses
 
 let change_index_board (player : player) : player =
   let current_index = player.index_on_board in
@@ -236,6 +277,7 @@ let rec turn gamestate : unit =
           List.nth life_tiles (Random.int (List.length life_tiles))
         in
         (add_card rand_lf_tile player_moved, Some rand_lf_tile)
+
     | CareerTile _ -> (
         let career_chosen = choose_career player_moved gamestate.deck in
         let had_career = has_career player_moved.deck in
@@ -245,6 +287,7 @@ let rec turn gamestate : unit =
         | Some h ->
             ( exchange_card player_moved career_chosen h,
               Some career_chosen ))
+
     | FamilyTile c ->
         if c.index_tile = married_index then
           ({ player_moved with so = true }, None)
@@ -261,7 +304,10 @@ let rec turn gamestate : unit =
               children = player_moved.children (*+ c.children*);
             },
             None )
-    | HouseTile _ -> (player_moved, None)
+
+    | HouseTile _ ->
+        let chosen_house = choose_houses player_moved gamestate.deck in
+        (add_card chosen_house player_moved, Some chosen_house)
     | TakeTile _ -> (player_moved, None) (* not implemented in ms1*)
     | ActionTile _ -> (player_moved, None)
     | SpinToWinTile _ ->
@@ -289,3 +335,38 @@ let rec turn gamestate : unit =
       players = new_play_list;
       deck = new_deck;
     }
+
+(** [gameover players] returns true if all players in the game have
+    retired and returns false if anyone is still playing.*)
+let rec gameover players =
+  match players with
+  | [] -> true
+  | h :: t -> if not (finished h) then false else gameover t
+
+(** [player_winner player_lst player] returns the player who has won the
+    game with the largest account balance at the end of the game.*)
+let rec player_winner player_lst player =
+  match player_lst with
+  | [] -> player
+  | h :: t ->
+      if final_balance h > final_balance player then player_winner t h
+      else player_winner t player
+
+let rec payraise_tiles = (39, 71, 99, 114)
+
+let rec payday_tiles =
+  (12, 15, 23, 32, 48, 57, 64, 79, 86, 92, 105, 109, 120, 127)
+
+let pay_raise (player : player) : player =
+  let current_index = player.index_on_board in
+  let spinner = spinner () in
+  let new_index = current_index + spinnner in
+  if current_index < payraise_tiles && payraise_tiles <= new_index then
+    { player with pay_raise = 10000 }
+
+let pay_day (player : player) : player =
+  let current_index = player.index_on_board in
+  let spinner = spinner () in
+  let new_index = current_index + spinnner in
+  if current_index < payraise_tiles && payraise_tiles <= new_index then
+    { player with account_balance = player.account_balance + 10000 }
