@@ -94,7 +94,7 @@ let rec possible_career_choices
           else possible_career_choices isCollege t acc
       | _ -> possible_career_choices isCollege t acc)
 
-let rec has_house (player : player) =
+let has_house (player : player) =
   player.index_on_board > starter_home_index
 
 let rec possible_house_choices
@@ -111,7 +111,6 @@ let rec possible_house_choices
             possible_house_choices player hasHouse t (h :: acc)
           else possible_house_choices player hasHouse t acc
       | _ -> possible_house_choices player hasHouse deck acc)
-
 
 let print_career_card (card : cards) =
   match card with
@@ -277,7 +276,6 @@ let rec turn gamestate : unit =
           List.nth life_tiles (Random.int (List.length life_tiles))
         in
         (add_card rand_lf_tile player_moved, Some rand_lf_tile)
-
     | CareerTile _ -> (
         let career_chosen = choose_career player_moved gamestate.deck in
         let had_career = has_career player_moved.deck in
@@ -287,7 +285,6 @@ let rec turn gamestate : unit =
         | Some h ->
             ( exchange_card player_moved career_chosen h,
               Some career_chosen ))
-
     | FamilyTile c ->
         if c.index_tile = married_index then
           ({ player_moved with so = true }, None)
@@ -304,7 +301,6 @@ let rec turn gamestate : unit =
               children = player_moved.children (*+ c.children*);
             },
             None )
-
     | HouseTile _ ->
         let chosen_house = choose_houses player_moved gamestate.deck in
         (add_card chosen_house player_moved, Some chosen_house)
