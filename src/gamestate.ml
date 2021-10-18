@@ -11,13 +11,6 @@ type gamestate = {
   deck : cards list;
 }
 
-exception Invalid_Input
-
-(** [num_players] equals the number of players in the game*)
-let num_players =
-  let () = print_string "Enter number of players: " in
-  read_int ()
-
 (** [new_player] constructs a new player with a user inputted name and
     whether or not they are going to college*)
 let new_player () =
@@ -38,9 +31,6 @@ let rec get_players num_players acc =
   match num_players with
   | 0 -> acc
   | h -> get_players (h - 1) (acc @ [ new_player () ])
-
-(** [players] represents the players in life. *)
-let players = get_players num_players []
 
 let init_state tiles deck players =
   { tiles; deck; current_player = List.nth players 0; players }
@@ -147,13 +137,16 @@ let choose_career (player : player) (deck : cards list) : cards =
 let change_index_board (player : player) : player =
   let current_index = player.index_on_board in
   let spinner = spinner () in
+
+  print_endline (string_of_int spinner);
   (* player position before adjustment*)
   let player_index_spinner = current_index + spinner in
+
   let new_index =
     (* makes college player stop at tile 10 to get college career*)
     if player.college && current_index < 10 then
       if player_index_spinner > 10 then 10
-      else current_index
+      else player_index_spinner
         (* maintains order for college player jumping from tile 10 to
            tile 15 to stay on main path *)
     else if player.college && current_index = 10 then
@@ -191,13 +184,45 @@ let new_players_list current_lst updated_player =
       if x.name = updated_player.name then updated_player else x)
     current_lst
 
-let turn gamestate : gamestate =
+(** [gameover players] returns true if all players in the game have
+    retired and returns false if anyone is still playing.*)
+let rec gameover players =
+  match players with
+  | [] -> true
+  | h :: t -> if not (finished h) then false else gameover t
+
+(** [player_winner player_lst player] returns the player who has won the
+    game with the largest account balance at the end of the game.*)
+let rec player_winner player_lst player =
+  match player_lst with
+  | [] -> player
+  | h :: t ->
+      if final_balance h > final_balance player then player_winner t h
+      else player_winner t player
+
+let winner player = print_endline player.name
+
+let rec has_career (deck : cards list) =
+  match deck with
+  | [] -> None
+  | h :: t -> (
+      match h with
+      | Career _ -> Some h
+      | _ -> has_career t)
+
+let rec turn gamestate : unit =
+  player_to_string gamestate.current_player;
+  if gameover gamestate.players then
+    winner
+      (player_winner gamestate.players (List.nth gamestate.players 0))
+  else print_endline "test";
   (*player with new index*)
   let player_moved = change_index_board gamestate.current_player in
-
+  print_endline "moved player";
+  player_to_string player_moved;
   (*tile on which [player_moved] is on*)
-  let tile = get_tile player_moved.index_on_board [] in
-
+  let tile = get_tile player_moved.index_on_board gamestate.tiles in
+  print_endline "test3";
   (* [new_player] returns a tuple with an updated player and None if the
      game deck does not need to be altered and Some card if card has to
      be removed from the game deck*)
@@ -211,9 +236,15 @@ let turn gamestate : gamestate =
           List.nth life_tiles (Random.int (List.length life_tiles))
         in
         (add_card rand_lf_tile player_moved, Some rand_lf_tile)
-    | CareerTile _ ->
+    | CareerTile _ -> (
         let career_chosen = choose_career player_moved gamestate.deck in
-        (add_card career_chosen player_moved, Some career_chosen)
+        let had_career = has_career player_moved.deck in
+        match had_career with
+        | None ->
+            (add_card career_chosen player_moved, Some career_chosen)
+        | Some h ->
+            ( exchange_card player_moved career_chosen h,
+              Some career_chosen ))
     | FamilyTile c ->
         if c.index_tile = married_index then
           ({ player_moved with so = true }, None)
@@ -227,7 +258,7 @@ let turn gamestate : gamestate =
         else
           ( {
               player_moved with
-              children = player_moved.children (*+ c.children *);
+              children = player_moved.children (*+ c.children*);
             },
             None )
     | HouseTile _ -> (player_moved, None)
@@ -250,26 +281,11 @@ let turn gamestate : gamestate =
     | Some x -> remove_from_deck gamestate.deck x []
   in
   (* returns new gamestate with updated records*)
-  {
-    gamestate with
-    current_player =
-      next_player gamestate.current_player gamestate.players;
-    players = new_play_list;
-    deck = new_deck;
-  }
-
-(** [gameover players] returns true if all players in the game have
-    retired and returns false if anyone is still playing.*)
-let rec gameover players =
-  match players with
-  | [] -> true
-  | h :: t -> if not (finished h) then false else gameover t
-
-(** [player_winner player_lst player] returns the player who has won the
-    game with the largest account balance at the end of the game.*)
-let rec player_winner player_lst player =
-  match player_lst with
-  | [] -> player
-  | h :: t ->
-      if final_balance h > final_balance player then player_winner t h
-      else player_winner t player
+  turn
+    {
+      gamestate with
+      current_player =
+        next_player gamestate.current_player gamestate.players;
+      players = new_play_list;
+      deck = new_deck;
+    }
