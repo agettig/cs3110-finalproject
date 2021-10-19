@@ -13,7 +13,7 @@ let new_player () =
   let () = print_string "Enter Player Name: " in
   let name = read_line () in
   let () =
-    print_string "Do you want to to college? Input yes or no \n >"
+    print_string "Do you want to to college? Input yes or no \n > "
   in
   let college = read_line () in
   let bool_college =
