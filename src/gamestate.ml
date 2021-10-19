@@ -348,21 +348,18 @@ let rec player_winner player_lst player =
       if final_balance h > final_balance player then player_winner t h
       else player_winner t player
 
-let rec payraise_tiles = (39, 71, 99, 114)
+(* let rec payraise_tiles = (39, 71, 99, 114)
 
-let rec payday_tiles =
-  (12, 15, 23, 32, 48, 57, 64, 79, 86, 92, 105, 109, 120, 127)
+   let rec payday_tiles = (12, 15, 23, 32, 48, 57, 64, 79, 86, 92, 105,
+   109, 120, 127)
 
-let pay_raise (player : player) : player =
-  let current_index = player.index_on_board in
-  let spinner = spinner () in
-  let new_index = current_index + spinnner in
-  if current_index < payraise_tiles && payraise_tiles <= new_index then
-    { player with pay_raise = 10000 }
+   let pay_raise (player : player) : player = let current_index =
+   player.index_on_board in let spinner = spinner () in let new_index =
+   current_index + spinner in if current_index < payraise_tiles &&
+   payraise_tiles <= new_index then { player with pay_raise = 10000 }
 
-let pay_day (player : player) : player =
-  let current_index = player.index_on_board in
-  let spinner = spinner () in
-  let new_index = current_index + spinnner in
-  if current_index < payraise_tiles && payraise_tiles <= new_index then
-    { player with account_balance = player.account_balance + 10000 }
+   let pay_day (player : player) : player = let current_index =
+   player.index_on_board in let spinner = spinner () in let new_index =
+   current_index + spinner in if current_index < payraise_tiles &&
+   payraise_tiles <= new_index then { player with account_balance =
+   player.account_balance + 10000 } *)
