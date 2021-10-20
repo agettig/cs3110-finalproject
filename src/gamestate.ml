@@ -159,9 +159,6 @@ let choose_career (player : player) (deck : cards list) : cards =
   let possible_careers =
     possible_career_choices player.college deck []
   in
-  let () =
-    print_endline (string_of_int (List.length possible_careers))
-  in
   let first_career =
     List.nth possible_careers
       (Random.int (List.length possible_careers))
