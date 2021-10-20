@@ -1,5 +1,10 @@
 Hi Game of Life player!
 
+To setup your computer: 
+
+1) in terminal, run opam update 
+2) in terminal, run opam install ANSITerminal
+
 To run this game:
 
 1) Unzip the folder
