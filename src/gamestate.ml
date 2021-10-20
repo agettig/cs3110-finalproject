@@ -163,9 +163,11 @@ let choose_career (player : player) (deck : cards list) : cards =
     List.nth possible_careers
       (Random.int (List.length possible_careers))
   in
+  let new_possible =
+    remove_from_deck possible_careers first_career []
+  in
   let second_career =
-    List.nth possible_careers
-      (Random.int (List.length possible_careers))
+    List.nth new_possible (Random.int (List.length new_possible))
   in
   let () = print_career_card first_career in
   let () = print_career_card second_career in
