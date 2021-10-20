@@ -108,10 +108,15 @@ let rec possible_house_choices
   | h :: t -> (
       match h with
       | House y ->
-          if hasHouse && y.price <= player.account_balance then
-            possible_house_choices player hasHouse t (h :: acc)
+          if
+            (not hasHouse)
+            && y.price <= player.account_balance
+            && y.starter
+          then possible_house_choices player false t (h :: acc)
+          else if hasHouse && y.price <= player.account_balance then
+            possible_house_choices player true t (h :: acc)
           else possible_house_choices player hasHouse t acc
-      | _ -> possible_house_choices player hasHouse deck acc)
+      | _ -> possible_house_choices player hasHouse t acc)
 
 let print_career_card (card : cards) =
   match card with
@@ -134,7 +139,8 @@ let rec print_houses houses : unit =
           print_endline ("Name: " ^ house.name);
           print_endline ("Price: " ^ string_of_int house.price);
           print_endline
-            ("Selling Price: " ^ string_of_int house.selling_price)
+            ("Selling Price: " ^ string_of_int house.selling_price ^ "}");
+          print_houses t
       | _ -> print_houses t)
 
 let rec match_card_by_name (name : string) (cards : cards list) : cards
@@ -167,14 +173,32 @@ let choose_career (player : player) (deck : cards list) : cards =
   let career_name = read_line () in
   match_card_by_name career_name possible_careers
 
+let rec bought_house
+    (player : player)
+    (house_name : string)
+    (deck : cards list) =
+  match deck with
+  | [] -> add_balance player 0
+  | h :: t -> (
+      match h with
+      | House h ->
+          if h.name = house_name then add_balance player (-h.price)
+          else bought_house player house_name t
+      | _ -> bought_house player house_name t)
+
 let choose_houses (player : player) (deck : cards list) =
   let possible_houses =
     possible_house_choices player (has_house player) deck []
   in
-  let () = print_houses possible_houses in
-  let () = print_string "Enter which house you'd like to buy: " in
-  let house_name = read_line () in
-  match_card_by_name house_name possible_houses
+  if possible_houses <> [] then
+    let () = print_houses possible_houses in
+    let () = print_string "Enter which house you'd like to buy: " in
+    let house_name = read_line () in
+    match_card_by_name house_name possible_houses
+    (* bought_house player house_name deck *)
+  else if has_house player then
+    match_card_by_name "No Non Starters" possible_houses
+  else match_card_by_name "No Starters" possible_houses
 
 let change_index_board (player : player) : player =
   let current_index = player.index_on_board in
@@ -366,21 +390,18 @@ let rec player_winner player_lst player =
       if final_balance h > final_balance player then player_winner t h
       else player_winner t player
 
-let rec payraise_tiles = (39, 71, 99, 114)
+(* let rec payraise_tiles = (39, 71, 99, 114)
 
-let rec payday_tiles =
-  (12, 15, 23, 32, 48, 57, 64, 79, 86, 92, 105, 109, 120, 127)
+   let rec payday_tiles = (12, 15, 23, 32, 48, 57, 64, 79, 86, 92, 105,
+   109, 120, 127)
 
-let pay_raise (player : player) : player =
-  let current_index = player.index_on_board in
-  let spinner = spinner () in
-  let new_index = current_index + spinner in
-  if current_index < payraise_tiles && payraise_tiles <= new_index then
-    { player with pay_raise = 10000 }
+   let pay_raise (player : player) : player = let current_index =
+   player.index_on_board in let spinner = spinner () in let new_index =
+   current_index + spinner in if current_index < payraise_tiles &&
+   payraise_tiles <= new_index then { player with pay_raise = 10000 }
 
-let pay_day (player : player) : player =
-  let current_index = player.index_on_board in
-  let spinner = spinner () in
-  let new_index = current_index + spinner in
-  if current_index < payraise_tiles && payraise_tiles <= new_index then
-    { player with account_balance = player.account_balance + 10000 }
+   let pay_day (player : player) : player = let current_index =
+   player.index_on_board in let spinner = spinner () in let new_index =
+   current_index + spinner in if current_index < payraise_tiles &&
+   payraise_tiles <= new_index then { player with account_balance =
+   player.account_balance + 10000 } *)
