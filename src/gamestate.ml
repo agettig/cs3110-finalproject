@@ -122,8 +122,8 @@ let print_career_card (card : cards) =
   match card with
   | Career x ->
       print_endline
-        (x.name ^ " " ^ "Salary: " ^ string_of_int x.salary ^ " "
-       ^ "Salary Max: "
+        ("Name: " ^ x.name ^ " " ^ "Salary: " ^ string_of_int x.salary
+       ^ " " ^ "Salary Max: "
         ^ string_of_int x.salary_max
         ^ " " ^ "Taxes Due: "
         ^ string_of_int x.taxes_due)
@@ -158,6 +158,9 @@ let rec match_card_by_name (name : string) (cards : cards list) : cards
 let choose_career (player : player) (deck : cards list) : cards =
   let possible_careers =
     possible_career_choices player.college deck []
+  in
+  let () =
+    print_endline (string_of_int (List.length possible_careers))
   in
   let first_career =
     List.nth possible_careers
@@ -385,41 +388,44 @@ let rec turn gamestate : unit =
     (* [new_player] returns a tuple with an updated player and None if
        the game deck does not need to be altered and Some card if card
        has to be removed from the game deck*)
-    let new_player : player * cards option =
+    let new_player : player * (cards option * cards option) =
       match tile with
-      | PayTile c -> (add_balance pay_player c.account_change, None)
+      | PayTile c ->
+          (add_balance pay_player c.account_change, (None, None))
       | TaxesTile _ ->
-          (add_balance pay_player (-1 * get_taxes pay_player), None)
+          ( add_balance pay_player (-1 * get_taxes pay_player),
+            (None, None) )
       | LifeTile _ ->
           let rand_lf_tile =
             List.nth life_tiles (Random.int (List.length life_tiles))
           in
-          (add_card rand_lf_tile pay_player, Some rand_lf_tile)
+          (add_card rand_lf_tile pay_player, (Some rand_lf_tile, None))
       | CareerTile _ -> (
           let career_chosen = choose_career pay_player gamestate.deck in
           let had_career = has_career pay_player.deck in
           match had_career with
           | None ->
-              (add_card career_chosen pay_player, Some career_chosen)
+              ( add_card career_chosen pay_player,
+                (Some career_chosen, None) )
           | Some h ->
               ( exchange_card pay_player career_chosen h,
-                Some career_chosen ))
+                (Some career_chosen, Some h) ))
       | FamilyTile c ->
           if c.index_tile = married_index then
-            ({ pay_player with so = true }, None)
+            ({ pay_player with so = true }, (None, None))
           else if c.index_tile = elope then
             ( {
                 pay_player with
                 so = true;
                 index_on_board = married_index;
               },
-              None )
+              (None, None) )
           else
             ( {
                 pay_player with
                 children = pay_player.children (*+ c.children*);
               },
-              None )
+              (None, None) )
       | HouseTile _ -> (
           let chosen_house =
             choose_houses player_moved gamestate.deck
@@ -432,16 +438,18 @@ let rec turn gamestate : unit =
           match house_name with
           | Some x ->
               if x = "None" then
-                (bought_house player_moved x gamestate.deck, None)
+                ( bought_house player_moved x gamestate.deck,
+                  (None, None) )
               else
                 ( bought_house player_moved x gamestate.deck,
-                  Some chosen_house )
-          | None -> (player_moved, None))
-      | TakeTile _ -> (player_moved, None) (* not implemented in ms1*)
-      | ActionTile _ -> (player_moved, None)
+                  (Some chosen_house, None) )
+          | None -> (player_moved, (None, None)))
+      | TakeTile _ ->
+          (player_moved, (None, None)) (* not implemented in ms1*)
+      | ActionTile _ -> (player_moved, (None, None))
       | SpinToWinTile _ ->
-          (pay_player, None) (* not implemented in ms1*)
-      | LawsuitTile _ -> (pay_player, None)
+          (pay_player, (None, None)) (* not implemented in ms1*)
+      | LawsuitTile _ -> (pay_player, (None, None))
       (* not implemented in ms1*)
     in
     (*[new_play_list] is the updated player list after the current
@@ -452,8 +460,10 @@ let rec turn gamestate : unit =
     (* [new_deck] is the new game deck*)
     let new_deck =
       match snd new_player with
-      | None -> gamestate.deck
-      | Some x -> remove_from_deck gamestate.deck x []
+      | None, None -> gamestate.deck
+      | Some x, None -> remove_from_deck gamestate.deck x []
+      | Some x, Some y -> remove_from_deck (y :: gamestate.deck) x []
+      | None, Some y -> y :: gamestate.deck
     in
     (* ANSITerminal.erase Screen; *)
     (* returns new gamestate with updated records*)
