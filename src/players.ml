@@ -60,7 +60,7 @@ let add_player (player_name : string) (attended_college : bool) =
     debt = college_loans_value attended_college;
     pay_raise = 0;
     college = attended_college;
-    index_on_board = (if attended_college then 0 else 11);
+    index_on_board = (if attended_college then 0 else 10);
   }
 
 (** [add_children player num_children] returns a [player] with
