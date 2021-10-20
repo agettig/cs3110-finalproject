@@ -41,7 +41,7 @@ let doctor =
 let banker =
   Career
     {
-      name = "Banker";
+      name = "Astronaut";
       salary = 80000;
       salary_max = 600000;
       taxes_due = 25000;
