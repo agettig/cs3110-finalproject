@@ -181,8 +181,9 @@ let rec bought_house
   | [] -> add_balance player 0
   | h :: t -> (
       match h with
-      | House h ->
-          if h.name = house_name then add_balance player (-h.price)
+      | House house ->
+          if house.name = house_name then
+            add_balance (add_card h player) (-house.price)
           else bought_house player house_name t
       | _ -> bought_house player house_name t)
 
@@ -195,7 +196,6 @@ let choose_houses (player : player) (deck : cards list) =
     let () = print_string "Enter which house you'd like to buy: " in
     let house_name = read_line () in
     match_card_by_name house_name possible_houses
-    (* bought_house player house_name deck *)
   else if has_house player then
     match_card_by_name "No Non Starters" possible_houses
   else match_card_by_name "No Starters" possible_houses
@@ -340,11 +340,20 @@ let rec turn gamestate : unit =
                 children = player_moved.children (*+ c.children*);
               },
               None )
-      | HouseTile _ ->
+      | HouseTile _ -> (
           let chosen_house =
             choose_houses player_moved gamestate.deck
           in
-          (add_card chosen_house player_moved, Some chosen_house)
+          let house_name =
+            match chosen_house with
+            | House h -> Some h.name
+            | _ -> None
+          in
+          match house_name with
+          | Some x ->
+              ( bought_house player_moved x gamestate.deck,
+                Some chosen_house )
+          | None -> (player_moved, None))
       | TakeTile _ -> (player_moved, None) (* not implemented in ms1*)
       | ActionTile _ -> (player_moved, None)
       | SpinToWinTile _ ->
@@ -390,18 +399,21 @@ let rec player_winner player_lst player =
       if final_balance h > final_balance player then player_winner t h
       else player_winner t player
 
-(* let rec payraise_tiles = (39, 71, 99, 114)
+let rec payraise_tiles = (39, 71, 99, 114)
 
-   let rec payday_tiles = (12, 15, 23, 32, 48, 57, 64, 79, 86, 92, 105,
-   109, 120, 127)
+let rec payday_tiles =
+  (12, 15, 23, 32, 48, 57, 64, 79, 86, 92, 105, 109, 120, 127)
 
-   let pay_raise (player : player) : player = let current_index =
-   player.index_on_board in let spinner = spinner () in let new_index =
-   current_index + spinner in if current_index < payraise_tiles &&
-   payraise_tiles <= new_index then { player with pay_raise = 10000 }
+let pay_raise (player : player) : player =
+  let current_index = player.index_on_board in
+  let spinner = spinner () in
+  let new_index = current_index + spinner in
+  if current_index < payraise_tiles && payraise_tiles <= new_index then
+    { player with pay_raise = 10000 }
 
-   let pay_day (player : player) : player = let current_index =
-   player.index_on_board in let spinner = spinner () in let new_index =
-   current_index + spinner in if current_index < payraise_tiles &&
-   payraise_tiles <= new_index then { player with account_balance =
-   player.account_balance + 10000 } *)
+let pay_day (player : player) : player =
+  let current_index = player.index_on_board in
+  let spinner = spinner () in
+  let new_index = current_index + spinner in
+  if current_index < payraise_tiles && payraise_tiles <= new_index then
+    { player with account_balance = player.account_balance + 10000 }
