@@ -267,7 +267,7 @@ let rec player_winner player_lst player =
       if final_balance h > final_balance player then player_winner t h
       else player_winner t player
 
-let winner player = print_endline "Winner ^ player.name^!"
+let winner player = Printf.printf "Winner %s!" player.name
 
 let rec has_career (deck : cards list) =
   match deck with
@@ -420,7 +420,6 @@ let rec turn gamestate : unit =
                 children = pay_player.children (*+ c.children*);
               },
               None )
-
       | HouseTile _ -> (
           let chosen_house =
             choose_houses player_moved gamestate.deck
@@ -479,4 +478,3 @@ let rec player_winner player_lst player =
   | h :: t ->
       if final_balance h > final_balance player then player_winner t h
       else player_winner t player
-
