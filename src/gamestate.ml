@@ -431,8 +431,11 @@ let rec turn gamestate : unit =
           in
           match house_name with
           | Some x ->
-              ( bought_house player_moved x gamestate.deck,
-                Some chosen_house )
+              if x = "None" then
+                (bought_house player_moved x gamestate.deck, None)
+              else
+                ( bought_house player_moved x gamestate.deck,
+                  Some chosen_house )
           | None -> (player_moved, None))
       | TakeTile _ -> (player_moved, None) (* not implemented in ms1*)
       | ActionTile _ -> (player_moved, None)
