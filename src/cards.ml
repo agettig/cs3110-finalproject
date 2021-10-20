@@ -304,27 +304,11 @@ let mansion =
       starter = false;
     }
 
-let none_starter =
-  House
-    {
-      name = "No Starters";
-      price = 0;
-      selling_price = 0;
-      starter = true;
-    }
-
 let none =
-  House
-    {
-      name = "No None Starters";
-      price = 0;
-      selling_price = 0;
-      starter = true;
-    }
+  House { name = "None"; price = 0; selling_price = 0; starter = true }
 
 let houses =
   [
-    none_starter;
     none;
     mobile_home;
     dbl_wide_rv;
