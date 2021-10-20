@@ -441,17 +441,18 @@ let gold_tiles =
 
 let print_tiles = function
   | PayTile x ->
-      Printf.printf "Name: %s\nAccount Change: %i\n" x.name
+      Printf.printf "Name: %s\nAccount Change: %i\n \n" x.name
         x.account_change
-  | TaxesTile _ -> Printf.printf "Taxes Due\n"
-  | LifeTile x -> Printf.printf "Name: %s\n" x.name
-  | CareerTile x -> Printf.printf "Name: %s\n" x.name
+  | TaxesTile _ -> Printf.printf "Taxes Due\n \n"
+  | LifeTile x -> Printf.printf "Name: %s\n \n" x.name
+  | CareerTile x -> Printf.printf "Name: %s\n \n" x.name
   | FamilyTile x ->
-      Printf.printf "Name: %s\nAccount Change: %i\nChildren: %i\n"
+      Printf.printf "Name: %s\nAccount Change: %i\nChildren: %i\n \n"
         x.name x.account_change x.children
-  | HouseTile x -> Printf.printf "Name: %s\n" x.name
-  | TakeTile x -> Printf.printf "Name: %s\n" x.name
+  | HouseTile x -> Printf.printf "Name: %s\n \n" x.name
+  | TakeTile x -> Printf.printf "Name: %s\n \n" x.name
   | ActionTile x ->
-      Printf.printf "Name: %s\nGo here: %i\n" x.name x.position_change
-  | LawsuitTile x -> Printf.printf "Name: %s\n" x.name
-  | SpinToWinTile x -> Printf.printf "Name: %s\n" x.name
+      Printf.printf "Name: %s\nGo here: %i\n \n" x.name
+        x.position_change
+  | LawsuitTile x -> Printf.printf "Name: %s\n \n" x.name
+  | SpinToWinTile x -> Printf.printf "Name: %s\n \n" x.name

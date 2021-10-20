@@ -269,7 +269,7 @@ let rec player_winner player_lst player =
       if final_balance h > final_balance player then player_winner t h
       else player_winner t player
 
-let winner player = Printf.printf "Winner %s!" player.name
+let winner player = Printf.printf "Winner %s!\n\n" player.name
 
 let rec has_career (deck : cards list) =
   match deck with
@@ -286,7 +286,7 @@ let start_turn () =
   | _ -> print_string ""
 
 let rec turn gamestate : unit =
-  Printf.printf "%s's Turn \nPlease enter any key to start: "
+  Printf.printf "%s's Turn \n \nPlease enter any key to start: "
     gamestate.current_player.name;
   (* makes current player type in anything into terminal to start their
      turn*)
@@ -296,6 +296,13 @@ let rec turn gamestate : unit =
   if gameover gamestate.players then
     winner
       (player_winner gamestate.players (List.nth gamestate.players 0))
+  else if gamestate.current_player.index_on_board = 130 then
+    turn
+      {
+        gamestate with
+        current_player =
+          next_player gamestate.current_player gamestate.players;
+      }
   else
     (*player with new index*)
     let player_moved = change_index_board gamestate.current_player in
