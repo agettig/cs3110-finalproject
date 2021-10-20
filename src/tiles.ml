@@ -6,7 +6,6 @@ type tiles =
     }
   | TaxesTile of {
       name : string;
-      account_change : int;
       index_tile : int;
     }
   | LifeTile of {
@@ -229,8 +228,7 @@ let gold_tiles =
       };
     CareerTile
       { name = "Lose your job: Take a Career Card"; index_tile = 60 };
-    TaxesTile
-      { name = "Taxes"; account_change = -10000; index_tile = 61 };
+    TaxesTile { name = "Taxes"; index_tile = 61 };
     LawsuitTile { name = "Lawsuit!"; index_tile = 62 };
     LifeTile { name = "Run for Congress!"; index_tile = 63 };
     PayTile
@@ -262,8 +260,7 @@ let gold_tiles =
     PayTile
       { name = "PAYDAY!"; account_change = 10000; index_tile = 71 };
     LifeTile { name = "Visit Grand Canyon!"; index_tile = 72 };
-    TaxesTile
-      { name = "Taxes"; account_change = -10000; index_tile = 73 };
+    TaxesTile { name = "Taxes"; index_tile = 73 };
     PayTile
       {
         name = "Sports Camp for the Kids";
@@ -353,8 +350,7 @@ let gold_tiles =
       };
     PayTile
       { name = "PAYDAY!"; account_change = 10000; index_tile = 99 };
-    TaxesTile
-      { name = "Taxes"; account_change = -10000; index_tile = 100 };
+    TaxesTile { name = "Taxes"; index_tile = 100 };
     PayTile
       {
         name = "Write Best Selling Book";
@@ -372,8 +368,7 @@ let gold_tiles =
       };
     PayTile
       { name = "PAYDAY!"; account_change = 10000; index_tile = 105 };
-    TaxesTile
-      { name = "Taxes"; account_change = 10000; index_tile = 106 };
+    TaxesTile { name = "Taxes"; index_tile = 106 };
     PayTile
       {
         name = "Take family on theme park vacation";
@@ -443,3 +438,20 @@ let gold_tiles =
       { name = "Pension"; account_change = 10000; index_tile = 129 };
     TakeTile { name = "Retirement"; index_tile = 130 };
   ]
+
+let print_tiles = function
+  | PayTile x ->
+      Printf.printf "Name: %s\nAccount Change: %i\n" x.name
+        x.account_change
+  | TaxesTile _ -> Printf.printf "Taxes Due\n"
+  | LifeTile x -> Printf.printf "Name: %s\n" x.name
+  | CareerTile x -> Printf.printf "Name: %s\n" x.name
+  | FamilyTile x ->
+      Printf.printf "Name: %s\nAccount Change: %i\nChildren: %i\n"
+        x.name x.account_change x.children
+  | HouseTile x -> Printf.printf "Name: %s\n" x.name
+  | TakeTile x -> Printf.printf "Name: %s\n" x.name
+  | ActionTile x ->
+      Printf.printf "Name: %s\nGo here: %i\n" x.name x.position_change
+  | LawsuitTile x -> Printf.printf "Name: %s\n" x.name
+  | SpinToWinTile x -> Printf.printf "Name: %s\n" x.name

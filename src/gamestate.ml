@@ -384,6 +384,7 @@ let rec turn gamestate : unit =
 
     (*tile on which [paid_player] is on*)
     let tile = get_tile pay_player.index_on_board gamestate.tiles in
+    print_tiles tile;
 
     (* [new_player] returns a tuple with an updated player and None if
        the game deck does not need to be altered and Some card if card
