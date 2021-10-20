@@ -38,7 +38,7 @@ let doctor =
       college_career = true;
     }
 
-let banker =
+let astronaut =
   Career
     {
       name = "Astronaut";
@@ -151,7 +151,7 @@ let salesperson =
 let careers =
   [
     police_officer;
-    banker;
+    astronaut;
     salesperson;
     mechanic;
     hair_stylist;
