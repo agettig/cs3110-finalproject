@@ -13,3 +13,5 @@ To run this game:
 4) Run 'make play'
 
 To run test files, run 'make test'
+
+Type commands exactly as shown on screen
