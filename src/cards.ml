@@ -38,6 +38,16 @@ let doctor =
       college_career = true;
     }
 
+let banker =
+  Career
+    {
+      name = "Banker";
+      salary = 80000;
+      salary_max = 600000;
+      taxes_due = 25000;
+      college_career = true;
+    }
+
 let lawyer =
   Career
     {
@@ -141,6 +151,7 @@ let salesperson =
 let careers =
   [
     police_officer;
+    banker;
     salesperson;
     mechanic;
     hair_stylist;
