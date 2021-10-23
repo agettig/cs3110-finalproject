@@ -151,12 +151,7 @@ let gold_tiles =
       };
     PayTile
       { name = "PAYDAY!"; account_change = 10000; index_tile = 32 };
-    HouseTile
-      {
-        name = "Buy a Starter Home";
-        (* need to figure out what to put here *)
-        index_tile = 33;
-      };
+    HouseTile { name = "Buy a Starter Home"; index_tile = 33 };
     PayTile
       { name = "Win Lottery"; account_change = 50000; index_tile = 34 };
     CareerTile
@@ -167,7 +162,13 @@ let gold_tiles =
         account_change = -5000;
         index_tile = 36;
       };
-    LifeTile { name = "Baby Boy!"; index_tile = 37 };
+    FamilyTile
+      {
+        name = "Baby Boy!";
+        account_change = 0;
+        index_tile = 37;
+        children = 1;
+      };
     PayTile
       {
         name = "Furnish baby's room";
@@ -184,7 +185,13 @@ let gold_tiles =
         account_change = 100000;
         index_tile = 42;
       };
-    LifeTile { name = "Twins!"; index_tile = 43 };
+    FamilyTile
+      {
+        name = "Twins!";
+        account_change = 0;
+        index_tile = 43;
+        children = 2;
+      };
     PayTile
       {
         name = "Get best seats at the big game!";
@@ -193,7 +200,13 @@ let gold_tiles =
       };
     LifeTile
       { name = "Attend Hollywood Movie Premiere!"; index_tile = 45 };
-    LifeTile { name = "Baby Girl!"; index_tile = 46 };
+    FamilyTile
+      {
+        name = "Baby Girl!";
+        account_change = 0;
+        index_tile = 46;
+        children = 1;
+      };
     TakeTile { name = "Take a Share the Wealth card"; index_tile = 47 };
     PayTile
       { name = "PAYDAY!"; account_change = 10000; index_tile = 48 };
@@ -433,7 +446,6 @@ let gold_tiles =
         account_change = -35000;
         index_tile = 128;
       };
-    (* (Figure out # of spins here) *)
     PayTile
       { name = "Pension"; account_change = 10000; index_tile = 129 };
     TakeTile { name = "Retirement"; index_tile = 130 };

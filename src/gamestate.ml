@@ -430,7 +430,7 @@ let rec turn gamestate : unit =
           else
             ( {
                 pay_player with
-                children = pay_player.children (*+ c.children*);
+                children = pay_player.children + c.children;
               },
               (None, None) )
       | HouseTile _ -> (
