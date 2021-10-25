@@ -11,27 +11,6 @@ type gamestate = {
   deck : cards list;
 }
 
-(** [new_player] constructs a new player with a user inputted name and
-    whether or not they are going to college*)
-let new_player () =
-  let () = print_string "Enter Player Name: " in
-  let name = read_line () in
-  let () = print_string "Do you want to to college? Input yes or no " in
-  let college = read_line () in
-  let bool_college =
-    if String.equal college "yes" then true
-    else if String.equal college "no" then false
-    else failwith "invalid input"
-  in
-  add_player name bool_college
-
-(** [get_players number_players acc] recursively constructs the list of
-    players in the game*)
-let rec get_players num_players acc =
-  match num_players with
-  | 0 -> acc
-  | h -> get_players (h - 1) (acc @ [ new_player () ])
-
 let init_state tiles deck players =
   { tiles; deck; current_player = List.nth players 0; players }
 
@@ -74,13 +53,29 @@ let finished player = player.index_on_board >= final_tile_index
     negative. *)
 let get_tile index tiles : tiles = List.nth tiles index
 
-(** [change_index_board player] returns the new position of the player
-    after they move a given number of spaces determined by the spinner*)
 let married_index, starter_home_index, house_index, retirement, elope =
   (25, 33, 97, 130, 20)
 
-(** [change_index_board player] returns a player with their new position
-    after that have spun the spinner and moved appropriately*)
+let rec has_investment (numSpun : int) (cards : cards list) : bool =
+  match cards with
+  | [] -> false
+  | h :: t -> (
+      match h with
+      | Long_Term_Investment x ->
+          if x = numSpun then true else has_investment numSpun t
+      | _ -> has_investment numSpun t)
+
+let rec check_investments
+    (numSpun : int)
+    (players : player list)
+    (acc : player list) : player list =
+  match players with
+  | [] -> acc
+  | h :: t ->
+      if has_investment numSpun h.deck then
+        check_investments numSpun t acc @ [ add_balance h 5000 ]
+      else check_investments numSpun t acc @ [ h ]
+
 let rec possible_career_choices
     (isCollege : bool)
     (deck : cards list)

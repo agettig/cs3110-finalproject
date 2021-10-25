@@ -1,6 +1,7 @@
 open Source.Gamestate
 open Source.Tiles
 open Source.Players
+open Source.Bank
 
 open Source.Cards
 (** [play_game f] starts the adventure in file [f]. *)
@@ -31,7 +32,11 @@ let new_player () =
   else if buy = "yes" then
     let () = print_string "Enter a number 1 through 10: " in
     let num = read_line () in
-    add_card (List.nth lg_tm_invt (int_of_string num - 1)) init_player
+    add_balance
+      (add_card
+         (List.nth lg_tm_invt (int_of_string num - 1))
+         init_player)
+      (-1 * 10000)
   else failwith "invalid input"
 
 (** [get_players number_players acc] recursively constructs the list of
