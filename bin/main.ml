@@ -10,10 +10,10 @@ open Source.Cards
 (** [new_player] constructs a new player with a user inputted name and
     whether or not they are going to college*)
 let new_player () =
-  let () = print_string "Enter Player Name: " in
+  let () = print_string "Enter player name: " in
   let name = read_line () in
   let () =
-    print_string "Do you want to to college? Input yes or no \n > "
+    print_string "Do you want to go to college? Input yes or no \n > "
   in
   let college = read_line () in
   let bool_college =
@@ -21,7 +21,18 @@ let new_player () =
     else if String.equal college "no" then false
     else failwith "invalid input"
   in
-  add_player name bool_college
+  let init_player = add_player name bool_college in
+  let () =
+    print_string
+      "Do you want to buy a long term investment? Input yes or no \n > "
+  in
+  let buy = read_line () in
+  if buy = "no" then init_player
+  else if buy = "yes" then
+    let () = print_string "Enter a number 1 through 10: " in
+    let num = read_line () in
+    add_card (List.nth lg_tm_invt (int_of_string num - 1)) init_player
+  else failwith "invalid input"
 
 (** [get_players number_players acc] recursively constructs the list of
     players in the game*)
