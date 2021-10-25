@@ -36,10 +36,25 @@ let init_state tiles deck players =
 let main () =
   ANSITerminal.print_string [ ANSITerminal.red ]
     "\n\nWelcome to the Game of Life.\n";
-  print_endline "Please enter the number of players (2-6).\n";
-  print_string "> ";
-  let num_players = read_line () in
-  let game_players = get_players (int_of_string num_players) [] in
+  let print_start () =
+    print_endline "Please enter the number of players (2-6).";
+    print_string "> "
+  in
+  print_start ();
+  let rec int_players () =
+    match int_of_string_opt (read_line ()) with
+    | Some x ->
+        if x > 1 && x < 7 then x
+        else (
+          print_endline "\nInvalid input ";
+          print_start ();
+          int_players ())
+    | None ->
+        print_endline " \nInvalid input ";
+        print_start ();
+        int_players ()
+  in
+  let game_players = get_players (int_players ()) [] in
   let start_state =
     init_state gold_tiles (houses @ careers @ life_tiles) game_players
   in
