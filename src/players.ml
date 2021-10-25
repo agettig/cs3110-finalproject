@@ -46,8 +46,6 @@ let rec deck_string_helper (deck : cards list) (acc : string) =
       | Life_Tiles _ -> deck_string_helper t (acc ^ "LifeTile" ^ ", ")
       | _ -> deck_string_helper t acc)
 
-let college_loans_value att_coll = if att_coll then 100000 else 0
-
 (** [add_player player_name attended_college] returns a [player] with
     initialized parameters *)
 let add_player (player_name : string) (attended_college : bool) =
@@ -56,8 +54,8 @@ let add_player (player_name : string) (attended_college : bool) =
     children = 0;
     so = false;
     deck = [];
-    account_balance = college_loans_value attended_college;
-    debt = college_loans_value attended_college;
+    account_balance = (if attended_college then 100000 else 10000);
+    debt = (if attended_college then 100000 else 0);
     pay_raise = 0;
     college = attended_college;
     index_on_board = (if attended_college then 0 else 10);
