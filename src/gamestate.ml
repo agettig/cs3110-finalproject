@@ -11,29 +11,9 @@ type gamestate = {
   deck : cards list;
 }
 
-(** [new_player] constructs a new player with a user inputted name and
-    whether or not they are going to college*)
-let new_player () =
-  let () = print_string "Enter Player Name: " in
-  let name = read_line () in
-  let () = print_string "Do you want to to college? Input yes or no " in
-  let college = read_line () in
-  let bool_college =
-    if String.equal college "yes" then true
-    else if String.equal college "no" then false
-    else failwith "invalid input"
-  in
-  add_player name bool_college
-
-(** [get_players number_players acc] recursively constructs the list of
-    players in the game*)
-let rec get_players num_players acc =
-  match num_players with
-  | 0 -> acc
-  | h -> get_players (h - 1) (acc @ [ new_player () ])
-
-let init_state tiles deck players =
-  { tiles; deck; current_player = List.nth players 0; players }
+(** [normalize_text] returns s with the whitespace trimed and in all
+    lowercase*)
+let normalize_text s = String.(s |> trim |> lowercase_ascii)
 
 (** [current_player gamestate] is the identifier of the player whose
     turn it is in which the in gamestate [st]. *)
@@ -129,6 +109,12 @@ let print_career_card (card : cards) =
         ^ string_of_int x.taxes_due)
   | _ -> failwith "passed in card that isn't a career"
 
+let get_house_or_career_name (card : cards) =
+  match card with
+  | Career x -> x.name
+  | House x -> x.name
+  | _ -> failwith "passed in card that isn't a career"
+
 let rec print_houses houses : unit =
   match houses with
   | [] -> print_endline ""
@@ -142,6 +128,11 @@ let rec print_houses houses : unit =
             ("Selling Price: " ^ string_of_int house.selling_price ^ "}");
           print_houses t
       | _ -> print_houses t)
+
+(** [string_equal s1 s2] returns true if s1 is equivalent to s2 after
+    both strings have been trimmed and changed to all lowercase else
+    false is returned*)
+let string_equal s1 s2 = normalize_text s1 = normalize_text s2
 
 let rec match_card_by_name (name : string) (cards : cards list) : cards
     =
@@ -169,11 +160,25 @@ let choose_career (player : player) (deck : cards list) : cards =
   let second_career =
     List.nth new_possible (Random.int (List.length new_possible))
   in
-  let () = print_career_card first_career in
-  let () = print_career_card second_career in
-  let () = print_string "Enter Desired Career Name: " in
-  let career_name = read_line () in
-  match_card_by_name career_name possible_careers
+  let print_careers () =
+    print_career_card first_career;
+    print_career_card second_career;
+    print_string "Enter Desired Career Name: "
+  in
+  let career1_name = get_house_or_career_name first_career in
+  let career2_name = get_house_or_career_name second_career in
+  let rec career_string () =
+    print_careers ();
+    match read_line () with
+    | x ->
+        if string_equal x career1_name then career1_name
+        else if string_equal x career2_name then career2_name
+        else (
+          print_endline "\nInvalid input";
+          career_string ())
+  in
+
+  match_card_by_name (career_string ()) possible_careers
 
 let rec bought_house
     (player : player)
@@ -194,10 +199,24 @@ let choose_houses (player : player) (deck : cards list) =
     possible_house_choices player (has_house player) deck []
   in
   if possible_houses <> [] then
-    let () = print_houses possible_houses in
-    let () = print_string "Enter which house you'd like to buy: " in
-    let house_name = read_line () in
-    match_card_by_name house_name possible_houses
+    let print_houses () =
+      print_houses possible_houses;
+      print_string "Enter which house you'd like to buy: "
+    in
+    let rec house_name () =
+      print_houses ();
+      match read_line () with
+      | chosen_house -> (
+          match
+            List.find_opt
+              (fun a ->
+                string_equal chosen_house (get_house_or_career_name a))
+              possible_houses
+          with
+          | Some x -> get_house_or_career_name x
+          | None -> house_name ())
+    in
+    match_card_by_name (house_name ()) possible_houses
   else if has_house player then
     match_card_by_name "No Non Starters" possible_houses
   else match_card_by_name "No Starters" possible_houses
