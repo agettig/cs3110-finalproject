@@ -39,12 +39,39 @@ let new_player () =
       (-1 * 10000)
   else failwith "invalid input"
 
+let rec get_all_investments (deck : cards list) (acc : int list) :
+    int list =
+  match deck with
+  | [] -> acc
+  | h :: t -> (
+      match h with
+      | Long_Term_Investment x -> get_all_investments t (x :: acc)
+      | _ -> get_all_investments t acc)
+
+let rec check_dup_investments (players : player list) (acc : int list) :
+    bool =
+  match players with
+  | [] ->
+      List.compare_lengths (List.sort compare acc)
+        (List.sort_uniq compare acc)
+      <> 0
+  | h :: t ->
+      check_dup_investments t (get_all_investments h.deck [] @ acc)
+
 (** [get_players number_players acc] recursively constructs the list of
     players in the game*)
 let rec get_players num_players acc =
   match num_players with
   | 0 -> acc
-  | h -> get_players (h - 1) (acc @ [ new_player () ])
+  | h ->
+      let newbie = new_player () in
+      if check_dup_investments (acc @ [ newbie ]) [] then
+        let () =
+          print_endline
+            "\nTwo players cannot have identical long term investments"
+        in
+        get_players h acc
+      else get_players (h - 1) (acc @ [ newbie ])
 
 let init_state tiles deck players =
   { tiles; deck; current_player = List.nth players 0; players }
