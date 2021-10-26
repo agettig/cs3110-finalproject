@@ -197,7 +197,7 @@ let choose_houses (player : player) (deck : cards list) =
     match_card_by_name "No Non Starters" possible_houses
   else match_card_by_name "No Starters" possible_houses
 
-let change_index_board (player : player) : player =
+let change_index_board (player : player) : player * int =
   let current_index = player.index_on_board in
   let spinner = spinner () in
 
@@ -238,7 +238,7 @@ let change_index_board (player : player) : player =
     else if player_index_spinner > 130 then 130
     else player_index_spinner
   in
-  { player with index_on_board = new_index }
+  ({ player with index_on_board = new_index }, spinner)
 
 (** [new_players_lst] returns an updated player with the current players
     record updated*)
@@ -300,7 +300,9 @@ let rec turn gamestate : unit =
       }
   else
     (*player with new index*)
-    let player_moved = change_index_board gamestate.current_player in
+    let change_ind_tup = change_index_board gamestate.current_player in
+    let player_moved = fst change_ind_tup in
+    let numSpun = snd change_ind_tup in
     let player_index = player_moved.index_on_board in
 
     let payraise_player =
@@ -474,7 +476,7 @@ let rec turn gamestate : unit =
         gamestate with
         current_player =
           next_player gamestate.current_player gamestate.players;
-        players = new_play_list;
+        players = check_investments numSpun new_play_list [];
         deck = new_deck;
       }
 
