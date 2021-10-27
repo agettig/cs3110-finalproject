@@ -237,6 +237,32 @@ let choose_houses (player : player) (deck : cards list) =
     match_card_by_name "No Non Starters" possible_houses
   else match_card_by_name "No Starters" possible_houses
 
+
+let rec print_lawsuit_players players plaintiff : unit =
+  match players with
+  | [] -> print_endline ""
+  | h :: t ->
+      if h.name <> plaintiff.name then
+        Printf.printf "Player name: %s\n" h.name
+      else print_lawsuit_players t plaintiff
+
+let rec lawsuit_player players plaintiff =
+  print_lawsuit_players players plaintiff;
+  print_endline "Enter Player's name who you would like to sue";
+  let player_name = read_line () in
+  match player_name with
+  | player -> (
+      match
+        List.find_opt
+          (fun x ->
+            player <> plaintiff.name && string_equal player x.name)
+          players
+      with
+      | None ->
+          print_endline "Invalid Input";
+          lawsuit_player players plaintiff
+      | Some x -> x)
+
 let change_index_board (player : player) : player * int =
   let current_index = player.index_on_board in
   let spinner = spinner () in
@@ -493,9 +519,21 @@ let rec turn gamestate : unit =
       | ActionTile _ -> (player_moved, (None, None))
       | SpinToWinTile _ ->
           (pay_player, (None, None)) (* not implemented in ms1*)
-      | LawsuitTile _ -> (pay_player, (None, None))
-      (* not implemented in ms1*)
+      | LawsuitTile _ ->
+          let player_sued =
+            lawsuit_player gamestate.players pay_player
+          in
+          Printf.printf "%s's Current Balance: %i \n" player_sued.name
+            player_sued.account_balance;
+          Printf.printf "%s has sued %s for $100,000 \n" pay_player.name
+            player_sued.name;
+          let new_balance_player = add_balance player_sued ~-100000 in
+          Printf.printf "%s's Current Balance: %i \n"
+            new_balance_player.name new_balance_player.account_balance;
+
+          (new_balance_player, (None, None))
     in
+
     (*[new_play_list] is the updated player list after the current
       player's turn*)
     let new_play_list =
