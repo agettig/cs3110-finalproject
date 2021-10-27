@@ -247,11 +247,17 @@ let change_index_board (player : player) : player =
 
 (** [new_players_lst] returns an updated player with the current players
     record updated*)
-let new_players_list current_lst updated_player =
-  List.map
-    (fun x ->
-      if x.name = updated_player.name then updated_player else x)
-    current_lst
+let rec new_players_list
+    (current_lst : player list)
+    (updated_player : player list) =
+  match updated_player with
+  | [] -> current_lst
+  | h :: t ->
+      new_players_list
+        (List.map
+           (fun x -> if h.name = x.name then h else x)
+           current_lst)
+        t
 
 (** [gameover players] returns true if all players in the game have
     retired and returns false if anyone is still playing.*)
@@ -278,6 +284,38 @@ let rec has_career (deck : cards list) =
       match h with
       | Career _ -> Some h
       | _ -> has_career t)
+
+let player_spintowin (player : player) : player =
+  let rec spin_number () =
+    Printf.printf "%s please enter your guess (0-9): " player.name;
+    match int_of_string_opt (String.trim (read_line ())) with
+    | Some x ->
+        if x > -1 && x < 10 then x
+        else (
+          print_endline "\nInvalid input ";
+          spin_number ())
+    | None ->
+        print_endline " \nInvalid input ";
+        spin_number ()
+  in
+
+  let rec invest () =
+    print_endline "How much would you like to invest?: ";
+    match int_of_string_opt (String.trim (read_line ())) with
+    | Some x ->
+        if x > 4999 && x < 50001 then x
+        else (
+          print_endline "\nInvalid input ";
+          invest ())
+    | None ->
+        print_endline " \nInvalid input ";
+        invest ()
+  in
+
+  let spin () = spinner () in
+  print_endline "Spinner Value: ";
+  if spin_number = spin then add_balance player (10 * invest ())
+  else player
 
 let start_turn () =
   (* Printf.printf ("%s ^ 's Turn /n Please enter any key to start"); *)
@@ -395,43 +433,48 @@ let rec turn gamestate : unit =
     (* [new_player] returns a tuple with an updated player and None if
        the game deck does not need to be altered and Some card if card
        has to be removed from the game deck*)
-    let new_player : player * (cards option * cards option) =
+    let new_player : player list * (cards option * cards option) =
       match tile with
       | PayTile c ->
-          (add_balance pay_player c.account_change, (None, None))
+          ([ add_balance pay_player c.account_change ], (None, None))
       | TaxesTile _ ->
-          ( add_balance pay_player (-1 * get_taxes pay_player),
+          ( [ add_balance pay_player (-1 * get_taxes pay_player) ],
             (None, None) )
       | LifeTile _ ->
           let rand_lf_tile =
             List.nth life_tiles (Random.int (List.length life_tiles))
           in
-          (add_card rand_lf_tile pay_player, (Some rand_lf_tile, None))
+          ( [ add_card rand_lf_tile pay_player ],
+            (Some rand_lf_tile, None) )
       | CareerTile _ -> (
           let career_chosen = choose_career pay_player gamestate.deck in
           let had_career = has_career pay_player.deck in
           match had_career with
           | None ->
-              ( add_card career_chosen pay_player,
+              ( [ add_card career_chosen pay_player ],
                 (Some career_chosen, None) )
           | Some h ->
-              ( exchange_card pay_player career_chosen h,
+              ( [ exchange_card pay_player career_chosen h ],
                 (Some career_chosen, Some h) ))
       | FamilyTile c ->
           if c.index_tile = married_index then
-            ({ pay_player with so = true }, (None, None))
+            ([ { pay_player with so = true } ], (None, None))
           else if c.index_tile = elope then
-            ( {
-                pay_player with
-                so = true;
-                index_on_board = married_index;
-              },
+            ( [
+                {
+                  pay_player with
+                  so = true;
+                  index_on_board = married_index;
+                };
+              ],
               (None, None) )
           else
-            ( {
-                pay_player with
-                children = pay_player.children + c.children;
-              },
+            ( [
+                {
+                  pay_player with
+                  children = pay_player.children + c.children;
+                };
+              ],
               (None, None) )
       | HouseTile _ -> (
           let chosen_house =
@@ -445,18 +488,32 @@ let rec turn gamestate : unit =
           match house_name with
           | Some x ->
               if x = "None" then
-                ( bought_house player_moved x gamestate.deck,
+                ( [ bought_house player_moved x gamestate.deck ],
                   (None, None) )
               else
-                ( bought_house player_moved x gamestate.deck,
+                ( [ bought_house player_moved x gamestate.deck ],
                   (Some chosen_house, None) )
-          | None -> (player_moved, (None, None)))
+          | None -> ([ player_moved ], (None, None)))
       | TakeTile _ ->
-          (player_moved, (None, None)) (* not implemented in ms1*)
-      | ActionTile _ -> (player_moved, (None, None))
+          ([ player_moved ], (None, None)) (* not implemented in ms1*)
+      | ActionTile _ -> ([ player_moved ], (None, None))
       | SpinToWinTile _ ->
-          (pay_player, (None, None)) (* not implemented in ms1*)
-      | LawsuitTile _ -> (pay_player, (None, None))
+          let new_players =
+            List.map player_spintowin gamestate.players
+          in
+          (new_players, (None, None))
+      (* for player in gamestate.current_player to snd in players do for
+         x=e1 to e2 do e3 done *)
+      (* if tile = string_of_int spin then (payraise
+         gamestate.current_player, (None, None)) else (pay_player,
+         (None, None)) done
+
+         let rec *)
+
+      (* match spin with | tile -> (payraise gamestate.current_player,
+         (None, None)) *)
+      (* not implemented in ms1*)
+      | LawsuitTile _ -> ([ pay_player ], (None, None))
       (* not implemented in ms1*)
     in
     (*[new_play_list] is the updated player list after the current
@@ -498,3 +555,9 @@ let rec player_winner player_lst player =
   | h :: t ->
       if final_balance h > final_balance player then player_winner t h
       else player_winner t player
+
+(* - check if they landed on the tile, if they did then have them, pick
+   a number, and then spin again and if it matches a number they get
+   10*investment *)
+
+(* spin to win indexes 51,77,89,113,121 *)
