@@ -19,8 +19,8 @@ let new_player () =
     print_q ();
     match read_line () with
     | x ->
-        if x |> String.trim |> String.equal "yes" then true
-        else if x |> String.trim |> String.equal "no" then false
+        if x |> normalize_text |> String.equal "yes" then true
+        else if x |> normalize_text |> String.equal "no" then false
         else (
           print_endline "\nInvalid input";
           college ())
