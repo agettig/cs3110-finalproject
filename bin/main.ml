@@ -27,21 +27,29 @@ let new_player () =
           college ())
   in
   let init_player = add_player (String.trim name) (college ()) in
-  let () =
+  let print_q2 () =
     print_string
       "Do you want to buy a long term investment? Input yes or no \n > "
   in
-  let buy = read_line () in
-  if buy = "no" then init_player
-  else if buy = "yes" then
-    let () = print_string "Enter a number 1 through 10: " in
-    let num = read_line () in
-    add_balance
-      (add_card
-         (List.nth lg_tm_invt (int_of_string num - 1))
-         init_player)
-      (-1 * 10000)
-  else failwith "invalid input"
+  let rec buy () =
+    print_q2 ();
+    match read_line () with
+    | x ->
+        if x |> String.trim |> String.equal "yes" then
+          (* check if it is a number 1 thru 10 *)
+          let () = print_string "Enter a number 1 through 10: " in
+          let num = read_line () in
+          add_balance
+            (add_card
+               (List.nth lg_tm_invt (int_of_string num - 1))
+               init_player)
+            (-1 * 10000)
+        else if x |> String.trim |> String.equal "no" then init_player
+        else (
+          print_endline "\nInvalid input";
+          buy ())
+  in
+  buy ()
 
 let rec get_all_investments (deck : cards list) (acc : int list) :
     int list =
