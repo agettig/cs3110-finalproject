@@ -259,7 +259,6 @@ let gold_tiles =
         account_change = 10000;
         index_tile = 66;
       };
-    SpinToWinTile { name = "Spin to Win!"; index_tile = 51 };
     TakeTile { name = "Take a Share the Wealth card"; index_tile = 67 };
     PayTile
       {
