@@ -11,7 +11,7 @@ open Source.Cards
 (** [new_player] constructs a new player with a user inputted name and
     whether or not they are going to college*)
 let new_player () =
-  let () = print_string "Enter player name: " in
+  let () = print_string "\nEnter player name: " in
   let name = read_line () in
   let print_q () =
     print_string "Do you want to to college? Input yes or no\n> "
@@ -27,21 +27,49 @@ let new_player () =
           college ())
   in
   let init_player = add_player (String.trim name) (college ()) in
-  let () =
+  let print_q2 () =
     print_string
       "Do you want to buy a long term investment? Input yes or no \n > "
   in
-  let buy = read_line () in
-  if buy = "no" then init_player
-  else if buy = "yes" then
-    let () = print_string "Enter a number 1 through 10: " in
-    let num = read_line () in
-    add_balance
-      (add_card
-         (List.nth lg_tm_invt (int_of_string num - 1))
-         init_player)
-      (-1 * 10000)
-  else failwith "invalid input"
+  let print_q3 () = print_string "Enter a number 1 through 10: " in
+  let rec num () =
+    print_q3 ();
+    match read_line () with
+    | y ->
+        (* need to check for numbers instead of yes *)
+        let trimmed = y |> String.trim in
+        if
+          String.equal trimmed "1"
+          || String.equal trimmed "2"
+          || String.equal trimmed "3"
+          || String.equal trimmed "4"
+          || String.equal trimmed "5"
+          || String.equal trimmed "6"
+          || String.equal trimmed "7"
+          || String.equal trimmed "8"
+          || String.equal trimmed "9"
+          || String.equal trimmed "10"
+        then
+          add_balance
+            (add_card
+               (List.nth lg_tm_invt (int_of_string trimmed - 1))
+               init_player)
+            (-1 * 10000)
+        else (
+          print_endline "\nInvalid input";
+          num ())
+  in
+  let rec buy () =
+    print_q2 ();
+    match read_line () with
+    | x ->
+        if x |> String.trim |> String.equal "yes" then num ()
+        else if x |> String.trim |> String.equal "no" then init_player
+        else (
+          print_endline "\nInvalid input";
+          buy ())
+  in
+  buy ()
 
 let rec get_all_investments (deck : cards list) (acc : int list) :
     int list =
@@ -72,7 +100,9 @@ let rec get_players num_players acc =
       if check_dup_investments (acc @ [ newbie ]) [] then
         let () =
           print_endline
-            "\nTwo players cannot have identical long term investments"
+            "\n\
+             Two players cannot have identical long term investments - \
+             restart creation of this player"
         in
         get_players h acc
       else get_players (h - 1) (acc @ [ newbie ])
