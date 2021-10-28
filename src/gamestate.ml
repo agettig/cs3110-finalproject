@@ -11,6 +11,107 @@ type gamestate = {
   deck : cards list;
 }
 
+let print_payday (num : int) =
+  match num with
+  | 0 ->
+      print_endline
+        "$$$$$$$$$$$$$$$$$$$                  $$$$$$$$$$$              \
+         $$$$$             $$$$$      \
+         $$$$$$$$$$$$$$$$$$$                       \
+         $$$$$$$$$$$              $$$$$             $$$$$"
+  | 1 ->
+      print_endline
+        "$$$$$$$$$$$$$$$$$$$$$               \
+         $$$$$$$$$$$$$              $$$$$           $$$$$       \
+         $$$$$$$$$$$$$$$$$$$$$                    \
+         $$$$$$$$$$$$$              $$$$$           $$$$$ "
+  | 2 ->
+      print_endline
+        "$$$$$$$$$$$$$$$$$$$$$$             \
+         $$$$$$$$$$$$$$$              $$$$$         $$$$$        \
+         $$$$$$$$$$$$$$$$$$$$$$                  \
+         $$$$$$$$$$$$$$$              $$$$$         $$$$$  "
+  | 3 ->
+      print_endline
+        "$$$$$             $$$$$           $$$$$       \
+         $$$$$              $$$$$       $$$$$         $$$$$            \
+         $$$$$$                $$$$$       $$$$$              \
+         $$$$$       $$$$$   "
+  | 4 ->
+      print_endline
+        "$$$$$              $$$$          $$$$$         \
+         $$$$$              $$$$$     $$$$$          $$$$$             \
+         $$$$$$              $$$$$         $$$$$              \
+         $$$$$     $$$$$    "
+  | 5 ->
+      print_endline
+        "$$$$$              $$$$         $$$$$           \
+         $$$$$              $$$$$   $$$$$           $$$$$              \
+         $$$$$             $$$$$           $$$$$              $$$$$   \
+         $$$$$     "
+  | 6 ->
+      print_endline
+        "$$$$$             $$$$$        \
+         $$$$$$$$$$$$$$$$$$$$$$$              $$$$$ $$$$$            \
+         $$$$$              $$$$$            \
+         $$$$$$$$$$$$$$$$$$$$$$$              $$$$$ $$$$$      "
+  | 7 ->
+      print_endline
+        "$$$$$$$$$$$$$$$$$$$$$         \
+         $$$$$$$$$$$$$$$$$$$$$$$$$              $$$$$$$$$             \
+         $$$$$              $$$$$           \
+         $$$$$$$$$$$$$$$$$$$$$$$$$              $$$$$$$$$       "
+  | 8 ->
+      print_endline
+        "$$$$$$$$$$$$$$$$$$$$$        \
+         $$$$$$$$$$$$$$$$$$$$$$$$$$$              $$$$$$$              \
+         $$$$$              $$$$$          \
+         $$$$$$$$$$$$$$$$$$$$$$$$$$$              $$$$$$$        "
+  | 9 ->
+      print_endline
+        "$$$$$$$$$$$$$$$$$           $$$$$                   \
+         $$$$$              $$$$$               $$$$$              \
+         $$$$$         $$$$$                   $$$$$              \
+         $$$$$         "
+  | 10 ->
+      print_endline
+        "$$$$$                      $$$$$                     \
+         $$$$$             $$$$$               $$$$$             \
+         $$$$$$        $$$$$                     $$$$$             \
+         $$$$$       "
+  | 11 ->
+      print_endline
+        "$$$$$                     $$$$$                       \
+         $$$$$            $$$$$               $$$$$            \
+         $$$$$$        $$$$$                       $$$$$            \
+         $$$$$       "
+  | 12 ->
+      print_endline
+        "$$$$$                    $$$$$                         \
+         $$$$$           $$$$$               \
+         $$$$$$$$$$$$$$$$$$$$$$        $$$$$                         \
+         $$$$$           $$$$$       "
+  | 13 ->
+      print_endline
+        "$$$$$                   $$$$$                           \
+         $$$$$          $$$$$               \
+         $$$$$$$$$$$$$$$$$$$$$        $$$$$                           \
+         $$$$$          $$$$$       "
+  | 14 ->
+      print_endline
+        "$$$$$                  $$$$$                             \
+         $$$$$         $$$$$               $$$$$$$$$$$$$$$$$$$         \
+         $$$$$                             $$$$$         $$$$$       "
+  | _ -> print_endline ""
+
+let rec print_payday_iter (num : int) =
+  match num with
+  | 14 -> print_payday 14
+  | x ->
+      print_payday x;
+      Unix.sleepf 0.08;
+      print_payday_iter (num + 1)
+
 (** [normalize_text] returns s with the whitespace trimed and in all
     lowercase*)
 let normalize_text s = String.(s |> trim |> lowercase_ascii)
@@ -369,59 +470,87 @@ let rec turn gamestate : unit =
       if
         gamestate.current_player.index_on_board < 12
         && 12 <= player_index
-      then payday payraise_player
+      then
+        let () = print_payday_iter 0 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 15
         && 15 <= player_index
-      then payday payraise_player
+      then
+        let () = print_payday_iter 0 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 23
         && 23 <= player_index
-      then payday payraise_player
+      then
+        let () = print_payday_iter 0 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 32
         && 32 <= player_index
-      then payday payraise_player
+      then
+        let () = print_payday_iter 0 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 48
         && 48 <= player_index
-      then payday payraise_player
+      then
+        let () = print_payday_iter 0 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 57
         && 57 <= player_index
-      then payday payraise_player
+      then
+        let () = print_payday_iter 0 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 64
         && 64 <= player_index
-      then payday payraise_player
+      then
+        let () = print_payday_iter 0 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 79
         && 79 <= player_index
-      then payday payraise_player
+      then
+        let () = print_payday_iter 0 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 86
         && 86 <= player_index
-      then payday payraise_player
+      then
+        let () = print_payday_iter 0 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 92
         && 92 <= player_index
-      then payday payraise_player
+      then
+        let () = print_payday_iter 0 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 105
         && 105 <= player_index
-      then payday payraise_player
+      then
+        let () = print_payday_iter 0 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 109
         && 109 <= player_index
-      then payday payraise_player
+      then
+        let () = print_payday_iter 0 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 120
         && 120 <= player_index
-      then payday payraise_player
+      then
+        let () = print_payday_iter 0 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 127
         && 127 <= player_index
-      then payday payraise_player
+      then
+        let () = print_payday_iter 0 in
+        payday payraise_player
       else payraise_player
     in
 

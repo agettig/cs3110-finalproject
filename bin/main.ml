@@ -2,8 +2,8 @@ open Source.Gamestate
 open Source.Tiles
 open Source.Players
 open Source.Bank
-
 open Source.Cards
+
 (** [play_game f] starts the adventure in file [f]. *)
 
 (** [main ()] prompts for the game to play, then starts it. *)
@@ -80,7 +80,25 @@ let rec get_players num_players acc =
 let init_state tiles deck players =
   { tiles; deck; current_player = List.nth players 0; players }
 
+(* ------start of random print testing *)
+let random_money_str () = if Random.int 2 = 1 then "$" else " "
+
+let rec make_it_rain (num : int) (acc : string) =
+  match num with
+  | 0 -> print_endline acc
+  | _ -> make_it_rain (num - 1) (acc ^ random_money_str ())
+
+let rec make_it_rain_iter (num : int) (idx : int) =
+  match idx with
+  | 0 -> make_it_rain num ""
+  | _ ->
+      make_it_rain num "";
+      Unix.sleepf 0.15;
+      make_it_rain_iter num (idx - 1)
+
+(* -------end of random print testing *)
 let main () =
+  (* let () = make_it_rain_iter 30 50 in *)
   ANSITerminal.print_string [ ANSITerminal.red ]
     "\n\nWelcome to the Game of Life.\n";
   let print_start () =
