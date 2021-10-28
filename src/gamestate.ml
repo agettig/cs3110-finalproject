@@ -30,7 +30,8 @@ let rec index_in_list_helper player lst c =
   match lst with
   | [] -> failwith "Not found"
   | h :: t ->
-      if h = player then c else index_in_list_helper player t (c + 1)
+      if h.name = player.name then c
+      else index_in_list_helper player t (c + 1)
 
 (** [index_in_list_next] returns the index of the next player after
     [player]. Requires [lst] contains at least two elements.
@@ -237,14 +238,17 @@ let choose_houses (player : player) (deck : cards list) =
     match_card_by_name "No Non Starters" possible_houses
   else match_card_by_name "No Starters" possible_houses
 
-
-let rec print_lawsuit_players players plaintiff : unit =
-  match players with
+let rec print_players = function
   | [] -> print_endline ""
   | h :: t ->
-      if h.name <> plaintiff.name then
-        Printf.printf "Player name: %s\n" h.name
-      else print_lawsuit_players t plaintiff
+      Printf.printf "Player: %s\n" h.name;
+      print_players t
+
+let print_lawsuit_players players plaintiff : unit =
+  let lawsuit_players =
+    List.filter (fun x -> plaintiff.name <> x.name) players
+  in
+  print_players lawsuit_players
 
 let rec lawsuit_player players plaintiff =
   print_lawsuit_players players plaintiff;
@@ -347,36 +351,37 @@ let rec has_career (deck : cards list) =
       | _ -> has_career t)
 
 let player_spintowin (player : player) : player =
-  let rec spin_number () =
+  let rec spin_help () =
     Printf.printf "%s please enter your guess (0-9): " player.name;
     match int_of_string_opt (String.trim (read_line ())) with
     | Some x ->
         if x > -1 && x < 10 then x
         else (
           print_endline "\nInvalid input ";
-          spin_number ())
+          spin_help ())
     | None ->
         print_endline " \nInvalid input ";
-        spin_number ()
+        spin_help ()
   in
+  let spin_num = spin_help () in
 
-  let rec invest () =
+  let rec invest_help () =
     print_endline "How much would you like to invest?: ";
     match int_of_string_opt (String.trim (read_line ())) with
     | Some x ->
         if x > 4999 && x < 50001 then x
         else (
           print_endline "\nInvalid input ";
-          invest ())
+          invest_help ())
     | None ->
         print_endline " \nInvalid input ";
-        invest ()
+        invest_help ()
   in
+  let invest = invest_help () in
 
-  let spin () = spinner () in
-  print_endline "Spinner Value: ";
-  if spin_number = spin then add_balance player (10 * invest ())
-  else player
+  let spin = spinner () in
+  Printf.printf "Spinner Value: %i \n" spin;
+  if spin = spin_num then add_balance player (10 * invest) else player
 
 let start_turn () =
   (* Printf.printf ("%s ^ 's Turn /n Please enter any key to start"); *)
@@ -385,6 +390,7 @@ let start_turn () =
   | _ -> print_string ""
 
 let rec turn gamestate : unit =
+  print_players gamestate.players;
   Printf.printf "%s's Turn \n \nPlease enter any key to start: "
     gamestate.current_player.name;
   (* makes current player type in anything into terminal to start their
@@ -577,7 +583,7 @@ let rec turn gamestate : unit =
           Printf.printf "%s's Current Balance: %i \n"
             new_balance_player.name new_balance_player.account_balance;
 
-          ([new_balance_player], (None, None))
+          ([ pay_player; new_balance_player ], (None, None))
     in
 
     (*[new_play_list] is the updated player list after the current
@@ -598,8 +604,7 @@ let rec turn gamestate : unit =
     turn
       {
         gamestate with
-        current_player =
-          next_player gamestate.current_player gamestate.players;
+        current_player = next_player pay_player new_play_list;
         players = check_investments numSpun new_play_list [];
         deck = new_deck;
       }
@@ -619,4 +624,3 @@ let rec player_winner player_lst player =
   | h :: t ->
       if final_balance h > final_balance player then player_winner t h
       else player_winner t player
-
