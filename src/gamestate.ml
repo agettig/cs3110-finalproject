@@ -101,7 +101,7 @@ let print_payday (num : int) =
       print_endline
         "$$$$$                  $$$$$                             \
          $$$$$         $$$$$               $$$$$$$$$$$$$$$$$$$         \
-         $$$$$                             $$$$$         $$$$$       "
+         $$$$$                             $$$$$         $$$$$       \n"
   | _ -> print_endline ""
 
 let rec print_payday_iter (num : int) =
@@ -111,6 +111,38 @@ let rec print_payday_iter (num : int) =
       print_payday x;
       Unix.sleepf 0.08;
       print_payday_iter (num + 1)
+
+let print_house (num : int) =
+  match num with
+  | 0 -> print_endline "                   |||||"
+  | 1 -> print_endline "                ||||   ||||"
+  | 2 -> print_endline "             ||||         ||||"
+  | 3 -> print_endline "          ||||               ||||"
+  | 4 -> print_endline "       ||||                     ||||"
+  | 5 -> print_endline "    ||||                           ||||"
+  | 6 -> print_endline "  |||||||||||||||||||||||||||||||||||||||"
+  | 7 -> print_endline "     |||                           |||"
+  | 8 -> print_endline "     |||                           |||"
+  | 9 -> print_endline "     |||    _____         _____    |||"
+  | 10 -> print_endline "     |||    |_|_|         |_|_|    |||"
+  | 11 -> print_endline "     |||    | | |         | | |    |||"
+  | 12 -> print_endline "     |||    ^^^^^         ^^^^^    |||"
+  | 13 -> print_endline "     |||                           |||"
+  | 14 -> print_endline "     |||                           |||"
+  | 15 -> print_endline "     |||            ____           |||"
+  | 16 -> print_endline "     |||           |    |          |||"
+  | 17 -> print_endline "     |||           |   .|          |||"
+  | 18 -> print_endline "     |||           |    |          |||"
+  | 19 -> print_endline "     |||||||||||||||||||||||||||||||||\n"
+  | _ -> print_endline ""
+
+let rec print_house_iter (num : int) =
+  match num with
+  | 19 -> print_house 19
+  | x ->
+      print_house x;
+      Unix.sleepf 0.08;
+      print_house_iter (num + 1)
 
 (** [normalize_text] returns s with the whitespace trimed and in all
     lowercase*)
@@ -175,8 +207,8 @@ let rec check_investments
   | [] -> acc
   | h :: t ->
       if has_investment numSpun h.deck then
-        check_investments numSpun t acc @ [ add_balance h 5000 ]
-      else check_investments numSpun t acc @ [ h ]
+        check_investments numSpun t (acc @ [ add_balance h 5000 ])
+      else check_investments numSpun t (acc @ [ h ])
 
 let rec possible_career_choices
     (isCollege : bool)
@@ -315,28 +347,26 @@ let choose_houses (player : player) (deck : cards list) =
   let possible_houses =
     possible_house_choices player (has_house player) deck []
   in
-  if possible_houses <> [] then
-    let print_houses () =
-      print_houses possible_houses;
-      print_string "Enter which house you'd like to buy: "
-    in
-    let rec house_name () =
-      print_houses ();
-      match read_line () with
-      | chosen_house -> (
-          match
-            List.find_opt
-              (fun a ->
-                string_equal chosen_house (get_house_or_career_name a))
-              possible_houses
-          with
-          | Some x -> get_house_or_career_name x
-          | None -> house_name ())
-    in
-    match_card_by_name (house_name ()) possible_houses
-  else if has_house player then
-    match_card_by_name "No Non Starters" possible_houses
-  else match_card_by_name "No Starters" possible_houses
+  let print_houses () =
+    print_houses possible_houses;
+    print_string "Enter which house you'd like to buy: "
+  in
+  let rec house_name () =
+    print_houses ();
+    match read_line () with
+    | chosen_house -> (
+        match
+          List.find_opt
+            (fun a ->
+              string_equal chosen_house (get_house_or_career_name a))
+            possible_houses
+        with
+        | Some x ->
+            print_house_iter 0;
+            get_house_or_career_name x
+        | None -> house_name ())
+  in
+  match_card_by_name (house_name ()) possible_houses
 
 let change_index_board (player : player) : player * int =
   let current_index = player.index_on_board in
