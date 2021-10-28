@@ -74,8 +74,8 @@ let rec check_investments
   | [] -> acc
   | h :: t ->
       if has_investment numSpun h.deck then
-        check_investments numSpun t acc @ [ add_balance h 5000 ]
-      else check_investments numSpun t acc @ [ h ]
+        check_investments numSpun t (acc @ [ add_balance h 5000 ])
+      else check_investments numSpun t (acc @ [ h ])
 
 let rec possible_career_choices
     (isCollege : bool)
