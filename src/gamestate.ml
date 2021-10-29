@@ -201,8 +201,28 @@ let rec index_in_list_helper player lst c =
     [player]. Requires [lst] contains at least two elements.
     Postcondition: [index_in_lst] returns an int between 0 and (list
     length -1)*)
-let index_in_list_next (player : player) (lst : player list) : int =
-  (index_in_list_helper player lst 0 + 1) mod List.length lst
+let ( married_index,
+      starter_home_index,
+      house_index,
+      retirement,
+      elope,
+      college_career,
+      career ) =
+  (25, 33, 97, 130, 20, 10, 11)
+
+let index_in_list_next (current_player : player) (lst : player list) :
+    int =
+  let x =
+    if
+      current_player.index_on_board = married_index
+      || current_player.index_on_board = starter_home_index
+      || current_player.index_on_board = house_index
+      || current_player.index_on_board = college_career
+      || current_player.index_on_board = career
+    then 0
+    else 1
+  in
+  (index_in_list_helper current_player lst 0 + x) mod List.length lst
 
 (** [next_player current_player players] returns the player whose turn
     is after [current_player]*)
@@ -218,9 +238,6 @@ let finished player = player.index_on_board >= final_tile_index
     Raises : Failure if list is too short and Invalid Argument if n is
     negative. *)
 let get_tile index tiles : tiles = List.nth tiles index
-
-let married_index, starter_home_index, house_index, retirement, elope =
-  (25, 33, 97, 130, 20)
 
 let rec has_investment (numSpun : int) (cards : cards list) : bool =
   match cards with

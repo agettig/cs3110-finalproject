@@ -176,6 +176,7 @@ let lg_tm_invt =
     Long_Term_Investment 7;
     Long_Term_Investment 8;
     Long_Term_Investment 9;
+    Long_Term_Investment 10;
   ]
 
 let life_tiles =

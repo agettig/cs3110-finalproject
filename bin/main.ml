@@ -29,7 +29,7 @@ let new_player () =
   let init_player = add_player (String.trim name) (college ()) in
   let print_q2 () =
     print_string
-      "Do you want to buy a long term investment? Input yes or no \n > "
+      "Do you want to buy a long term investment? Input yes or no \n> "
   in
   let print_q3 () = print_string "Enter a number 1 through 10: " in
   let rec num () =
@@ -63,8 +63,9 @@ let new_player () =
     print_q2 ();
     match read_line () with
     | x ->
-        if x |> String.trim |> String.equal "yes" then num ()
-        else if x |> String.trim |> String.equal "no" then init_player
+        if x |> normalize_text |> String.equal "yes" then num ()
+        else if x |> normalize_text |> String.equal "no" then
+          init_player
         else (
           print_endline "\nInvalid input";
           buy ())
