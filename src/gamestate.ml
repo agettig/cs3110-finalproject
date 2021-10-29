@@ -194,7 +194,8 @@ let rec index_in_list_helper player lst c =
   match lst with
   | [] -> failwith "Not found"
   | h :: t ->
-      if h = player then c else index_in_list_helper player t (c + 1)
+      if h.name = player.name then c
+      else index_in_list_helper player t (c + 1)
 
 (** [index_in_list_next] returns the index of the next player after
     [player]. Requires [lst] contains at least two elements.
@@ -378,26 +379,55 @@ let choose_houses (player : player) (deck : cards list) =
   let possible_houses =
     possible_house_choices player (has_house player) deck []
   in
-  let print_houses () =
-    print_houses possible_houses;
-    print_string "Enter which house you'd like to buy: "
+  if possible_houses <> [] then
+    let print_houses () =
+      print_houses possible_houses;
+      print_string "Enter which house you'd like to buy: "
+    in
+    let rec house_name () =
+      print_houses ();
+      match read_line () with
+      | chosen_house -> (
+          match
+            List.find_opt
+              (fun a ->
+                string_equal chosen_house (get_house_or_career_name a))
+              possible_houses
+          with
+          | Some x -> print_iter print_house 0 19; get_house_or_career_name x
+          | None -> house_name ())
+    in
+    match_card_by_name (house_name ()) possible_houses
+  else match_card_by_name "None" possible_houses
+
+let rec print_players = function
+  | [] -> print_endline ""
+  | h :: t ->
+      Printf.printf "Player: %s\n" h.name;
+      print_players t
+
+let print_lawsuit_players players plaintiff : unit =
+  let lawsuit_players =
+    List.filter (fun x -> plaintiff.name <> x.name) players
   in
-  let rec house_name () =
-    print_houses ();
-    match read_line () with
-    | chosen_house -> (
-        match
-          List.find_opt
-            (fun a ->
-              string_equal chosen_house (get_house_or_career_name a))
-            possible_houses
-        with
-        | Some x ->
-            print_iter print_house 0 19;
-            get_house_or_career_name x
-        | None -> house_name ())
-  in
-  match_card_by_name (house_name ()) possible_houses
+  print_players lawsuit_players
+
+let rec lawsuit_player players plaintiff =
+  print_lawsuit_players players plaintiff;
+  print_endline "Enter Player's name who you would like to sue";
+  let player_name = read_line () in
+  match player_name with
+  | player -> (
+      match
+        List.find_opt
+          (fun x ->
+            player <> plaintiff.name && string_equal player x.name)
+          players
+      with
+      | None ->
+          print_endline "Invalid Input";
+          lawsuit_player players plaintiff
+      | Some x -> x)
 
 let change_index_board (player : player) : player * int =
   let current_index = player.index_on_board in
@@ -444,11 +474,17 @@ let change_index_board (player : player) : player * int =
 
 (** [new_players_lst] returns an updated player with the current players
     record updated*)
-let new_players_list current_lst updated_player =
-  List.map
-    (fun x ->
-      if x.name = updated_player.name then updated_player else x)
-    current_lst
+let rec new_players_list
+    (current_lst : player list)
+    (updated_player : player list) =
+  match updated_player with
+  | [] -> current_lst
+  | h :: t ->
+      new_players_list
+        (List.map
+           (fun x -> if h.name = x.name then h else x)
+           current_lst)
+        t
 
 (** [gameover players] returns true if all players in the game have
     retired and returns false if anyone is still playing.*)
@@ -476,6 +512,39 @@ let rec has_career (deck : cards list) =
       | Career _ -> Some h
       | _ -> has_career t)
 
+let player_spintowin (player : player) : player =
+  let rec spin_help () =
+    Printf.printf "%s please enter your guess (0-9): " player.name;
+    match int_of_string_opt (String.trim (read_line ())) with
+    | Some x ->
+        if x > -1 && x < 10 then x
+        else (
+          print_endline "\nInvalid input ";
+          spin_help ())
+    | None ->
+        print_endline " \nInvalid input ";
+        spin_help ()
+  in
+  let spin_num = spin_help () in
+
+  let rec invest_help () =
+    print_endline "How much would you like to invest?: ";
+    match int_of_string_opt (String.trim (read_line ())) with
+    | Some x ->
+        if x > 4999 && x < 50001 then x
+        else (
+          print_endline "\nInvalid input ";
+          invest_help ())
+    | None ->
+        print_endline " \nInvalid input ";
+        invest_help ()
+  in
+  let invest = invest_help () in
+
+  let spin = spinner () in
+  Printf.printf "Spinner Value: %i \n" spin;
+  if spin = spin_num then add_balance player (10 * invest) else player
+
 let start_turn () =
   (* Printf.printf ("%s ^ 's Turn /n Please enter any key to start"); *)
   let x = read_line () in
@@ -483,6 +552,7 @@ let start_turn () =
   | _ -> print_string ""
 
 let rec turn gamestate : unit =
+  print_players gamestate.players;
   Printf.printf "%s's Turn \n \nPlease enter any key to start: "
     gamestate.current_player.name;
   (* makes current player type in anything into terminal to start their
@@ -622,43 +692,48 @@ let rec turn gamestate : unit =
     (* [new_player] returns a tuple with an updated player and None if
        the game deck does not need to be altered and Some card if card
        has to be removed from the game deck*)
-    let new_player : player * (cards option * cards option) =
+    let new_player : player list * (cards option * cards option) =
       match tile with
       | PayTile c ->
-          (add_balance pay_player c.account_change, (None, None))
+          ([ add_balance pay_player c.account_change ], (None, None))
       | TaxesTile _ ->
-          ( add_balance pay_player (-1 * get_taxes pay_player),
+          ( [ add_balance pay_player (-1 * get_taxes pay_player) ],
             (None, None) )
       | LifeTile _ ->
           let rand_lf_tile =
             List.nth life_tiles (Random.int (List.length life_tiles))
           in
-          (add_card rand_lf_tile pay_player, (Some rand_lf_tile, None))
+          ( [ add_card rand_lf_tile pay_player ],
+            (Some rand_lf_tile, None) )
       | CareerTile _ -> (
           let career_chosen = choose_career pay_player gamestate.deck in
           let had_career = has_career pay_player.deck in
           match had_career with
           | None ->
-              ( add_card career_chosen pay_player,
+              ( [ add_card career_chosen pay_player ],
                 (Some career_chosen, None) )
           | Some h ->
-              ( exchange_card pay_player career_chosen h,
+              ( [ exchange_card pay_player career_chosen h ],
                 (Some career_chosen, Some h) ))
       | FamilyTile c ->
           if c.index_tile = married_index then
-            ({ pay_player with so = true }, (None, None))
+            ([ { pay_player with so = true } ], (None, None))
           else if c.index_tile = elope then
-            ( {
-                pay_player with
-                so = true;
-                index_on_board = married_index;
-              },
+            ( [
+                {
+                  pay_player with
+                  so = true;
+                  index_on_board = married_index;
+                };
+              ],
               (None, None) )
           else
-            ( {
-                pay_player with
-                children = pay_player.children + c.children;
-              },
+            ( [
+                {
+                  pay_player with
+                  children = pay_player.children + c.children;
+                };
+              ],
               (None, None) )
       | HouseTile _ -> (
           let chosen_house =
@@ -672,20 +747,35 @@ let rec turn gamestate : unit =
           match house_name with
           | Some x ->
               if x = "None" then
-                ( bought_house player_moved x gamestate.deck,
+                ( [ bought_house player_moved x gamestate.deck ],
                   (None, None) )
               else
-                ( bought_house player_moved x gamestate.deck,
+                ( [ bought_house player_moved x gamestate.deck ],
                   (Some chosen_house, None) )
-          | None -> (player_moved, (None, None)))
+          | None -> ([ player_moved ], (None, None)))
       | TakeTile _ ->
-          (player_moved, (None, None)) (* not implemented in ms1*)
-      | ActionTile _ -> (player_moved, (None, None))
+          ([ player_moved ], (None, None)) (* not implemented in ms1*)
+      | ActionTile _ -> ([ player_moved ], (None, None))
       | SpinToWinTile _ ->
-          (pay_player, (None, None)) (* not implemented in ms1*)
-      | LawsuitTile _ -> (pay_player, (None, None))
-      (* not implemented in ms1*)
+          let new_players =
+            List.map player_spintowin gamestate.players
+          in
+          (new_players, (None, None))
+      | LawsuitTile _ ->
+          let player_sued =
+            lawsuit_player gamestate.players pay_player
+          in
+          Printf.printf "%s's Current Balance: %i \n" player_sued.name
+            player_sued.account_balance;
+          Printf.printf "%s has sued %s for $100,000 \n" pay_player.name
+            player_sued.name;
+          let new_balance_player = add_balance player_sued ~-100000 in
+          Printf.printf "%s's Current Balance: %i \n"
+            new_balance_player.name new_balance_player.account_balance;
+
+          ([ pay_player; new_balance_player ], (None, None))
     in
+
     (*[new_play_list] is the updated player list after the current
       player's turn*)
     let new_play_list =
@@ -704,8 +794,7 @@ let rec turn gamestate : unit =
     turn
       {
         gamestate with
-        current_player =
-          next_player gamestate.current_player gamestate.players;
+        current_player = next_player pay_player new_play_list;
         players = check_investments numSpun new_play_list [];
         deck = new_deck;
       }
