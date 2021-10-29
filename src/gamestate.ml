@@ -11,6 +11,170 @@ type gamestate = {
   deck : cards list;
 }
 
+let print_payday (num : int) =
+  match num with
+  | 0 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$$$$$$$$$$$$$$$                  $$$$$$$$$$$              \
+         $$$$$             $$$$$      \
+         $$$$$$$$$$$$$$$$$$$                       \
+         $$$$$$$$$$$              $$$$$             $$$$$"
+  | 1 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$$$$$$$$$$$$$$$$$               \
+         $$$$$$$$$$$$$              $$$$$           $$$$$       \
+         $$$$$$$$$$$$$$$$$$$$$                    \
+         $$$$$$$$$$$$$              $$$$$           $$$$$ "
+  | 2 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$$$$$$$$$$$$$$$$$$             \
+         $$$$$$$$$$$$$$$              $$$$$         $$$$$        \
+         $$$$$$$$$$$$$$$$$$$$$$                  \
+         $$$$$$$$$$$$$$$              $$$$$         $$$$$  "
+  | 3 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$             $$$$$           $$$$$       \
+         $$$$$              $$$$$       $$$$$         $$$$$            \
+         $$$$$$                $$$$$       $$$$$              \
+         $$$$$       $$$$$   "
+  | 4 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$              $$$$          $$$$$         \
+         $$$$$              $$$$$     $$$$$          $$$$$             \
+         $$$$$$              $$$$$         $$$$$              \
+         $$$$$     $$$$$    "
+  | 5 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$              $$$$         $$$$$           \
+         $$$$$              $$$$$   $$$$$           $$$$$              \
+         $$$$$             $$$$$           $$$$$              $$$$$   \
+         $$$$$     "
+  | 6 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$             $$$$$        \
+         $$$$$$$$$$$$$$$$$$$$$$$              $$$$$ $$$$$            \
+         $$$$$              $$$$$            \
+         $$$$$$$$$$$$$$$$$$$$$$$              $$$$$ $$$$$      "
+  | 7 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$$$$$$$$$$$$$$$$$         \
+         $$$$$$$$$$$$$$$$$$$$$$$$$              $$$$$$$$$             \
+         $$$$$              $$$$$           \
+         $$$$$$$$$$$$$$$$$$$$$$$$$              $$$$$$$$$       "
+  | 8 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$$$$$$$$$$$$$$$$$        \
+         $$$$$$$$$$$$$$$$$$$$$$$$$$$              $$$$$$$              \
+         $$$$$              $$$$$          \
+         $$$$$$$$$$$$$$$$$$$$$$$$$$$              $$$$$$$        "
+  | 9 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$$$$$$$$$$$$$           $$$$$                   \
+         $$$$$              $$$$$               $$$$$              \
+         $$$$$         $$$$$                   $$$$$              \
+         $$$$$         "
+  | 10 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$                      $$$$$                     \
+         $$$$$             $$$$$               $$$$$             \
+         $$$$$$        $$$$$                     $$$$$             \
+         $$$$$       "
+  | 11 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$                     $$$$$                       \
+         $$$$$            $$$$$               $$$$$            \
+         $$$$$$        $$$$$                       $$$$$            \
+         $$$$$       "
+  | 12 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$                    $$$$$                         \
+         $$$$$           $$$$$               \
+         $$$$$$$$$$$$$$$$$$$$$$        $$$$$                         \
+         $$$$$           $$$$$       "
+  | 13 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$                   $$$$$                           \
+         $$$$$          $$$$$               \
+         $$$$$$$$$$$$$$$$$$$$$        $$$$$                           \
+         $$$$$          $$$$$       "
+  | 14 ->
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "$$$$$                  $$$$$                             \
+         $$$$$         $$$$$               $$$$$$$$$$$$$$$$$$$         \
+         $$$$$                             $$$$$         $$$$$       \n"
+  | _ -> print_endline ""
+
+let print_house (num : int) =
+  match num with
+  | 0 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "                   |||||"
+  | 1 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "                ||||   ||||"
+  | 2 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "             ||||         ||||"
+  | 3 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "          ||||               ||||"
+  | 4 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "       ||||                     ||||"
+  | 5 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "    ||||                           ||||"
+  | 6 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "  |||||||||||||||||||||||||||||||||||||||"
+  | 7 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "     |||                           |||"
+  | 8 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "     |||                           |||"
+  | 9 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "     |||    _____         _____    |||"
+  | 10 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "     |||    |_|_|         |_|_|    |||"
+  | 11 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "     |||    | | |         | | |    |||"
+  | 12 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "     |||    ^^^^^         ^^^^^    |||"
+  | 13 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "     |||                           |||"
+  | 14 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "     |||                           |||"
+  | 15 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "     |||            ____           |||"
+  | 16 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "     |||           |    |          |||"
+  | 17 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "     |||           |   .|          |||"
+  | 18 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "     |||           |    |          |||"
+  | 19 ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "     |||||||||||||||||||||||||||||||||\n"
+  | _ -> print_endline ""
+
+let rec print_iter pfun acc cap : unit =
+  if acc <= cap then
+    let () = pfun acc in
+    let () = Unix.sleepf 0.08 in
+    let () = print_endline "" in
+    print_iter pfun (acc + 1) cap
+
 (** [normalize_text] returns s with the whitespace trimed and in all
     lowercase*)
 let normalize_text s = String.(s |> trim |> lowercase_ascii)
@@ -230,7 +394,7 @@ let choose_houses (player : player) (deck : cards list) =
                 string_equal chosen_house (get_house_or_career_name a))
               possible_houses
           with
-          | Some x -> get_house_or_career_name x
+          | Some x -> print_iter print_house 0 19; get_house_or_career_name x
           | None -> house_name ())
     in
     match_card_by_name (house_name ()) possible_houses
@@ -437,59 +601,87 @@ let rec turn gamestate : unit =
       if
         gamestate.current_player.index_on_board < 12
         && 12 <= player_index
-      then payday payraise_player
+      then
+        let () = print_iter print_payday 0 14 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 15
         && 15 <= player_index
-      then payday payraise_player
+      then
+        let () = print_iter print_payday 0 14 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 23
         && 23 <= player_index
-      then payday payraise_player
+      then
+        let () = print_iter print_payday 0 14 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 32
         && 32 <= player_index
-      then payday payraise_player
+      then
+        let () = print_iter print_payday 0 14 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 48
         && 48 <= player_index
-      then payday payraise_player
+      then
+        let () = print_iter print_payday 0 14 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 57
         && 57 <= player_index
-      then payday payraise_player
+      then
+        let () = print_iter print_payday 0 14 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 64
         && 64 <= player_index
-      then payday payraise_player
+      then
+        let () = print_iter print_payday 0 14 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 79
         && 79 <= player_index
-      then payday payraise_player
+      then
+        let () = print_iter print_payday 0 14 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 86
         && 86 <= player_index
-      then payday payraise_player
+      then
+        let () = print_iter print_payday 0 14 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 92
         && 92 <= player_index
-      then payday payraise_player
+      then
+        let () = print_iter print_payday 0 14 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 105
         && 105 <= player_index
-      then payday payraise_player
+      then
+        let () = print_iter print_payday 0 14 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 109
         && 109 <= player_index
-      then payday payraise_player
+      then
+        let () = print_iter print_payday 0 14 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 120
         && 120 <= player_index
-      then payday payraise_player
+      then
+        let () = print_iter print_payday 0 14 in
+        payday payraise_player
       else if
         gamestate.current_player.index_on_board < 127
         && 127 <= player_index
-      then payday payraise_player
+      then
+        let () = print_iter print_payday 0 14 in
+        payday payraise_player
       else payraise_player
     in
 
