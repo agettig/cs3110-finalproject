@@ -234,9 +234,7 @@ let choose_houses (player : player) (deck : cards list) =
           | None -> house_name ())
     in
     match_card_by_name (house_name ()) possible_houses
-  else if has_house player then
-    match_card_by_name "No Non Starters" possible_houses
-  else match_card_by_name "No Starters" possible_houses
+  else match_card_by_name "None" possible_houses
 
 let rec print_players = function
   | [] -> print_endline ""
