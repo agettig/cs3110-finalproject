@@ -1,4 +1,5 @@
 open Cards
+open Board
 
 type player = {
   name : string;
@@ -122,5 +123,10 @@ let player_to_string (player : player) =
   let () =
     print_endline ("Went to College: " ^ string_of_bool player.college)
   in
+  print_endline "------------------------------------------";
   print_endline
-    ("Index on board: " ^ string_of_int player.index_on_board)
+    ("You are on tile "
+    ^ string_of_int (player.index_on_board + 1)
+    ^ ".");
+  print_tile player.index_on_board make_board;
+  print_endline ""

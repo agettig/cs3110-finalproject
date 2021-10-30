@@ -268,8 +268,15 @@ let rec lawsuit_player players plaintiff =
 let change_index_board (player : player) : player * int =
   let current_index = player.index_on_board in
   let spinner = spinner () in
-
+  print_endline "";
   print_endline ("Spinner: " ^ string_of_int spinner ^ "\n");
+  print_endline
+    ("You have moved to tile "
+    ^ string_of_int (current_index + spinner + 1)
+    ^ ".");
+  print_tile (current_index + spinner) make_board;
+  print_endline "";
+  print_endline "------------------------------------------";
   (* player position before adjustment*)
   let player_index_spinner = current_index + spinner in
 
@@ -389,6 +396,8 @@ let start_turn () =
 
 let rec turn gamestate : unit =
   print_players gamestate.players;
+  print_board ();
+  print_endline "";
   Printf.printf "%s's Turn \n \nPlease enter any key to start: "
     gamestate.current_player.name;
   (* makes current player type in anything into terminal to start their
