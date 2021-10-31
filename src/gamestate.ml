@@ -411,7 +411,9 @@ let choose_houses (player : player) (deck : cards list) =
                 string_equal chosen_house (get_house_or_career_name a))
               possible_houses
           with
-          | Some x -> print_iter print_house 0 19; get_house_or_career_name x
+          | Some x ->
+              print_iter print_house 0 19;
+              get_house_or_career_name x
           | None -> house_name ())
     in
     match_card_by_name (house_name ()) possible_houses
@@ -422,6 +424,14 @@ let rec print_players = function
   | h :: t ->
       Printf.printf "Player: %s\n" h.name;
       print_players t
+
+let rec has_exemption_card (deck : cards list) =
+  match deck with
+  | [] -> None
+  | h :: t -> (
+      match h with
+      | Exemption_Card -> Some h
+      | _ -> has_exemption_card t)
 
 let print_lawsuit_players players plaintiff : unit =
   let lawsuit_players =
@@ -536,9 +546,18 @@ let rec has_career (deck : cards list) =
       | Career _ -> Some h
       | _ -> has_career t)
 
+let rec has_spin_card (deck : cards list) =
+  match deck with
+  | [] -> None
+  | h :: t -> (
+      match h with
+      | SpinToWin_Card x -> Some x
+      | _ -> has_spin_card t)
+
 let player_spintowin (player : player) : player =
   let rec spin_help () =
-    Printf.printf "%s please enter your guess (0-9): " player.name;
+    let spin_card = has_spin_card player.deck in
+        Printf.printf "%s please enter your guess (0-9): " player.name;
     match int_of_string_opt (String.trim (read_line ())) with
     | Some x ->
         if x > -1 && x < 10 then x
@@ -547,9 +566,27 @@ let player_spintowin (player : player) : player =
           spin_help ())
     | None ->
         print_endline " \nInvalid input ";
-        spin_help ()
+        spin_help () in
+  match spin_card with 
+  | None ->
+    
+  |Some x -> 
+    match x with 
+    | x -> (
+            let init_array = Array.make x 0
+          in
+            for i = 0 to Array.length init_array - 1 do 
+            init_array.(i) <- guess
+            done
+    )
+    | 4 -> 
+    | _ -> failwith "Illegal Actions"
+
+
+    
   in
   let spin_num = spin_help () in
+  
 
   let rec invest_help () =
     print_endline "How much would you like to invest?: ";
@@ -787,19 +824,29 @@ let rec turn gamestate : unit =
             List.map player_spintowin gamestate.players
           in
           (new_players, (None, None))
-      | LawsuitTile _ ->
+      | LawsuitTile _ -> (
           let player_sued =
             lawsuit_player gamestate.players pay_player
           in
-          Printf.printf "%s's Current Balance: %i \n" player_sued.name
-            player_sued.account_balance;
-          Printf.printf "%s has sued %s for $100,000 \n" pay_player.name
-            player_sued.name;
-          let new_balance_player = add_balance player_sued ~-100000 in
-          Printf.printf "%s's Current Balance: %i \n"
-            new_balance_player.name new_balance_player.account_balance;
-
-          ([ pay_player; new_balance_player ], (None, None))
+          let exemption_card = has_exemption_card player_sued.deck in
+          match exemption_card with
+          | None ->
+              Printf.printf "%s's Current Balance: %i \n"
+                player_sued.name player_sued.account_balance;
+              Printf.printf "%s has sued %s for $100,000 \n"
+                pay_player.name player_sued.name;
+              let new_balance_player =
+                add_balance player_sued ~-100000
+              in
+              Printf.printf "%s's Current Balance: %i \n"
+                new_balance_player.name
+                new_balance_player.account_balance;
+              ([ pay_player; new_balance_player ], (None, None))
+          | Some x ->
+              Printf.printf "%s used an Exemption Card!"
+                player_sued.name;
+              ([ pay_player; remove_card x player_sued ], (None, Some x))
+          )
     in
 
     (*[new_play_list] is the updated player list after the current
