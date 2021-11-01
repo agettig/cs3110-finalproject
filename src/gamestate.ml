@@ -546,48 +546,51 @@ let rec has_career (deck : cards list) =
       | Career _ -> Some h
       | _ -> has_career t)
 
-let rec has_spin_card (deck : cards list) =
+let rec has_spin_card (deck : cards list) : cards option =
   match deck with
   | [] -> None
   | h :: t -> (
       match h with
-      | SpinToWin_Card x -> Some x
+      | SpinToWin_Card _ -> Some h
       | _ -> has_spin_card t)
 
-let player_spintowin (player : player) : player =
-  let rec spin_help () =
-    let spin_card = has_spin_card player.deck in
-        Printf.printf "%s please enter your guess (0-9): " player.name;
-    match int_of_string_opt (String.trim (read_line ())) with
-    | Some x ->
-        if x > -1 && x < 10 then x
-        else (
-          print_endline "\nInvalid input ";
-          spin_help ())
-    | None ->
-        print_endline " \nInvalid input ";
-        spin_help () in
-  match spin_card with 
+let rec spin_number player =
+  Printf.printf "%s please enter your guess (0-9): " player.name;
+  match int_of_string_opt (String.trim (read_line ())) with
+  | Some x ->
+      if x > -1 && x < 10 then x
+      else (
+        print_endline "\nInvalid input ";
+        spin_number player)
   | None ->
-    
-  |Some x -> 
-    match x with 
-    | x -> (
-            let init_array = Array.make x 0
-          in
-            for i = 0 to Array.length init_array - 1 do 
-            init_array.(i) <- guess
-            done
-    )
-    | 4 -> 
-    | _ -> failwith "Illegal Actions"
+      print_endline " \nInvalid input ";
+      spin_number player
 
+let rec guess_lst (num : int) lst player =
+  match num with
+  | 0 -> lst
+  | _ -> guess_lst (num - 1) (spin_number player :: lst) player
 
-    
+let player_spintowin (player : player) : player =
+  let spin_card = has_spin_card player.deck in
+  let player_removed_card =
+    match spin_card with
+    | None -> player
+    | Some x -> remove_card x player
   in
-  let spin_num = spin_help () in
-  
 
+  let num_of_guesses =
+    match spin_card with
+    | None -> 1
+    | Some x -> (
+        match x with
+        | SpinToWin_Card x -> x
+        | _ -> failwith "Illegal")
+  in
+
+  let player_guesses =
+    guess_lst num_of_guesses [] player_removed_card
+  in
   let rec invest_help () =
     print_endline "How much would you like to invest?: ";
     match int_of_string_opt (String.trim (read_line ())) with
@@ -604,7 +607,9 @@ let player_spintowin (player : player) : player =
 
   let spin = spinner () in
   Printf.printf "Spinner Value: %i \n" spin;
-  if spin = spin_num then add_balance player (10 * invest) else player
+  if List.mem spin player_guesses then
+    add_balance player_removed_card (10 * invest)
+  else player_removed_card
 
 let start_turn () =
   (* Printf.printf ("%s ^ 's Turn /n Please enter any key to start"); *)
