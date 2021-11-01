@@ -554,19 +554,19 @@ let rec has_spin_card (deck : cards list) : cards option =
       | SpinToWin_Card _ -> Some h
       | _ -> has_spin_card t)
 
-let rec spin_number player =
-  Printf.printf "%s please enter your guess (0-9): " player.name;
-  match int_of_string_opt (String.trim (read_line ())) with
-  | Some x ->
-      if x > -1 && x < 10 then x
-      else (
-        print_endline "\nInvalid input ";
-        spin_number player)
-  | None ->
-      print_endline " \nInvalid input ";
-      spin_number player
-
 let rec guess_lst (num : int) lst player =
+  let rec spin_number player =
+    Printf.printf "%s please enter your guess (0-9): " player.name;
+    match int_of_string_opt (String.trim (read_line ())) with
+    | Some x ->
+        if x > -1 && x < 10 && List.mem x lst <> true then x
+        else (
+          print_endline "\nInvalid input ";
+          spin_number player)
+    | None ->
+        print_endline " \nInvalid input ";
+        spin_number player
+  in
   match num with
   | 0 -> lst
   | _ -> guess_lst (num - 1) (spin_number player :: lst) player

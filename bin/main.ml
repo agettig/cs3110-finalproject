@@ -150,12 +150,8 @@ let main () =
         int_players ()
   in
   let game_players = get_players (int_players ()) [] in
-  let start_state =
-    init_state gold_tiles (houses @ careers @ life_tiles) game_players
-  in
+  let deck = houses @ careers @ life_tiles @ share_wealth_cards in
+  let start_state = init_state gold_tiles deck game_players in
   turn start_state
 
-(* let player_lst = get_players (int_of_string num_players) [] in turn
-   (init_state gold_tiles (houses @ careers @ life_tiles) player_lst) *)
-(* Execute the game engine. *)
 let () = main ()

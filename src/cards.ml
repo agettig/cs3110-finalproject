@@ -234,6 +234,8 @@ let spin_to_win_lst =
     SpinToWin_Card 4;
   ]
 
+let share_wealth_cards = spin_to_win_lst @ exemption_card_lst
+
 let mobile_home =
   House
     {
