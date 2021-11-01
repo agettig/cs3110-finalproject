@@ -425,6 +425,14 @@ let rec print_players = function
       Printf.printf "Player: %s\n" h.name;
       print_players t
 
+let rec has_exemption_card (deck : cards list) =
+  match deck with
+  | [] -> None
+  | h :: t -> (
+      match h with
+      | Exemption_Card -> Some h
+      | _ -> has_exemption_card t)
+
 let print_lawsuit_players players plaintiff : unit =
   let lawsuit_players =
     List.filter (fun x -> plaintiff.name <> x.name) players
@@ -536,21 +544,51 @@ let rec has_career (deck : cards list) =
       | Career _ -> Some h
       | _ -> has_career t)
 
-let player_spintowin (player : player) : player =
-  let rec spin_help () =
+let rec has_spin_card (deck : cards list) : cards option =
+  match deck with
+  | [] -> None
+  | h :: t -> (
+      match h with
+      | SpinToWin_Card _ -> Some h
+      | _ -> has_spin_card t)
+
+let rec guess_lst (num : int) lst player =
+  let rec spin_number player =
     Printf.printf "%s please enter your guess (0-9): " player.name;
     match int_of_string_opt (String.trim (read_line ())) with
     | Some x ->
-        if x > -1 && x < 10 then x
+        if x > -1 && x < 10 && List.mem x lst <> true then x
         else (
           print_endline "\nInvalid input ";
-          spin_help ())
+          spin_number player)
     | None ->
         print_endline " \nInvalid input ";
-        spin_help ()
+        spin_number player
   in
-  let spin_num = spin_help () in
+  match num with
+  | 0 -> lst
+  | _ -> guess_lst (num - 1) (spin_number player :: lst) player
 
+let player_spintowin (player : player) : player =
+  let spin_card = has_spin_card player.deck in
+  let player_removed_card =
+    match spin_card with
+    | None -> player
+    | Some x -> remove_card x player
+  in
+
+  let num_of_guesses =
+    match spin_card with
+    | None -> 1
+    | Some x -> (
+        match x with
+        | SpinToWin_Card x -> x
+        | _ -> failwith "Illegal")
+  in
+
+  let player_guesses =
+    guess_lst num_of_guesses [] player_removed_card
+  in
   let rec invest_help () =
     print_endline "How much would you like to invest?: ";
     match int_of_string_opt (String.trim (read_line ())) with
@@ -567,7 +605,9 @@ let player_spintowin (player : player) : player =
 
   let spin = spinner () in
   Printf.printf "Spinner Value: %i \n" spin;
-  if spin = spin_num then add_balance player (10 * invest) else player
+  if List.mem spin player_guesses then
+    add_balance player_removed_card (10 * invest)
+  else player_removed_card
 
 let start_turn () =
   (* Printf.printf ("%s ^ 's Turn /n Please enter any key to start"); *)
@@ -787,19 +827,29 @@ let rec turn gamestate : unit =
             List.map player_spintowin gamestate.players
           in
           (new_players, (None, None))
-      | LawsuitTile _ ->
+      | LawsuitTile _ -> (
           let player_sued =
             lawsuit_player gamestate.players pay_player
           in
-          Printf.printf "%s's Current Balance: %i \n" player_sued.name
-            player_sued.account_balance;
-          Printf.printf "%s has sued %s for $100,000 \n" pay_player.name
-            player_sued.name;
-          let new_balance_player = add_balance player_sued ~-100000 in
-          Printf.printf "%s's Current Balance: %i \n"
-            new_balance_player.name new_balance_player.account_balance;
-
-          ([ pay_player; new_balance_player ], (None, None))
+          let exemption_card = has_exemption_card player_sued.deck in
+          match exemption_card with
+          | None ->
+              Printf.printf "%s's Current Balance: %i \n"
+                player_sued.name player_sued.account_balance;
+              Printf.printf "%s has sued %s for $100,000 \n"
+                pay_player.name player_sued.name;
+              let new_balance_player =
+                add_balance player_sued ~-100000
+              in
+              Printf.printf "%s's Current Balance: %i \n"
+                new_balance_player.name
+                new_balance_player.account_balance;
+              ([ pay_player; new_balance_player ], (None, None))
+          | Some x ->
+              Printf.printf "%s used an Exemption Card!"
+                player_sued.name;
+              ([ pay_player; remove_card x player_sued ], (None, Some x))
+          )
     in
 
     (*[new_play_list] is the updated player list after the current
