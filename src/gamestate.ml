@@ -411,7 +411,9 @@ let choose_houses (player : player) (deck : cards list) =
                 string_equal chosen_house (get_house_or_career_name a))
               possible_houses
           with
-          | Some x -> print_iter print_house 0 19; get_house_or_career_name x
+          | Some x ->
+              print_iter print_house 0 19;
+              get_house_or_career_name x
           | None -> house_name ())
     in
     match_card_by_name (house_name ()) possible_houses
@@ -455,7 +457,7 @@ let change_index_board (player : player) : player * int =
     ("You have moved to tile "
     ^ string_of_int (current_index + spinner + 1)
     ^ ".");
-  print_tile (current_index + spinner) make_board;
+  print_color_tile (current_index + spinner) make_board;
   print_endline "";
   print_endline "------------------------------------------";
   (* player position before adjustment*)
@@ -574,6 +576,14 @@ let start_turn () =
   let x = read_line () in
   match x with
   | _ -> print_string ""
+
+let rec get_players lst =
+  match lst with
+  | [] -> []
+  | h :: t ->
+      ( pos_to_tuple h.index_on_board,
+        "| " ^ String.sub h.name 0 3 ^ " |" )
+      :: get_players t
 
 let rec turn gamestate : unit =
   print_players gamestate.players;
@@ -801,7 +811,6 @@ let rec turn gamestate : unit =
 
           ([ pay_player; new_balance_player ], (None, None))
     in
-
     (*[new_play_list] is the updated player list after the current
       player's turn*)
     let new_play_list =
@@ -823,7 +832,9 @@ let rec turn gamestate : unit =
         current_player = next_player pay_player new_play_list;
         players = check_investments numSpun new_play_list [];
         deck = new_deck;
-      }
+      };
+    let new_pos_lst = get_players new_play_list in
+    update_board make_board new_pos_lst
 
 (** [gameover players] returns true if all players in the game have
     retired and returns false if anyone is still playing.*)
