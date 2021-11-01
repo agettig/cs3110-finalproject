@@ -104,68 +104,85 @@ let print_payday (num : int) =
          $$$$$                             $$$$$         $$$$$       \n"
   | _ -> print_endline ""
 
-let print_house (num : int) =
+let print_wedding (num : int) =
   match num with
   | 0 ->
-      ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "                   |||||"
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "                         --."
+  | 1 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "          @@@           /  ))"
+  | 2 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "         (( }           7_ /"
+  | 3 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "         ``)             / \\"
+  | 4 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "        ``( \\           |<| |"
+  | 5 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "       ```\\`.\\__     __/|/| |"
+  | 6 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "      ```` )|---~o_)|___| | |"
+  | 7 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "     ~~~~~/ \\`          | |_|"
+  | 8 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "         / ' \\`         |__>)"
+  | 9 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "        /  '  \\`        || |"
+  | 10 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "       /   '    `       |\\ \\"
+  | 11 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "      /   _!__.-._`     | \\ \\"
+  | 12 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "     /_.-'  ( |         | |\\ \\"
+  | 13 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "        /    `|         |_| \\_\\"
+  | 14 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "       |`_   |`_      __'_)__.-'"
+  | _ -> print_endline ""
+
+let print_house (num : int) =
+  match num with
+  | 0 -> ANSITerminal.print_string [ ANSITerminal.yellow ] "       _"
   | 1 ->
       ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "                ||||   ||||"
+        "     _|=|__________"
   | 2 ->
       ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "             ||||         ||||"
+        "    /              \\"
   | 3 ->
       ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "          ||||               ||||"
+        "   /                \\"
   | 4 ->
       ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "       ||||                     ||||"
+        "  /__________________\\"
   | 5 ->
       ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "    ||||                           ||||"
+        "   ||  || /--\\ ||  ||"
   | 6 ->
       ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "  |||||||||||||||||||||||||||||||||||||||"
+        "   ||[]|| | .| ||[]||"
   | 7 ->
       ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "     |||                           |||"
+        " ()||__||_|__|_||__||()"
   | 8 ->
       ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "     |||                           |||"
+        "( )|-|-|-|====|-|-|-|( ) "
   | 9 ->
       ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "     |||    _____         _____    |||"
-  | 10 ->
-      ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "     |||    |_|_|         |_|_|    |||"
-  | 11 ->
-      ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "     |||    | | |         | | |    |||"
-  | 12 ->
-      ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "     |||    ^^^^^         ^^^^^    |||"
-  | 13 ->
-      ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "     |||                           |||"
-  | 14 ->
-      ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "     |||                           |||"
-  | 15 ->
-      ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "     |||            ____           |||"
-  | 16 ->
-      ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "     |||           |    |          |||"
-  | 17 ->
-      ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "     |||           |   .|          |||"
-  | 18 ->
-      ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "     |||           |    |          |||"
-  | 19 ->
-      ANSITerminal.print_string [ ANSITerminal.yellow ]
-        "     |||||||||||||||||||||||||||||||||\n"
+        "^^^^^^^^^^====^^^^^^^^^^^"
   | _ -> print_endline ""
 
 let rec print_iter pfun acc cap : unit =
@@ -412,7 +429,7 @@ let choose_houses (player : player) (deck : cards list) =
               possible_houses
           with
           | Some x ->
-              print_iter print_house 0 19;
+              print_iter print_house 0 9;
               get_house_or_career_name x
           | None -> house_name ())
     in
@@ -494,6 +511,9 @@ let change_index_board (player : player) : player * int =
   print_tile new_index make_board;
   print_endline "";
   print_endline "------------------------------------------";
+  let () =
+    if new_index = married_index then print_iter print_wedding 0 14
+  in
   ({ player with index_on_board = new_index }, spinner)
 
 (** [new_players_lst] returns an updated player with the current players
