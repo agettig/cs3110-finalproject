@@ -459,15 +459,6 @@ let rec lawsuit_player players plaintiff =
 let change_index_board (player : player) : player * int =
   let current_index = player.index_on_board in
   let spinner = spinner () in
-  print_endline "";
-  print_endline ("Spinner: " ^ string_of_int spinner ^ "\n");
-  print_endline
-    ("You have moved to tile "
-    ^ string_of_int (current_index + spinner + 1)
-    ^ ".");
-  (* print_tile (current_index + spinner) make_board; *)
-  print_endline "";
-  print_endline "------------------------------------------";
   (* player position before adjustment*)
   let player_index_spinner = current_index + spinner in
 
@@ -504,6 +495,13 @@ let change_index_board (player : player) : player * int =
     else if player_index_spinner > 130 then 130
     else player_index_spinner
   in
+  print_endline "";
+  print_endline ("Spinner: " ^ string_of_int spinner ^ "\n");
+  print_endline
+    ("You have moved to tile " ^ string_of_int (new_index + 1) ^ ".");
+  print_tile new_index make_board;
+  print_endline "";
+  print_endline "------------------------------------------";
   ({ player with index_on_board = new_index }, spinner)
 
 (** [new_players_lst] returns an updated player with the current players
