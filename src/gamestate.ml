@@ -465,7 +465,7 @@ let change_index_board (player : player) : player * int =
     ("You have moved to tile "
     ^ string_of_int (current_index + spinner + 1)
     ^ ".");
-  print_tile (current_index + spinner) make_board;
+  (* print_tile (current_index + spinner) make_board; *)
   print_endline "";
   print_endline "------------------------------------------";
   (* player position before adjustment*)

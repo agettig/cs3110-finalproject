@@ -10,6 +10,7 @@ open Source.Cards
 
 (** [new_player] constructs a new player with a user inputted name and
     whether or not they are going to college*)
+
 let new_player () =
   let () = print_string "\nEnter player name: " in
   let name = read_line () in
@@ -108,6 +109,55 @@ let rec get_players num_players acc =
         get_players h acc
       else get_players (h - 1) (acc @ [ newbie ])
 
+let rec remove_first_instance
+    (card : cards)
+    (card_list : cards list)
+    (acc : cards list) =
+  match card_list with
+  | [] -> acc
+  | h :: t ->
+      if h = card then acc @ t
+      else remove_first_instance card t (h :: acc)
+
+let rec new_player_share_wealth_cards
+    (current_cards : cards list)
+    (num : int)
+    (acc : cards list) : cards list =
+  match num with
+  | 0 -> acc
+  | _ ->
+      let new_share_card =
+        let rand () = Random.int (List.length current_cards) in
+        let num = rand () in
+        List.nth current_cards num
+      in
+      new_player_share_wealth_cards
+        (remove_first_instance new_share_card current_cards [])
+        (num - 1) (new_share_card :: acc)
+
+let new_share_player player share_list =
+  { player with deck = player.deck @ share_list }
+
+let rec new_share_deck player_cards current_cards =
+  match player_cards with
+  | [] -> current_cards
+  | h :: t ->
+      new_share_deck (remove_first_instance h current_cards []) t
+
+let rec share_players
+    (player_lst : player list)
+    (cards_lst : cards list)
+    (acc : player list) : player list * cards list =
+  match player_lst with
+  | [] -> (acc, cards_lst)
+  | h :: t ->
+      let player_cards =
+        new_player_share_wealth_cards share_wealth_cards 3 []
+      in
+      let new_player = new_share_player h player_cards in
+      let new_deck = new_share_deck player_cards share_wealth_cards in
+      share_players t new_deck (acc @ [ new_player ])
+
 let init_state tiles deck players =
   { tiles; deck; current_player = List.nth players 0; players }
 
@@ -150,8 +200,15 @@ let main () =
         int_players ()
   in
   let game_players = get_players (int_players ()) [] in
-  let deck = houses @ careers @ life_tiles @ share_wealth_cards in
-  let start_state = init_state gold_tiles deck game_players in
+  let final_games_share_wealth =
+    share_players game_players share_wealth_cards []
+  in
+  let deck =
+    houses @ careers @ life_tiles @ snd final_games_share_wealth
+  in
+  let start_state =
+    init_state gold_tiles deck (fst final_games_share_wealth)
+  in
   turn start_state
 
 let () = main ()
