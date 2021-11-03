@@ -231,7 +231,5 @@ let rec update_board board updated_player_lst =
   | [] -> board
   | (k, v) :: t -> update_board (BoardMap.add k v board) t
 
-(**[print_board] prints the initialized board to the terminal*)
-(* let print_board () = init_board 0 make_board *)
-
+(**[print_board] prints the initialized board [board] to the terminal*)
 let print_board board = init_board 0 board
