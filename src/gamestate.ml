@@ -574,10 +574,10 @@ let rec has_spin_card (deck : cards list) : cards option =
 
 let rec guess_lst (num : int) lst player =
   let rec spin_number player =
-    Printf.printf "%s please enter your guess (0-9): " player.name;
+    Printf.printf "%s please enter your guess (1-10): " player.name;
     match int_of_string_opt (String.trim (read_line ())) with
     | Some x ->
-        if x > -1 && x < 10 && List.mem x lst <> true then x
+        if x > 0 && x < 11 && List.mem x lst <> true then x
         else (
           print_endline "\nInvalid input ";
           spin_number player)
@@ -610,7 +610,8 @@ let player_spintowin (player : player) : player =
     guess_lst num_of_guesses [] player_removed_card
   in
   let rec invest_help () =
-    print_endline "How much would you like to invest?: ";
+    print_endline
+      "How much would you like to invest? (Input 5000 - 50000): ";
     match int_of_string_opt (String.trim (read_line ())) with
     | Some x ->
         if x > 4999 && x < 50001 then x
