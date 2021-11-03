@@ -587,7 +587,6 @@ let rec get_players lst =
 
 let rec turn gamestate : unit =
   print_players gamestate.players;
-  print_board ();
   print_endline "";
   Printf.printf "%s's Turn \n \nPlease enter any key to start: "
     gamestate.current_player.name;
@@ -816,6 +815,10 @@ let rec turn gamestate : unit =
     let new_play_list =
       new_players_list gamestate.players (fst new_player)
     in
+    let new_pos_lst = get_players new_play_list in
+    let updated_board = update_board make_board new_pos_lst in
+    (*not printing names to terminal*)
+    print_board updated_board;
     (* [new_deck] is the new game deck*)
     let new_deck =
       match snd new_player with
@@ -832,9 +835,7 @@ let rec turn gamestate : unit =
         current_player = next_player pay_player new_play_list;
         players = check_investments numSpun new_play_list [];
         deck = new_deck;
-      };
-    let new_pos_lst = get_players new_play_list in
-    update_board make_board new_pos_lst
+      }
 
 (** [gameover players] returns true if all players in the game have
     retired and returns false if anyone is still playing.*)
