@@ -206,7 +206,7 @@ let make_color pos board =
             print_string [ yellow ]
               (BoardMap.find (k, SpinToWinTile s) board)))
 
-(**[print_tile] prints the tile associated with [pos] in [board]*)
+(**[print_color_tile] prints the tile associated with [pos] in [board]*)
 let print_color_tile pos board = make_color (pos_to_tuple pos) board
 
 (**[init_board] initializes each position of the board and prepares them
@@ -214,10 +214,6 @@ let print_color_tile pos board = make_color (pos_to_tuple pos) board
 let rec init_board pos board =
   match pos with
   | pos when pos = 131 -> print_endline ""
-  (* | pos when pos = 120 -> if not (pos > -1 && pos < 132) then
-     failwith "invalid position" else if BoardMap.mem (pos_to_tuple pos)
-     board then print_string ""; print_tile pos board; init_board (pos +
-     1) board *)
   | pos when pos mod 22 = 0 ->
       print_endline "";
       if not (pos > -1 && pos < 132) then failwith "invalid position"
@@ -232,7 +228,7 @@ let rec init_board pos board =
 
 let rec update_board board updated_player_lst =
   match updated_player_lst with
-  | [] -> make_board
+  | [] -> board
   | (k, v) :: t -> update_board (BoardMap.add k v board) t
 
 (**[print_board] prints the initialized board to the terminal*)
