@@ -35,6 +35,8 @@ let rec deck_string_helper (deck : cards list) (acc : string) =
       | Long_Term_Investment c ->
           acc ^ "Long Term Investments: " ^ string_of_int c
       | Life_Tiles _ -> acc ^ "LifeTile"
+      | Exemption_Card -> acc ^ "Exemption Card"
+      | SpinToWin_Card x -> acc ^ "Spin to Win: " ^ string_of_int x
       | _ -> acc)
   | h :: t -> (
       match h with
@@ -45,6 +47,11 @@ let rec deck_string_helper (deck : cards list) (acc : string) =
           deck_string_helper t
             (acc ^ "Long Term Investments: " ^ string_of_int c ^ ", ")
       | Life_Tiles _ -> deck_string_helper t (acc ^ "LifeTile" ^ ", ")
+      | Exemption_Card ->
+          deck_string_helper t (acc ^ "Exemption Card" ^ ", ")
+      | SpinToWin_Card x ->
+          deck_string_helper t
+            (acc ^ "Spin to Win: " ^ string_of_int x ^ ", ")
       | _ -> deck_string_helper t acc)
 
 (** [add_player player_name attended_college] returns a [player] with

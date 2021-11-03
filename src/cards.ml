@@ -12,6 +12,8 @@ type cards =
       taxes_due : int;
       college_career : bool;
     }
+  | Exemption_Card
+  | SpinToWin_Card of int
   | Share_the_Wealth
   | Long_Term_Investment of int
   | Life_Tiles of int
@@ -207,6 +209,32 @@ let life_tiles =
     Life_Tiles 50000;
     Life_Tiles 50000;
   ]
+
+let exemption_card_lst =
+  [
+    Exemption_Card;
+    Exemption_Card;
+    Exemption_Card;
+    Exemption_Card;
+    Exemption_Card;
+    Exemption_Card;
+    Exemption_Card;
+    Exemption_Card;
+  ]
+
+let spin_to_win_lst =
+  [
+    SpinToWin_Card 2;
+    SpinToWin_Card 2;
+    SpinToWin_Card 2;
+    SpinToWin_Card 2;
+    SpinToWin_Card 4;
+    SpinToWin_Card 4;
+    SpinToWin_Card 4;
+    SpinToWin_Card 4;
+  ]
+
+let share_wealth_cards = spin_to_win_lst @ exemption_card_lst
 
 let mobile_home =
   House
