@@ -135,5 +135,5 @@ let player_to_string (player : player) =
     ("You are on tile "
     ^ string_of_int (player.index_on_board + 1)
     ^ ".");
-  print_tile player.index_on_board make_board;
+  print_color_tile player.index_on_board make_board;
   print_endline ""

@@ -635,8 +635,16 @@ let start_turn () =
   match x with
   | _ -> print_string ""
 
+let rec get_players lst =
+  match lst with
+  | [] -> []
+  | h :: t ->
+      ( pos_to_tuple h.index_on_board,
+        "| " ^ String.sub h.name 0 3 ^ " |" )
+      :: get_players t
+
 let rec turn gamestate : unit =
-  print_board ();
+  print_players gamestate.players;
   print_endline "";
   Printf.printf "%s's Turn \n \nPlease enter any key to start: "
     gamestate.current_player.name;
@@ -870,12 +878,15 @@ let rec turn gamestate : unit =
               ([ pay_player; remove_card x player_sued ], (None, Some x))
           )
     in
-
     (*[new_play_list] is the updated player list after the current
       player's turn*)
     let new_play_list =
       new_players_list gamestate.players (fst new_player)
     in
+    let new_pos_lst = get_players new_play_list in
+    let updated_board = update_board make_board new_pos_lst in
+    (*not printing names to terminalg*)
+    print_board updated_board;
     (* [new_deck] is the new game deck*)
     let new_deck =
       match snd new_player with
