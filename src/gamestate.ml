@@ -817,7 +817,7 @@ let rec turn gamestate : unit =
     in
     let new_pos_lst = get_players new_play_list in
     let updated_board = update_board make_board new_pos_lst in
-    (*not printing names to terminal*)
+    (*not printing names to terminalg*)
     print_board updated_board;
     (* [new_deck] is the new game deck*)
     let new_deck =
