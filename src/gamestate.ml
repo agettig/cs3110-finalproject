@@ -636,7 +636,6 @@ let start_turn () =
   | _ -> print_string ""
 
 let rec turn gamestate : unit =
-  print_players gamestate.players;
   print_board ();
   print_endline "";
   Printf.printf "%s's Turn \n \nPlease enter any key to start: "
