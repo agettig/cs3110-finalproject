@@ -107,6 +107,7 @@ let test_gamestate =
     players = [ test_player; test_player_add ];
     tiles = [];
     deck = [];
+    graphics = false;
   }
 
 let test_gamestate_no_stops =
@@ -115,6 +116,7 @@ let test_gamestate_no_stops =
     players = [ test_player_stop_3; test_player_stop_4 ];
     tiles = [];
     deck = [];
+    graphics = false;
   }
 
 let test_gamestate_finished =
@@ -123,6 +125,7 @@ let test_gamestate_finished =
     players = [ test_player_finished ];
     tiles = [];
     deck = [];
+    graphics = false;
   }
 
 (* let print_terminal = test_player_final_balance3 |>
