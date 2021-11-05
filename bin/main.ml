@@ -168,7 +168,7 @@ let init_state tiles deck players graphics =
   }
 
 let main () =
-  print_iter print_life 0 11;
+  print_iter print_life 0 11 true;
   ANSITerminal.print_string [ ANSITerminal.yellow ]
     "\n\nWelcome to the Game of Life.\n";
   let print_start () =
