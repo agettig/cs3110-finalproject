@@ -9,6 +9,7 @@ type gamestate = {
   players : player list;
   tiles : tiles list;
   deck : cards list;
+  graphics : bool;
 }
 
 let print_payday (num : int) =
@@ -153,6 +154,182 @@ let print_wedding (num : int) =
         "       |`_   |`_      __'_)__.-'"
   | _ -> print_endline ""
 
+let print_life (num : int) =
+  match num with
+  | 0 ->
+      ANSITerminal.print_string
+        [ ANSITerminal.magenta ]
+        "███████████████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "████████████";
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "████████████████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "███████████████████"
+  | 1 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██"
+  | 2 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██"
+  | 3 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██████████"
+  | 4 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██████████"
+  | 5 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██"
+  | 6 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██"
+  | 7 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██████████"
+  | 8 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██████████"
+  | 9 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██"
+  | 10 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██"
+  | 11 ->
+      ANSITerminal.print_string
+        [ ANSITerminal.magenta ]
+        "███████████████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "████████████";
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "████████████████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "███████████████████"
+  | _ -> print_endline ""
+
 let print_house (num : int) =
   match num with
   | 0 -> ANSITerminal.print_string [ ANSITerminal.yellow ] "       _"
@@ -185,12 +362,14 @@ let print_house (num : int) =
         "^^^^^^^^^^====^^^^^^^^^^^"
   | _ -> print_endline ""
 
-let rec print_iter pfun acc cap : unit =
-  if acc <= cap then
-    let () = pfun acc in
-    let () = Unix.sleepf 0.08 in
-    let () = print_endline "" in
-    print_iter pfun (acc + 1) cap
+let rec print_iter pfun acc cap graphics : unit =
+  if graphics then (
+    if acc <= cap then
+      let () = pfun acc in
+      let () = Unix.sleepf 0.06 in
+      let () = print_endline "" in
+      print_iter pfun (acc + 1) cap graphics)
+  else print_endline ""
 
 (** [normalize_text] returns s with the whitespace trimed and in all
     lowercase*)
@@ -428,9 +607,7 @@ let choose_houses (player : player) (deck : cards list) =
                 string_equal chosen_house (get_house_or_career_name a))
               possible_houses
           with
-          | Some x ->
-              print_iter print_house 0 9;
-              get_house_or_career_name x
+          | Some x -> get_house_or_career_name x
           | None -> house_name ())
     in
     match_card_by_name (house_name ()) possible_houses
@@ -519,9 +696,6 @@ let change_index_board (player : player) : player * int =
   print_color_tile new_index make_board;
   print_endline "";
   print_endline "------------------------------------------";
-  let () =
-    if new_index = married_index then print_iter print_wedding 0 14
-  in
   ({ player with index_on_board = new_index }, spinner)
 
 (** [new_players_lst] returns an updated player with the current players
@@ -671,6 +845,11 @@ let rec turn gamestate : unit =
     let numSpun = snd change_ind_tup in
     let player_index = player_moved.index_on_board in
 
+    let () =
+      if player_index = married_index then
+        print_iter print_wedding 0 14 gamestate.graphics
+    in
+
     let payraise_player =
       if
         gamestate.current_player.index_on_board < 39
@@ -696,85 +875,85 @@ let rec turn gamestate : unit =
         gamestate.current_player.index_on_board < 12
         && 12 <= player_index
       then
-        let () = print_iter print_payday 0 14 in
+        let () = print_iter print_payday 0 14 gamestate.graphics in
         payday payraise_player
       else if
         gamestate.current_player.index_on_board < 15
         && 15 <= player_index
       then
-        let () = print_iter print_payday 0 14 in
+        let () = print_iter print_payday 0 14 gamestate.graphics in
         payday payraise_player
       else if
         gamestate.current_player.index_on_board < 23
         && 23 <= player_index
       then
-        let () = print_iter print_payday 0 14 in
+        let () = print_iter print_payday 0 14 gamestate.graphics in
         payday payraise_player
       else if
         gamestate.current_player.index_on_board < 32
         && 32 <= player_index
       then
-        let () = print_iter print_payday 0 14 in
+        let () = print_iter print_payday 0 14 gamestate.graphics in
         payday payraise_player
       else if
         gamestate.current_player.index_on_board < 48
         && 48 <= player_index
       then
-        let () = print_iter print_payday 0 14 in
+        let () = print_iter print_payday 0 14 gamestate.graphics in
         payday payraise_player
       else if
         gamestate.current_player.index_on_board < 57
         && 57 <= player_index
       then
-        let () = print_iter print_payday 0 14 in
+        let () = print_iter print_payday 0 14 gamestate.graphics in
         payday payraise_player
       else if
         gamestate.current_player.index_on_board < 64
         && 64 <= player_index
       then
-        let () = print_iter print_payday 0 14 in
+        let () = print_iter print_payday 0 14 gamestate.graphics in
         payday payraise_player
       else if
         gamestate.current_player.index_on_board < 79
         && 79 <= player_index
       then
-        let () = print_iter print_payday 0 14 in
+        let () = print_iter print_payday 0 14 gamestate.graphics in
         payday payraise_player
       else if
         gamestate.current_player.index_on_board < 86
         && 86 <= player_index
       then
-        let () = print_iter print_payday 0 14 in
+        let () = print_iter print_payday 0 14 gamestate.graphics in
         payday payraise_player
       else if
         gamestate.current_player.index_on_board < 92
         && 92 <= player_index
       then
-        let () = print_iter print_payday 0 14 in
+        let () = print_iter print_payday 0 14 gamestate.graphics in
         payday payraise_player
       else if
         gamestate.current_player.index_on_board < 105
         && 105 <= player_index
       then
-        let () = print_iter print_payday 0 14 in
+        let () = print_iter print_payday 0 14 gamestate.graphics in
         payday payraise_player
       else if
         gamestate.current_player.index_on_board < 109
         && 109 <= player_index
       then
-        let () = print_iter print_payday 0 14 in
+        let () = print_iter print_payday 0 14 gamestate.graphics in
         payday payraise_player
       else if
         gamestate.current_player.index_on_board < 120
         && 120 <= player_index
       then
-        let () = print_iter print_payday 0 14 in
+        let () = print_iter print_payday 0 14 gamestate.graphics in
         payday payraise_player
       else if
         gamestate.current_player.index_on_board < 127
         && 127 <= player_index
       then
-        let () = print_iter print_payday 0 14 in
+        let () = print_iter print_payday 0 14 gamestate.graphics in
         payday payraise_player
       else payraise_player
     in
@@ -794,6 +973,7 @@ let rec turn gamestate : unit =
           ( [ add_balance pay_player (-1 * get_taxes pay_player) ],
             (None, None) )
       | LifeTile _ ->
+          print_iter print_life 0 11 gamestate.graphics;
           let rand_lf_tile =
             List.nth life_tiles (Random.int (List.length life_tiles))
           in
@@ -833,6 +1013,7 @@ let rec turn gamestate : unit =
           let chosen_house =
             choose_houses player_moved gamestate.deck
           in
+          print_iter print_house 0 9 gamestate.graphics;
           let house_name =
             match chosen_house with
             | House h -> Some h.name

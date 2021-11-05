@@ -15,7 +15,7 @@ let new_player () =
   let () = print_string "\nEnter player name: " in
   let name = read_line () in
   let print_q () =
-    print_string "Do you want to to college? Input yes or no\n> "
+    print_string "Do you want to go to college? Input yes or no\n> "
   in
   let rec college () =
     print_q ();
@@ -158,29 +158,18 @@ let rec share_players
       let new_deck = new_share_deck player_cards share_wealth_cards in
       share_players t new_deck (acc @ [ new_player ])
 
-let init_state tiles deck players =
-  { tiles; deck; current_player = List.nth players 0; players }
+let init_state tiles deck players graphics =
+  {
+    tiles;
+    deck;
+    current_player = List.nth players 0;
+    players;
+    graphics;
+  }
 
-(* ------start of random print testing *)
-let random_money_str () = if Random.int 2 = 1 then "$" else " "
-
-let rec make_it_rain (num : int) (acc : string) =
-  match num with
-  | 0 -> print_endline acc
-  | _ -> make_it_rain (num - 1) (acc ^ random_money_str ())
-
-let rec make_it_rain_iter (num : int) (idx : int) =
-  match idx with
-  | 0 -> make_it_rain num ""
-  | _ ->
-      make_it_rain num "";
-      Unix.sleepf 0.15;
-      make_it_rain_iter num (idx - 1)
-
-(* -------end of random print testing *)
 let main () =
-  (* let () = make_it_rain_iter 30 50 in *)
-  ANSITerminal.print_string [ ANSITerminal.red ]
+  print_iter print_life 0 11 true;
+  ANSITerminal.print_string [ ANSITerminal.yellow ]
     "\n\nWelcome to the Game of Life.\n";
   let print_start () =
     print_endline "Please enter the number of players (2-6).";
@@ -199,6 +188,21 @@ let main () =
         print_endline " \nInvalid input ";
         int_players ()
   in
+
+  let print_q () =
+    print_string "\nDo you want graphics? Input yes or no\n> "
+  in
+  let rec graphics () =
+    print_q ();
+    match read_line () with
+    | x ->
+        if x |> normalize_text |> String.equal "yes" then true
+        else if x |> normalize_text |> String.equal "no" then false
+        else (
+          print_endline "\nInvalid input";
+          graphics ())
+  in
+
   let game_players = get_players (int_players ()) [] in
   let final_games_share_wealth =
     share_players game_players share_wealth_cards []
@@ -207,7 +211,9 @@ let main () =
     houses @ careers @ life_tiles @ snd final_games_share_wealth
   in
   let start_state =
-    init_state gold_tiles deck (fst final_games_share_wealth)
+    init_state gold_tiles deck
+      (fst final_games_share_wealth)
+      (graphics ())
   in
   turn start_state
 
