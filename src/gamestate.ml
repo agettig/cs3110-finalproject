@@ -819,7 +819,6 @@ let rec get_players lst =
       :: get_players t
 
 let rec turn gamestate : unit =
-  print_players gamestate.players;
   print_endline "";
   Printf.printf "%s's Turn \n \nPlease enter any key to start: "
     gamestate.current_player.name;
