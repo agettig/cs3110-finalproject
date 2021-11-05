@@ -15,7 +15,7 @@ let new_player () =
   let () = print_string "\nEnter player name: " in
   let name = read_line () in
   let print_q () =
-    print_string "Do you want to to college? Input yes or no\n> "
+    print_string "Do you want to go to college? Input yes or no\n> "
   in
   let rec college () =
     print_q ();
@@ -158,8 +158,14 @@ let rec share_players
       let new_deck = new_share_deck player_cards share_wealth_cards in
       share_players t new_deck (acc @ [ new_player ])
 
-let init_state tiles deck players =
-  { tiles; deck; current_player = List.nth players 0; players }
+let init_state tiles deck players graphics =
+  {
+    tiles;
+    deck;
+    current_player = List.nth players 0;
+    players;
+    graphics;
+  }
 
 let main () =
   print_iter print_life 0 11;
@@ -182,6 +188,21 @@ let main () =
         print_endline " \nInvalid input ";
         int_players ()
   in
+
+  let print_q () =
+    print_string "\nDo you want graphics? Input yes or no\n> "
+  in
+  let rec graphics () =
+    print_q ();
+    match read_line () with
+    | x ->
+        if x |> normalize_text |> String.equal "yes" then true
+        else if x |> normalize_text |> String.equal "no" then false
+        else (
+          print_endline "\nInvalid input";
+          graphics ())
+  in
+
   let game_players = get_players (int_players ()) [] in
   let final_games_share_wealth =
     share_players game_players share_wealth_cards []
@@ -190,7 +211,9 @@ let main () =
     houses @ careers @ life_tiles @ snd final_games_share_wealth
   in
   let start_state =
-    init_state gold_tiles deck (fst final_games_share_wealth)
+    init_state gold_tiles deck
+      (fst final_games_share_wealth)
+      (graphics ())
   in
   turn start_state
 

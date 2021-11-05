@@ -9,6 +9,7 @@ type gamestate = {
   players : player list;
   tiles : tiles list;
   deck : cards list;
+  graphics : bool;
 }
 
 let print_payday (num : int) =
@@ -361,12 +362,14 @@ let print_house (num : int) =
         "^^^^^^^^^^====^^^^^^^^^^^"
   | _ -> print_endline ""
 
-let rec print_iter pfun acc cap : unit =
-  if acc <= cap then
-    let () = pfun acc in
-    let () = Unix.sleepf 0.06 in
-    let () = print_endline "" in
-    print_iter pfun (acc + 1) cap
+let rec print_iter pfun acc cap graphics : unit =
+  if graphics then (
+    if acc <= cap then
+      let () = pfun acc in
+      let () = Unix.sleepf 0.06 in
+      let () = print_endline "" in
+      print_iter pfun (acc + 1) cap graphics)
+  else print_endline ""
 
 (** [normalize_text] returns s with the whitespace trimed and in all
     lowercase*)
