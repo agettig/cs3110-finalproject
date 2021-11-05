@@ -180,7 +180,8 @@ let rec make_it_rain_iter (num : int) (idx : int) =
 (* -------end of random print testing *)
 let main () =
   (* let () = make_it_rain_iter 30 50 in *)
-  ANSITerminal.print_string [ ANSITerminal.red ]
+  print_iter print_life 0 11;
+  ANSITerminal.print_string [ ANSITerminal.yellow ]
     "\n\nWelcome to the Game of Life.\n";
   let print_start () =
     print_endline "Please enter the number of players (2-6).";

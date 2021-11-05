@@ -153,6 +153,182 @@ let print_wedding (num : int) =
         "       |`_   |`_      __'_)__.-'"
   | _ -> print_endline ""
 
+let print_life (num : int) =
+  match num with
+  | 0 ->
+      ANSITerminal.print_string
+        [ ANSITerminal.magenta ]
+        "███████████████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "████████████";
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "████████████████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "███████████████████"
+  | 1 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██"
+  | 2 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██"
+  | 3 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██████████"
+  | 4 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██████████"
+  | 5 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██"
+  | 6 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██"
+  | 7 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██████████"
+  | 8 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██████████"
+  | 9 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██"
+  | 10 ->
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "██";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.magenta ] "███";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "███";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███";
+      ANSITerminal.print_string [ ANSITerminal.on_white ] "      ";
+      ANSITerminal.print_string [ ANSITerminal.green ] "███████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "███";
+      ANSITerminal.print_string
+        [ ANSITerminal.on_white ]
+        "              ";
+      ANSITerminal.print_string [ ANSITerminal.yellow ] "██"
+  | 11 ->
+      ANSITerminal.print_string
+        [ ANSITerminal.magenta ]
+        "███████████████████";
+      ANSITerminal.print_string [ ANSITerminal.blue ] "████████████";
+      ANSITerminal.print_string [ ANSITerminal.green ]
+        "████████████████████";
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "███████████████████"
+  | _ -> print_endline ""
+
 let print_house (num : int) =
   match num with
   | 0 -> ANSITerminal.print_string [ ANSITerminal.yellow ] "       _"
@@ -188,7 +364,7 @@ let print_house (num : int) =
 let rec print_iter pfun acc cap : unit =
   if acc <= cap then
     let () = pfun acc in
-    let () = Unix.sleepf 0.08 in
+    let () = Unix.sleepf 0.06 in
     let () = print_endline "" in
     print_iter pfun (acc + 1) cap
 
@@ -793,6 +969,7 @@ let rec turn gamestate : unit =
           ( [ add_balance pay_player (-1 * get_taxes pay_player) ],
             (None, None) )
       | LifeTile _ ->
+          print_iter print_life 0 11;
           let rand_lf_tile =
             List.nth life_tiles (Random.int (List.length life_tiles))
           in
