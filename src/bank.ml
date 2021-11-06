@@ -49,25 +49,16 @@ let rec calculate_loans (player : player) =
   else calculate_loans (loan player)
 (* ---------- helper functions end ----------*)
 
-(** [add_balance player amount] returns a [player] with [amount] added
-    to their current balance *)
 let add_balance (player : player) (amount : int) : player =
   calculate_loans
     { player with account_balance = player.account_balance + amount }
 
-(** [payraise player] returns a [player] with $10,000 added to their
-    current pay_raise *)
 let payraise (player : player) : player =
   { player with pay_raise = player.pay_raise + 10000 }
 
-(** [pay_college player] returns a [player] with 100,000 added to their
-    current debt *)
 let pay_college (player : player) : player =
   { player with debt = player.debt + 100000; college = true }
 
-(** [payday player] returns a [player] with their current career's pay
-    and the player's pay_raise (pay + pay_raise is limited at their
-    career's salary max) added to their current balance *)
 let payday (player : player) : player =
   {
     player with
@@ -76,8 +67,6 @@ let payday (player : player) : player =
       + calculate_payday (find_career_card player.deck) player.pay_raise;
   }
 
-(** [tax player] returns a [player] with their career's taxes subtracted
-    from their current balance *)
 let tax (player : player) : player =
   calculate_loans
     {
@@ -87,9 +76,6 @@ let tax (player : player) : player =
         - nth_of_career_tuple (find_career_card player.deck) 2;
     }
 
-(** [final_balance player] returns the final balance of the [player]
-    which includes taking into account their current balance, debt,
-    house, and life tiles *)
 let final_balance (player : player) =
   player.account_balance - player.debt
   + add_houses_and_life_tiles player.deck 0

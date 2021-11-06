@@ -1,7 +1,7 @@
 open OUnit2
 open Source
 open Players
-open Bank
+include Bank
 open Cards
 open Gamestate
 open Tiles
@@ -216,8 +216,9 @@ let tests =
            assert_equal 130
              (fst (change_index_board test_player_stop_5))
                .index_on_board );
-         ( "Gamestate operation current_player" >:: fun _ ->
-           assert_equal test_player (current_player test_gamestate) );
+         (* ( "Gamestate operation current_player" >:: fun _ ->
+            assert_equal test_player (current_player test_gamestate)
+            ); *)
          ( "Gamestate operation finished false" >:: fun _ ->
            assert_equal false (finished test_player) );
          ( "Gamestate operation finished true" >:: fun _ ->

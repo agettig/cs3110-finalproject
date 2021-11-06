@@ -375,10 +375,6 @@ let rec print_iter pfun acc cap graphics : unit =
     lowercase*)
 let normalize_text s = String.(s |> trim |> lowercase_ascii)
 
-(** [current_player gamestate] is the identifier of the player whose
-    turn it is in which the in gamestate [st]. *)
-let current_player st = st.current_player
-
 (** [final_tile_index] is the last tile on the path of life which
     signifies retirement*)
 let final_tile_index = 130
@@ -400,11 +396,10 @@ let rec index_in_list_helper player lst c =
 let ( married_index,
       starter_home_index,
       house_index,
-      retirement,
       elope,
       college_career,
       career ) =
-  (25, 33, 97, 130, 20, 10, 11)
+  (25, 33, 97, 20, 10, 11)
 
 let index_in_list_next (current_player : player) (lst : player list) :
     int =
@@ -968,9 +963,7 @@ let rec turn gamestate : unit =
       match tile with
       | PayTile c ->
           ([ add_balance pay_player c.account_change ], (None, None))
-      | TaxesTile _ ->
-          ( [ add_balance pay_player (-1 * get_taxes pay_player) ],
-            (None, None) )
+      | TaxesTile _ -> ([ tax pay_player ], (None, None))
       | LifeTile _ ->
           print_iter print_life 0 11 gamestate.graphics;
           let rand_lf_tile =
