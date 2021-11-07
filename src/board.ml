@@ -1,4 +1,3 @@
-(* open Players *)
 open Tiles
 
 let spinner () = Random.int 10 + 1
