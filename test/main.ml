@@ -1,10 +1,48 @@
 open OUnit2
 open Source
 open Players
-include Bank
+open Bank
 open Cards
 open Gamestate
 open Tiles
+
+let police_officer =
+  Career
+    {
+      name = "Police Officer";
+      salary = 40000;
+      salary_max = 70000;
+      taxes_due = 15000;
+      college_career = false;
+    }
+
+let veterinarian =
+  Career
+    {
+      name = "Veterinarian";
+      salary = 100000;
+      salary_max = 120000;
+      taxes_due = 35000;
+      college_career = true;
+    }
+
+let mobile_home =
+  House
+    {
+      name = "Mobile Home";
+      price = 80000;
+      selling_price = 80000;
+      starter = true;
+    }
+
+let dbl_wide_rv =
+  House
+    {
+      name = "Double Wide + RV";
+      price = 300000;
+      selling_price = 300000;
+      starter = false;
+    }
 
 let test_player = add_player "test player" false
 

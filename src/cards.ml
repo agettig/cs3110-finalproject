@@ -18,6 +18,16 @@ type cards =
   | Long_Term_Investment of int
   | Life_Tiles of int
 
+let rec remove_first_instance
+    (card : cards)
+    (card_list : cards list)
+    (acc : cards list) =
+  match card_list with
+  | [] -> acc
+  | h :: t ->
+      if h = card then acc @ t
+      else remove_first_instance card t (h :: acc)
+
 (*These are all the career options in our game*)
 
 let police_officer =

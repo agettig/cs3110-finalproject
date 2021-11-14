@@ -39,3 +39,8 @@ val share_wealth_cards : cards list
 
 val houses : cards list
 (** [houses] is a list of house cards in the game *)
+
+val remove_first_instance :
+  cards -> cards list -> cards list -> cards list
+(** [remove_first)instance c deck acc] returns the deck with the first
+    instance of c removed. Returns deck if c is not in deck*)

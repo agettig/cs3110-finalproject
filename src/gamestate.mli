@@ -28,10 +28,6 @@ val print_iter : (int -> unit) -> int -> int -> bool -> unit
 (** [print_iter pfun acc cap graphic] prints [pfun] if [graphic] is true
     else unit is returned *)
 
-val print_life : int -> unit
-(** [print_life i] prints the row of the life graphic corresponding to
-    row [i] *)
-
 val get_tile : int -> tiles list -> tiles
 (** [get_tile] returns the tile in [tiles] at given index [index].
     Raises : Failure if list is too short and Invalid Argument if n is
