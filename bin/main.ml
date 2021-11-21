@@ -1,9 +1,10 @@
 open Source.Gamestate
-open Source.Tiles
 open Source.Players
 open Source.Bank
 open Source.Cards
+open Source.Tiles
 
+open Source.Printing
 (** [play_game f] starts the adventure in file [f]. *)
 
 (** [main ()] prompts for the game to play, then starts it. *)
@@ -108,16 +109,6 @@ let rec get_players num_players acc =
         in
         get_players h acc
       else get_players (h - 1) (acc @ [ newbie ])
-
-let rec remove_first_instance
-    (card : cards)
-    (card_list : cards list)
-    (acc : cards list) =
-  match card_list with
-  | [] -> acc
-  | h :: t ->
-      if h = card then acc @ t
-      else remove_first_instance card t (h :: acc)
 
 let rec new_player_share_wealth_cards
     (current_cards : cards list)
