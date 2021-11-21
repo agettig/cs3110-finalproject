@@ -16,8 +16,8 @@ val empty_board : 'a BoardMap.t
 (**Creates an empty instance of BoardMap*)
 
 val pos_to_tuple : int -> int * tiles
-(**[pos_to_tuple index_on_board] maps the position index to the specific
-   tile that the player is on *)
+(**[pos_to_tuple index_on_board] maps the position index
+   [index_on_board] to the specific tile that the player is on *)
 
 val make_board : string BoardMap.t
 (**[make_board] maps each position to a specific binding associated with
@@ -25,7 +25,7 @@ val make_board : string BoardMap.t
 
 val make_color : int * tiles -> string BoardMap.t -> unit
 (**[make_color] prints the board in color based on [pos] and the
-   associated binding [board]*)
+   associated binding on the board[board]*)
 
 val print_color_tile : int -> string BoardMap.t -> unit
 (**[print_color_tile] prints the tile associated with [pos] in [board]*)
@@ -36,5 +36,9 @@ val init_board : int -> string BoardMap.t -> unit
 
 val update_board :
   'a BoardMap.t -> (IntTilesTupl.t * 'a) list -> 'a BoardMap.t
+(**[update_board] updates each player's position from the
+   list[updated_player_lst] onto the current board [board] and prepares
+   the new board to be printed to the terminal*)
 
 val print_board : string BoardMap.t -> unit
+(**[print_board] prints the current board [board] to the terminal*)
