@@ -25,6 +25,8 @@ let calculate_payday (card_info : int * int * int) (pay_raise : int) =
     (nth_of_career_tuple card_info 0 + pay_raise)
     (nth_of_career_tuple card_info 1)
 
+(** [loan player] returns a [player] with 20,000 added to their account
+    balance and 25,000 added to thier debt*)
 let loan (player : player) : player =
   {
     player with
@@ -32,6 +34,8 @@ let loan (player : player) : player =
     debt = player.debt + 25000;
   }
 
+(** [add_houses_and_life_tiles deck acc] returns a [acc] that is the sum
+    of selling prices of all house tiles and values of all life tiles *)
 let rec add_houses_and_life_tiles (deck : cards list) (acc : int) =
   match deck with
   | [] -> acc
@@ -43,7 +47,7 @@ let rec add_houses_and_life_tiles (deck : cards list) (acc : int) =
 
 (** [calculate_loans player] returns a [player] with continous loans
     (loans are 20,000 added to their current balance and 25,000 added to
-    their current debt)added until their account balance is positive *)
+    their current debt) added until their account balance is positive *)
 let rec calculate_loans (player : player) =
   if player.account_balance >= 0 then player
   else calculate_loans (loan player)
