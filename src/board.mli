@@ -1,21 +1,24 @@
-open Board
 open Tiles
+
+module BoardMap : sig
+  type 'a t
+end
+
+module IntTilesTupl : sig
+  type t
+
+  val compare : 'a -> 'a -> int
+end
 
 (**Creating and printing the board to the terminal*)
 
 val spinner : unit -> int
 (**Creates the spinner value at the beginning of a turn*)
 
-module type IntTilesTupl = sig
-  type t
-
-  val compare : 'a -> 'a -> int
-end
-
 val empty_board : 'a BoardMap.t
 (**Creates an empty instance of BoardMap*)
 
-val pos_to_tuple : int -> int * tiles
+val pos_to_tuple : int -> IntTilesTupl.t
 (**[pos_to_tuple index_on_board] maps the position index
    [index_on_board] to the specific tile that the player is on *)
 
