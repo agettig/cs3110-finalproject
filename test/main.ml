@@ -6,6 +6,22 @@ open Cards
 open Gamestate
 open Tiles
 
+(* TEST PLAN: A large majority of the functions seen in the .mli files,
+   such as gamestate.mli, players.mli and bank.mli, are automatically
+   tested using OUnit. However, many functions' outputs depend on user
+   inputted data, making them difficult to test using OUnit. As a
+   result, these functions, such as gamestate.turn, were tested manually
+   through the use of 'make play'. After running 'make play,' we tested
+   many variations of the game to ensure that our code was working as
+   intended. Functions from gamestate, players, and bank were tested
+   using OUnit with black box testing methods, in which we inputted data
+   and tested based on its specification. This testing approach was the
+   best possible way to demonstrate the correctness of the system
+   because the OUnit tests show the functions that assist in running the
+   game. Then, by manually testing the actual game extensively through
+   'make play,' we are able to catch common errors that a user may
+   experience. *)
+
 let police_officer =
   Career
     {
