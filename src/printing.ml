@@ -347,3 +347,27 @@ let print_house (num : int) =
       ANSITerminal.print_string [ ANSITerminal.yellow ]
         "^^^^^^^^^^====^^^^^^^^^^^"
   | _ -> print_endline ""
+
+let print_lawsuit (num : int) =
+  match num with
+  | 0 -> ANSITerminal.print_string [ ANSITerminal.white ] "(\\"
+  | 1 -> ANSITerminal.print_string [ ANSITerminal.white ] "\\'\\"
+  | 2 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        " \\'\\     __________"
+  | 3 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        " / '|   ()_________)"
+  | 4 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        " \\ '/    \\ ~~~~~~~~ \\"
+  | 5 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "   \\       \\~~~~~~   \\"
+  | 6 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "   ==).      \\__________\\"
+  | 7 ->
+      ANSITerminal.print_string [ ANSITerminal.white ]
+        "  (__)       ()__________)"
+  | _ -> print_endline ""

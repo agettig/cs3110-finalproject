@@ -701,6 +701,8 @@ let rec turn gamestate : unit =
           in
           (new_players, (None, None))
       | LawsuitTile _ -> (
+          print_iter print_lawsuit 0 7 gamestate.graphics;
+          print_endline "";
           let player_sued =
             lawsuit_player gamestate.players pay_player
           in

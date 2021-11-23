@@ -13,3 +13,7 @@ val print_life : int -> unit
 val print_house : int -> unit
 (** [print_house i] prints the row of the house graphic corresponding to
     row [i] *)
+
+val print_lawsuit : int -> unit
+(** [print_lawsuit i] prints the row of the lawsuit graphic
+    corresponding to row [i] *)
