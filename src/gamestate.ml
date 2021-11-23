@@ -22,12 +22,8 @@ let rec print_iter pfun acc cap graphics : unit =
       print_iter pfun (acc + 1) cap graphics)
   else print_endline ""
 
-(** [normalize_text] returns s with the whitespace trimed and in all
-    lowercase*)
 let normalize_text s = String.(s |> trim |> lowercase_ascii)
 
-(** [final_tile_index] is the last tile on the path of life which
-    signifies retirement*)
 let final_tile_index = 130
 
 (** [index_in_list_helper player lst c] returns an int that represents
@@ -40,10 +36,6 @@ let rec index_in_list_helper player lst c =
       if h.name = player.name then c
       else index_in_list_helper player t (c + 1)
 
-(** [index_in_list_next] returns the index of the next player after
-    [player]. Requires [lst] contains at least two elements.
-    Postcondition: [index_in_lst] returns an int between 0 and (list
-    length -1)*)
 let ( married_index,
       starter_home_index,
       house_index,
@@ -52,6 +44,10 @@ let ( married_index,
       career ) =
   (25, 33, 97, 20, 10, 11)
 
+(** [index_in_list_next] returns the index of the next player after
+    [player]. Requires [lst] contains at least two elements.
+    Postcondition: [index_in_lst] returns an int between 0 and (list
+    length -1)*)
 let index_in_list_next (current_player : player) (lst : player list) :
     int =
   let x =
@@ -66,21 +62,15 @@ let index_in_list_next (current_player : player) (lst : player list) :
   in
   (index_in_list_helper current_player lst 0 + x) mod List.length lst
 
-(** [next_player current_player players] returns the player whose turn
-    is after [current_player]*)
 let next_player current_player players =
   List.nth players (index_in_list_next current_player players)
 
-(** [finished player] returns true if the player has reached the end of
-    the board and has retired and returns false if player is still
-    playing.*)
 let finished player = player.index_on_board >= final_tile_index
 
-(** [get_tile] returns the tile in [tiles] at given index [index].
-    Raises : Failure if list is too short and Invalid Argument if n is
-    negative. *)
 let get_tile index tiles : tiles = List.nth tiles index
 
+(** [has_investment numSpun cards] returns true if [numSpun] matches a
+    long term investment card within [cards], else false*)
 let rec has_investment (numSpun : int) (cards : cards list) : bool =
   match cards with
   | [] -> false
@@ -90,6 +80,8 @@ let rec has_investment (numSpun : int) (cards : cards list) : bool =
           if x = numSpun then true else has_investment numSpun t
       | _ -> has_investment numSpun t)
 
+(** [check_investments numSpun players acc] returns [players] with
+    updated balances based on long term investment cards and [numSpun]*)
 let rec check_investments
     (numSpun : int)
     (players : player list)
@@ -101,6 +93,8 @@ let rec check_investments
         check_investments numSpun t (acc @ [ add_balance h 5000 ])
       else check_investments numSpun t (acc @ [ h ])
 
+(** [possible_career_choices isCollege deck acc] returns [acc] with all
+    remaining careers in [deck] that match [isCollege]*)
 let rec possible_career_choices
     (isCollege : bool)
     (deck : cards list)
@@ -115,6 +109,8 @@ let rec possible_career_choices
           else possible_career_choices isCollege t acc
       | _ -> possible_career_choices isCollege t acc)
 
+(** [share_cards_in_deck acc deck] returns [acc] with all SpinToWin and
+    Expection cards in [deck] added*)
 let rec share_cards_in_deck (acc : cards list) (deck : cards list) =
   match deck with
   | [] -> acc
@@ -125,14 +121,19 @@ let rec share_cards_in_deck (acc : cards list) (deck : cards list) =
           share_cards_in_deck (h :: acc) t
       | _ -> share_cards_in_deck acc t)
 
+(** [random_share_card deck] returns a random card from [deck]*)
 let random_share_card deck : cards option =
   let share_cards = share_cards_in_deck deck [] in
   let random_num () = Random.int (List.length share_cards) in
   List.nth_opt share_cards (random_num ())
 
+(** [has_house players] returns a true if a player has a house, else
+    false*)
 let has_house (player : player) =
   player.index_on_board > starter_home_index
 
+(** [possible_house_choices player hasHouse deck acc] returns [acc] with
+    all house choices the [player] can purchase*)
 let rec possible_house_choices
     (player : player)
     (hasHouse : bool)
@@ -153,6 +154,8 @@ let rec possible_house_choices
           else possible_house_choices player hasHouse t acc
       | _ -> possible_house_choices player hasHouse t acc)
 
+(** [print_career_card card] prints out the information of a career
+    card. Requires [card] is a career card. *)
 let print_career_card (card : cards) =
   match card with
   | Career x ->
@@ -164,12 +167,16 @@ let print_career_card (card : cards) =
         ^ string_of_int x.taxes_due)
   | _ -> failwith "passed in card that isn't a career"
 
+(** [get_house_or_career_name card] returns a string containing the name
+    of the card. Requires [card] is a career or house card. *)
 let get_house_or_career_name (card : cards) =
   match card with
   | Career x -> x.name
   | House x -> x.name
   | _ -> failwith "passed in card that isn't a career"
 
+(** [print_houses houses] prints out the information of all house cards
+    in [houses] *)
 let rec print_houses houses : unit =
   match houses with
   | [] -> print_endline ""
@@ -189,6 +196,9 @@ let rec print_houses houses : unit =
     false is returned*)
 let string_equal s1 s2 = normalize_text s1 = normalize_text s2
 
+(** [match_card_by_name name cards] returns a career or house card in
+    [cards] that has the same name as [name]. Requires that a card in
+    [cards] has name [name]. *)
 let rec match_card_by_name (name : string) (cards : cards list) : cards
     =
   match cards with
@@ -201,6 +211,8 @@ let rec match_card_by_name (name : string) (cards : cards list) : cards
           if name = x.name then h else match_card_by_name name t
       | _ -> match_card_by_name name t)
 
+(** [choose_career player deck] returns the career card that [player]
+    chooses out of two choices *)
 let choose_career (player : player) (deck : cards list) : cards =
   let possible_careers =
     possible_career_choices player.college deck []
@@ -235,6 +247,9 @@ let choose_career (player : player) (deck : cards list) : cards =
 
   match_card_by_name (career_string ()) possible_careers
 
+(** [bought_house player house_name deck] returns [player] with the
+    house of [house_name] added to their deck and house price removed
+    from their balance *)
 let rec bought_house
     (player : player)
     (house_name : string)
@@ -249,6 +264,8 @@ let rec bought_house
           else bought_house player house_name t
       | _ -> bought_house player house_name t)
 
+(** [choose_houses player deck] returns the house card that [player]
+    chooses out of all possible choices *)
 let choose_houses (player : player) (deck : cards list) =
   let possible_houses =
     possible_house_choices player (has_house player) deck []
@@ -274,12 +291,16 @@ let choose_houses (player : player) (deck : cards list) =
     match_card_by_name (house_name ()) possible_houses
   else match_card_by_name "None" possible_houses
 
+(** [print_players] prints out all the names of all players in the
+    players list passed in *)
 let rec print_players = function
   | [] -> print_endline ""
   | h :: t ->
       Printf.printf "Player: %s\n" h.name;
       print_players t
 
+(** [has_exemption_card deck] returns Some exemption card if there is an
+    exemption card in [deck], else None *)
 let rec has_exemption_card (deck : cards list) =
   match deck with
   | [] -> None
@@ -288,12 +309,17 @@ let rec has_exemption_card (deck : cards list) =
       | Exemption_Card -> Some h
       | _ -> has_exemption_card t)
 
+(** [print_lawsuit_players players planintiff] prints out the names of
+    all players in [players] that does not share the same name as
+    [plaintiff] *)
 let print_lawsuit_players players plaintiff : unit =
   let lawsuit_players =
     List.filter (fun x -> plaintiff.name <> x.name) players
   in
   print_players lawsuit_players
 
+(** [lawsuit_player players planintiff] returns a player who the
+    plaintiff chooses to sue *)
 let rec lawsuit_player players plaintiff =
   print_lawsuit_players players plaintiff;
   print_endline "Enter Player's name who you would like to sue";
@@ -373,15 +399,11 @@ let rec new_players_list
            current_lst)
         t
 
-(** [gameover players] returns true if all players in the game have
-    retired and returns false if anyone is still playing.*)
 let rec gameover players =
   match players with
   | [] -> true
   | h :: t -> if not (finished h) then false else gameover t
 
-(** [player_winner player_lst player] returns the player who has won the
-    game with the largest account balance at the end of the game.*)
 let rec player_winner player_lst player =
   match player_lst with
   | [] -> player
@@ -389,8 +411,11 @@ let rec player_winner player_lst player =
       if final_balance h > final_balance player then player_winner t h
       else player_winner t player
 
+(** [winner player] prints the name of [player] as the winner*)
 let winner player = Printf.printf "Winner %s!\n\n" player.name
 
+(** [has_career deck] returns Some career card if there is a career card
+    in [deck], else None*)
 let rec has_career (deck : cards list) =
   match deck with
   | [] -> None
@@ -399,6 +424,8 @@ let rec has_career (deck : cards list) =
       | Career _ -> Some h
       | _ -> has_career t)
 
+(** [has_career deck] returns Some SpinToWin card if there is a
+    SpinToWin card in [deck], else None*)
 let rec has_spin_card (deck : cards list) : cards option =
   match deck with
   | [] -> None
@@ -407,6 +434,8 @@ let rec has_spin_card (deck : cards list) : cards option =
       | SpinToWin_Card _ -> Some h
       | _ -> has_spin_card t)
 
+(** [guess_lst num lst player] returns a list of integer guesses from
+    each player*)
 let rec guess_lst (num : int) lst player =
   let rec spin_number player =
     Printf.printf "%s please enter your guess (1-10): " player.name;
@@ -424,6 +453,9 @@ let rec guess_lst (num : int) lst player =
   | 0 -> lst
   | _ -> guess_lst (num - 1) (spin_number player :: lst) player
 
+(** [player_spintowin player] returns [player] with money added or
+    subtract to balance depending on how much they invested and if they
+    won the spin to win. *)
 let player_spintowin (player : player) : player =
   let spin_card = has_spin_card player.deck in
   let player_removed_card =
@@ -465,12 +497,16 @@ let player_spintowin (player : player) : player =
     add_balance player_removed_card (10 * invest)
   else player_removed_card
 
+(** [start_turn] waits for any user input to begin the next turn *)
 let start_turn () =
   (* Printf.printf ("%s ^ 's Turn /n Please enter any key to start"); *)
   let x = read_line () in
   match x with
   | _ -> print_string ""
 
+(** [get_players lst] returns a list of (IntTilesTupl.t * string) to
+    represent the indexes of players in [list] on the board and a string
+    to represent them on the board *)
 let rec get_players lst =
   match lst with
   | [] -> []
