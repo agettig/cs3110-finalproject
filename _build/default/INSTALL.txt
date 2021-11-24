@@ -1,0 +1,18 @@
+Hi Game of Life player!
+
+To setup your computer: 
+
+1) in terminal, run opam update 
+2) in terminal, run opam install ANSITerminal
+
+To run this game:
+
+1) Unzip the folder
+2) Open it in VSCode
+3) Run 'make build'
+4) Run 'make play'
+
+To run test files, run 'make test'
+
+Tips to play:
+Type commands exactly as shown on the screen

@@ -201,6 +201,12 @@ let test_list (name : string) (exp_out : 'a list) (act_out : 'a list) =
 let test_pl (name : string) (exp_out : player) (act_out : player) =
   name >:: fun _ -> assert_equal exp_out act_out
 
+let test_int (name : string) (exp_out : int) (act_out : int) =
+  name >:: fun _ -> assert_equal exp_out act_out
+
+let test_string (name : string) (exp_out : string) (act_out : string) =
+  name >:: fun _ -> assert_equal exp_out act_out ~printer:(fun x -> x)
+
 let tests =
   "test suite for sum"
   >::: [
@@ -287,6 +293,8 @@ let tests =
                 test_player_final_balance3;
               ]
               test_player_final_balance1);
+         test_string "test normalize text" "test"
+           (normalize_text "        TesT    ");
        ]
 
 let _ = run_test_tt_main tests

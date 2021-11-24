@@ -1,9 +1,0 @@
-2021-09-29T18:47:38+00:00 dhcp-vl2041-8848.eduroam.cornell.edu#02 I: Start test test suite for sum:1:Bank operation add_balance.
-2021-09-29T18:47:38+00:00 dhcp-vl2041-8848.eduroam.cornell.edu#02 I: Test test suite for sum:1:Bank operation add_balance is successful.
-2021-09-29T18:47:38+00:00 dhcp-vl2041-8848.eduroam.cornell.edu#02 I: End test test suite for sum:1:Bank operation add_balance.
-2021-09-29T18:47:38+00:00 dhcp-vl2041-8848.eduroam.cornell.edu#02 I: Start test test suite for sum:4:Bank operation calculate_loans balance.
-2021-09-29T18:47:38+00:00 dhcp-vl2041-8848.eduroam.cornell.edu#02 I: Test test suite for sum:4:Bank operation calculate_loans balance is successful.
-2021-09-29T18:47:38+00:00 dhcp-vl2041-8848.eduroam.cornell.edu#02 I: End test test suite for sum:4:Bank operation calculate_loans balance.
-2021-09-29T18:47:38+00:00 dhcp-vl2041-8848.eduroam.cornell.edu#02 I: Start test test suite for sum:6:Bank operation pay_college.
-2021-09-29T18:47:38+00:00 dhcp-vl2041-8848.eduroam.cornell.edu#02 I: Test test suite for sum:6:Bank operation pay_college is successful.
-2021-09-29T18:47:38+00:00 dhcp-vl2041-8848.eduroam.cornell.edu#02 I: End test test suite for sum:6:Bank operation pay_college.
