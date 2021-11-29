@@ -622,6 +622,128 @@ let pay gamestate payraise_player player_index =
     payday payraise_player
   else payraise_player
 
+(** [new_deck_helper cards_option gamestate] returns an updated deck by
+    removing cards given to players and inserting cards discarded by
+    players *)
+let new_deck_helper cards_options gamestate =
+  match cards_options with
+  | None, None -> gamestate.deck
+  | Some x, None -> remove_first_instance x gamestate.deck []
+  | Some x, Some y -> remove_first_instance x (y :: gamestate.deck) []
+  | None, Some y -> y :: gamestate.deck
+
+(** [lawsuit_tile_helper gamestate pay_player] returns an updated player
+    list after a lawsuit occurs and a tuple of cards that needs to be
+    added to or removed from the deck. *)
+let lawsuit_tile_helper gamestate pay_player =
+  print_iter print_lawsuit 0 7 gamestate.graphics;
+  print_endline "";
+  let player_sued = lawsuit_player gamestate.players pay_player in
+  let exemption_card = has_exemption_card player_sued.deck in
+  match exemption_card with
+  | None ->
+      Printf.printf "%s's Current Balance: %i \n" player_sued.name
+        player_sued.account_balance;
+      Printf.printf "%s has sued %s for $100,000 \n" pay_player.name
+        player_sued.name;
+      let new_balance_player = add_balance player_sued ~-100000 in
+      Printf.printf "%s's Current Balance: %i \n"
+        new_balance_player.name new_balance_player.account_balance;
+      ([ pay_player; new_balance_player ], (None, None))
+  | Some x ->
+      Printf.printf "%s used an Exemption Card!" player_sued.name;
+      ([ pay_player; remove_card x player_sued ], (None, Some x))
+
+(** [take_tile_helper gamestate pay_player] returns an updated player
+    list after pay_player lands on a take tile and a tuple of cards that
+    needs to be added to or removed from the deck. *)
+let take_tile_helper (gamestate : gamestate) (pay_player : player) =
+  let spin_card_chosen = random_share_card gamestate.deck in
+  match spin_card_chosen with
+  | None -> ([ pay_player ], (None, None))
+  | Some x ->
+      ( [ { pay_player with deck = x :: pay_player.deck } ],
+        (Some x, None) )
+
+(** [house_tile_helper gamestate pay_player] returns an updated player
+    list after pay_player lands on a house tile and a tuple of cards
+    that needs to be added to or removed from the deck. *)
+let house_tile_helper gamestate pay_player =
+  let chosen_house = choose_houses pay_player gamestate.deck in
+  print_iter print_house 0 9 gamestate.graphics;
+  let house_name =
+    match chosen_house with
+    | House h -> Some h.name
+    | _ -> None
+  in
+  match house_name with
+  | Some x ->
+      if x = "None" then
+        ([ bought_house pay_player x gamestate.deck ], (None, None))
+      else
+        ( [ bought_house pay_player x gamestate.deck ],
+          (Some chosen_house, None) )
+  | None -> ([ pay_player ], (None, None))
+
+(** [family_tile_helper pay_player index children] returns an updated
+    player list after pay_player lands on a familty tile and a tuple of
+    cards that needs to be added to or removed from the deck. *)
+let family_tile_helper pay_player index children =
+  if index = married_index then
+    ([ { pay_player with so = true } ], (None, None))
+  else if index = elope then
+    ( [ { pay_player with so = true; index_on_board = married_index } ],
+      (None, None) )
+  else
+    ( [ { pay_player with children = pay_player.children + children } ],
+      (None, None) )
+
+(** [career_tile_helper gamestate pay_player] returns an updated player
+    list after pay_player lands on a career tile and a tuple of cards
+    that needs to be added to or removed from the deck. *)
+let career_tile_helper gamestate pay_player =
+  let career_chosen = choose_career pay_player gamestate.deck in
+  let had_career = has_career pay_player.deck in
+  match had_career with
+  | None ->
+      ([ add_card career_chosen pay_player ], (Some career_chosen, None))
+  | Some h ->
+      ( [ exchange_card pay_player career_chosen h ],
+        (Some career_chosen, Some h) )
+
+(** [career_tile_helper gamestate pay_player] returns an updated player
+    list after pay_player lands on a life tile and a tuple of cards that
+    needs to be added to or removed from the deck. *)
+let life_tile_helper gamestate pay_player =
+  print_iter Printing.print_life 0 11 gamestate.graphics;
+  let rand_lf_tile =
+    List.nth life_tiles (Random.int (List.length life_tiles))
+  in
+  ([ add_card rand_lf_tile pay_player ], (Some rand_lf_tile, None))
+
+(* [new_player] returns a tuple with an updated players list and a pair
+   of card options. The first entry in the card pair is a card that
+   needs to be removed from the gamedeck. The second entry are cards
+   that need to be added to the gamedeck. If None then the deck remains
+   the same. If Some x, then x is added to of removed from the deck
+   corresponding to its entry. *)
+let new_player_helper tile pay_player gamestate =
+  match tile with
+  | PayTile c ->
+      ([ add_balance pay_player c.account_change ], (None, None))
+  | TaxesTile _ -> ([ tax pay_player ], (None, None))
+  | LifeTile _ -> life_tile_helper gamestate pay_player
+  | CareerTile _ -> career_tile_helper gamestate pay_player
+  | FamilyTile { name; account_change; index_tile; children } ->
+      family_tile_helper pay_player index_tile children
+  | HouseTile _ -> house_tile_helper gamestate pay_player
+  | TakeTile _ -> take_tile_helper gamestate pay_player
+  | ActionTile _ -> ([ pay_player ], (None, None))
+  | SpinToWinTile _ ->
+      let new_players = List.map player_spintowin gamestate.players in
+      (new_players, (None, None))
+  | LawsuitTile _ -> lawsuit_tile_helper gamestate pay_player
+
 let rec turn gamestate : unit =
   print_endline "";
   Printf.printf "%s's Turn \n \nPlease enter any key to start: "
@@ -666,110 +788,8 @@ let rec turn gamestate : unit =
     let tile = get_tile pay_player.index_on_board gamestate.tiles in
     print_tiles tile;
 
-    (* [new_player] returns a tuple with an updated player and None if
-       the game deck does not need to be altered and Some card if card
-       has to be removed from the game deck*)
-    let new_player : player list * (cards option * cards option) =
-      match tile with
-      | PayTile c ->
-          ([ add_balance pay_player c.account_change ], (None, None))
-      | TaxesTile _ -> ([ tax pay_player ], (None, None))
-      | LifeTile _ ->
-          print_iter Printing.print_life 0 11 gamestate.graphics;
-          let rand_lf_tile =
-            List.nth life_tiles (Random.int (List.length life_tiles))
-          in
-          ( [ add_card rand_lf_tile pay_player ],
-            (Some rand_lf_tile, None) )
-      | CareerTile _ -> (
-          let career_chosen = choose_career pay_player gamestate.deck in
-          let had_career = has_career pay_player.deck in
-          match had_career with
-          | None ->
-              ( [ add_card career_chosen pay_player ],
-                (Some career_chosen, None) )
-          | Some h ->
-              ( [ exchange_card pay_player career_chosen h ],
-                (Some career_chosen, Some h) ))
-      | FamilyTile c ->
-          if c.index_tile = married_index then
-            ([ { pay_player with so = true } ], (None, None))
-          else if c.index_tile = elope then
-            ( [
-                {
-                  pay_player with
-                  so = true;
-                  index_on_board = married_index;
-                };
-              ],
-              (None, None) )
-          else
-            ( [
-                {
-                  pay_player with
-                  children = pay_player.children + c.children;
-                };
-              ],
-              (None, None) )
-      | HouseTile _ -> (
-          let chosen_house =
-            choose_houses player_moved gamestate.deck
-          in
-          print_iter print_house 0 9 gamestate.graphics;
-          let house_name =
-            match chosen_house with
-            | House h -> Some h.name
-            | _ -> None
-          in
-          match house_name with
-          | Some x ->
-              if x = "None" then
-                ( [ bought_house player_moved x gamestate.deck ],
-                  (None, None) )
-              else
-                ( [ bought_house player_moved x gamestate.deck ],
-                  (Some chosen_house, None) )
-          | None -> ([ player_moved ], (None, None)))
-      | TakeTile _ -> begin
-          let spin_card_chosen = random_share_card gamestate.deck in
-          match spin_card_chosen with
-          | None -> ([ player_moved ], (None, None))
-          | Some x ->
-              ( [ { player_moved with deck = x :: player_moved.deck } ],
-                (Some x, None) )
-        end
-      | ActionTile _ -> ([ player_moved ], (None, None))
-      | SpinToWinTile _ ->
-          let new_players =
-            List.map player_spintowin gamestate.players
-          in
-          (new_players, (None, None))
-      | LawsuitTile _ -> (
-          print_iter print_lawsuit 0 7 gamestate.graphics;
-          print_endline "";
-          let player_sued =
-            lawsuit_player gamestate.players pay_player
-          in
-          let exemption_card = has_exemption_card player_sued.deck in
-          match exemption_card with
-          | None ->
-              Printf.printf "%s's Current Balance: %i \n"
-                player_sued.name player_sued.account_balance;
-              Printf.printf "%s has sued %s for $100,000 \n"
-                pay_player.name player_sued.name;
-              let new_balance_player =
-                add_balance player_sued ~-100000
-              in
-              Printf.printf "%s's Current Balance: %i \n"
-                new_balance_player.name
-                new_balance_player.account_balance;
-              ([ pay_player; new_balance_player ], (None, None))
-          | Some x ->
-              Printf.printf "%s used an Exemption Card!"
-                player_sued.name;
-              ([ pay_player; remove_card x player_sued ], (None, Some x))
-          )
-    in
+    let new_player = new_player_helper tile pay_player gamestate in
+
     (*[new_play_list] is the updated player list after the current
       player's turn*)
     let new_play_list =
@@ -778,16 +798,10 @@ let rec turn gamestate : unit =
     let new_pos_lst = get_players new_play_list in
     let updated_board = update_board make_board new_pos_lst in
     print_board updated_board;
+
     (* [new_deck] is the new game deck*)
-    let new_deck =
-      match snd new_player with
-      | None, None -> gamestate.deck
-      | Some x, None -> remove_first_instance x gamestate.deck []
-      | Some x, Some y ->
-          remove_first_instance x (y :: gamestate.deck) []
-      | None, Some y -> y :: gamestate.deck
-    in
-    (* ANSITerminal.erase Screen; *)
+    let new_deck = new_deck_helper (snd new_player) gamestate in
+
     (* returns new gamestate with updated records*)
     turn
       {
