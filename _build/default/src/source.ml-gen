@@ -1,3 +1,7 @@
+(** @canonical Source.Author *)
+module Author = Source__Author
+
+
 (** @canonical Source.Bank *)
 module Bank = Source__Bank
 
@@ -10,13 +14,17 @@ module Board = Source__Board
 module Cards = Source__Cards
 
 
+(** @canonical Source.Gamestate *)
+module Gamestate = Source__Gamestate
+
+
 (** @canonical Source.Players *)
 module Players = Source__Players
 
 
+(** @canonical Source.Printing *)
+module Printing = Source__Printing
+
+
 (** @canonical Source.Tiles *)
 module Tiles = Source__Tiles
-
-
-(** @canonical Source.Types *)
-module Types = Source__Types
