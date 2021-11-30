@@ -14,7 +14,6 @@ type cards =
     }
   | Exemption_Card
   | SpinToWin_Card of int
-  | Share_the_Wealth
   | Long_Term_Investment of int
   | Life_Tiles of int
 
