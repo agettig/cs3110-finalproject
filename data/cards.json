@@ -1,0 +1,310 @@
+{
+  "house cards": [
+    {
+      "name": "Mobile Home",
+      "price": 80000,
+      "selling price": 80000,
+      "starter": true
+    },
+    {
+      "name": "Condo",
+      "price": 100000,
+      "selling price": 105000,
+      "starter": true
+    },
+    {
+      "name": "Log Cabin",
+      "price": 120000,
+      "selling price": 140000,
+      "starter": true
+    },
+    {
+      "name": "Ranch Style",
+      "price": 140000,
+      "selling price": 160000,
+      "starter": true
+    },
+    {
+      "name": "Small Cape",
+      "price": 160000,
+      "selling price": 180000,
+      "starter": true
+    },
+    {
+      "name": "Tudor Style",
+      "price": 180000,
+      "selling price": 200000,
+      "starter": true
+    },
+    {
+      "name": "Double Wide + RV",
+      "price": 300000,
+      "selling price": 300000,
+      "starter": false
+    },
+    {
+      "name": "Executive Cape",
+      "price": 400000,
+      "selling price": 400000,
+      "starter": false
+    },
+    {
+      "name": "Modern Victorian",
+      "price": 500000,
+      "selling price": 500000,
+      "starter": false
+    },
+    {
+      "name": "Luxury Mountain Retreat",
+      "price": 600000,
+      "selling price": 600000,
+      "starter": false
+    },
+    {
+      "name": "Penthouse Suite",
+      "price": 700000,
+      "selling price": 700000,
+      "starter": false
+    },
+    {
+      "name": "Mansion",
+      "price": 800000,
+      "selling price": 800000,
+      "starter": false
+    },
+    {
+      "name": "None",
+      "price": 0,
+      "selling price": 0,
+      "starter": true
+    }
+  ],
+  "career cards": [
+    {
+      "name": "Police Officer",
+      "salary": 40000,
+      "salary max": 70000,
+      "taxes due": 15000,
+      "college career": false
+    },
+    {
+      "name": "Doctor",
+      "salary": 100000,
+      "salary max": 1000000,
+      "taxes due": 45000,
+      "college career": true
+    },
+    {
+      "name": "Astronaut",
+      "salary": 80000,
+      "salary max": 600000,
+      "taxes due": 25000,
+      "college career": true
+    },
+    {
+      "name": "Lawyer",
+      "salary": 90000,
+      "salary max": 1000000,
+      "taxes due": 40000,
+      "college career": true
+    },
+    {
+      "name": "Accountant",
+      "salary": 70000,
+      "salary max": 110000,
+      "taxes due": 30000,
+      "college career": true
+    },
+    {
+      "name": "Computer Designer",
+      "salary": 50000,
+      "salary max": 80000,
+      "taxes due": 20000,
+      "college career": true
+    },
+    {
+      "name": "Mechanic",
+      "salary": 30000,
+      "salary max": 60000,
+      "taxes due": 40000,
+      "college career": false
+    },
+    {
+      "name": "Hair Stylist",
+      "salary": 30000,
+      "salary max": 60000,
+      "taxes due": 10000,
+      "college career": false
+    },
+    {
+      "name": "Teacher",
+      "salary": 40000,
+      "salary max": 70000,
+      "taxes due": 15000,
+      "college career": true
+    },
+    {
+      "name": "Athlete",
+      "salary": 60000,
+      "salary max": 1000000,
+      "taxes due": 25000,
+      "college career": false
+    },
+    {
+      "name": "Veterinarian",
+      "salary": 100000,
+      "salary max": 120000,
+      "taxes due": 35000,
+      "college career": true
+    },
+    {
+      "name": "Entertainer",
+      "salary": 50000,
+      "salary max": 1000000,
+      "taxes due": 20000,
+      "college career": false
+    },
+    {
+      "name": "Salesperson",
+      "salary": 20000,
+      "salary max": 50000,
+      "taxes due": 5000,
+      "college career": false
+    }
+  ],
+  "spin to win cards": [
+    {
+      "number": 2
+    },
+    {
+      "number": 2
+    },
+    {
+      "number": 2
+    },
+    {
+      "number": 2
+    },
+    {
+      "number": 4
+    },
+    {
+      "number": 4
+    },
+    {
+      "number": 4
+    },
+    {
+      "number": 4
+    }
+  ],
+  "long term investment cards": [
+    {
+      "spin": 1
+    },
+    {
+      "spin": 2
+    },
+    {
+      "spin": 3
+    },
+    {
+      "spin": 4
+    },
+    {
+      "spin": 5
+    },
+    {
+      "spin": 6
+    },
+    {
+      "spin": 7
+    },
+    {
+      "spin": 8
+    },
+    {
+      "spin": 9
+    },
+    {
+      "spin": 10
+    }
+  ],
+  "life tile cards": [
+    {
+      "value": 10000
+    },
+    {
+      "value": 10000
+    },
+    {
+      "value": 10000
+    },
+    {
+      "value": 10000
+    },
+    {
+      "value": 10000
+    },
+    {
+      "value": 10000
+    },
+    {
+      "value": 10000
+    },
+    {
+      "value": 20000
+    },
+    {
+      "value": 20000
+    },
+    {
+      "value": 20000
+    },
+    {
+      "value": 20000
+    },
+    {
+      "value": 20000
+    },
+    {
+      "value": 20000
+    },
+    {
+      "value": 30000
+    },
+    {
+      "value": 30000
+    },
+    {
+      "value": 30000
+    },
+    {
+      "value": 30000
+    },
+    {
+      "value": 30000
+    },
+    {
+      "value": 40000
+    },
+    {
+      "value": 40000
+    },
+    {
+      "value": 40000
+    },
+    {
+      "value": 40000
+    },
+    {
+      "value": 50000
+    },
+    {
+      "value": 50000
+    },
+    {
+      "value": 50000
+    }
+  ]
+}
