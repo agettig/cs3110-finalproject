@@ -29,7 +29,6 @@ let rec remove_first_instance
       if h = card then acc @ t
       else remove_first_instance card t (h :: acc)
 
-(*These are all the career options in our game*)
 let extract_house json =
   let name = json |> member "name" |> to_string in
   let price = json |> member "price" |> to_int in
@@ -53,11 +52,11 @@ let extract_long_term_investment json =
   let number = json |> member "spin" |> to_int in
   Long_Term_Investment number
 
-let extract_life_tile_tiles json =
+let extract_life_tile json =
   let number = json |> member "value" |> to_int in
   Life_Tiles number
 
-let extract_house_list json =
+let extract_house_lst json =
   json |> member "house cards" |> to_list |> List.map extract_house
 
 let extract_careers_lst json =
@@ -67,7 +66,7 @@ let extract_life_tiles_lst json =
   json
   |> member "life tile cards"
   |> to_list
-  |> List.map extract_life_tile_tiles
+  |> List.map extract_life_tile
 
 let extract_spin_to_win_cards_lst json =
   json
@@ -81,7 +80,7 @@ let extract_long_term_investment_cards_lst json =
   |> to_list
   |> List.map extract_long_term_investment
 
-let tree = Yojson.Basic.from_file "data/cards.json"
+let card_tree = Yojson.Basic.from_file "data/cards.json"
 
 let exemption_card_lst =
   [
@@ -95,15 +94,15 @@ let exemption_card_lst =
     Exemption_Card;
   ]
 
-let houses = extract_house_list tree
+let houses = extract_house_lst card_tree
 
-let careers = extract_careers_lst tree
+let careers = extract_careers_lst card_tree
 
-let spin_to_win_lst = extract_spin_to_win_cards_lst tree
+let spin_to_win_lst = extract_spin_to_win_cards_lst card_tree
 
-let lg_tm_invt = extract_long_term_investment_cards_lst tree
+let lg_tm_invt = extract_long_term_investment_cards_lst card_tree
 
-let life_tiles = extract_life_tiles_lst tree
+let life_tiles = extract_life_tiles_lst card_tree
 
 (* let rec deck_string_helper (deck : cards list) (acc : string) = match
    deck with | [] -> acc | [ h ] -> ( match h with | House c -> acc ^
