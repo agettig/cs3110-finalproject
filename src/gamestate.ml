@@ -685,16 +685,17 @@ let house_tile_helper gamestate pay_player =
           (Some chosen_house, None) )
   | None -> ([ pay_player ], (None, None))
 
-(** [family_tile_helper pay_player index children] returns an updated
-    player list after pay_player lands on a familty tile and a tuple of
-    cards that needs to be added to or removed from the deck. *)
-let family_tile_helper pay_player index children =
+(** [family_tile_helper pay_player index children gamestate] returns an
+    updated player list after pay_player lands on a family tile and a
+    tuple of cards that needs to be added to or removed from the deck. *)
+let family_tile_helper pay_player index children gamestate =
   if index = married_index then
     ([ { pay_player with so = true } ], (None, None))
   else if index = elope then
     ( [ { pay_player with so = true; index_on_board = married_index } ],
       (None, None) )
   else
+    let () = print_iter print_children 0 5 gamestate.graphics in
     ( [ { pay_player with children = pay_player.children + children } ],
       (None, None) )
 
@@ -735,7 +736,7 @@ let new_player_helper tile pay_player gamestate =
   | LifeTile _ -> life_tile_helper gamestate pay_player
   | CareerTile _ -> career_tile_helper gamestate pay_player
   | FamilyTile { name; account_change; index_tile; children } ->
-      family_tile_helper pay_player index_tile children
+      family_tile_helper pay_player index_tile children gamestate
   | HouseTile _ -> house_tile_helper gamestate pay_player
   | TakeTile _ -> take_tile_helper gamestate pay_player
   | ActionTile _ -> ([ pay_player ], (None, None))
