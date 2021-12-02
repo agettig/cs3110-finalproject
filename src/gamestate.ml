@@ -4,6 +4,7 @@ open Cards
 open Bank
 open Board
 open Printing
+open IntHashtbl
 
 type gamestate = {
   current_player : player;
@@ -76,7 +77,7 @@ let finished player = player.index_on_board >= final_tile_index
 
 (** [get_tile i tiles] returns the tile with index [i]. Raises Failure
     if [tiles] is shorter than [i]. Raises Invalid Argument if [i] < 0 *)
-let get_tile i tiles : tiles = List.nth tiles i
+let get_tile i = IntHashtbl.find int_tile i
 
 (** [has_investment numSpun cards] returns true if [numSpun] matches a
     long term investment card within [cards], else false*)
@@ -786,7 +787,7 @@ let rec turn gamestate : unit =
     let pay_player = pay gamestate payraise_player player_index in
 
     (* tile on which [paid_player] is on *)
-    let tile = get_tile pay_player.index_on_board gamestate.tiles in
+    let tile = get_tile pay_player.index_on_board in
     print_tiles tile;
 
     let new_player = new_player_helper tile pay_player gamestate in

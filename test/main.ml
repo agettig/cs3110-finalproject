@@ -419,9 +419,9 @@ let tests =
          test_bool "Gamestate operation gameover true" true
            (gameover test_gamestate_finished.players);
          test_bool "Gamestate operation get_tile true" true
-           (get_tile 1 gold_tiles = test_tile);
+           (get_tile 1 = test_tile);
          test_bool "Gamestate operation get_tile false" false
-           (get_tile 1 gold_tiles = bad_test_tile);
+           (get_tile 1 = bad_test_tile);
          test_pl "Gamestate operation player_winner"
            test_player_final_balance3
            (player_winner

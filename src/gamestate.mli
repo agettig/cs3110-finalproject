@@ -28,7 +28,7 @@ val print_iter : (int -> unit) -> int -> int -> bool -> unit
 (** [print_iter pfun acc cap graphic] prints [pfun] if [graphic] is true
     else unit is returned *)
 
-val get_tile : int -> tiles list -> tiles
+val get_tile : int -> tiles
 (** [get_tile] returns the tile in [tiles] at given index [index].
     Raises : Failure if list is too short and Invalid Argument if n is
     negative. *)
