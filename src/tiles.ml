@@ -162,6 +162,40 @@ let gold_tiles =
   @ house_tile @ lawsuit_tile @ spintowin_tile @ action_tile
   @ taxes_tile
 
+module IntHash = struct
+  type t = int
+
+  let equal i j = i = j
+
+  let hash i = i land max_int
+end
+
+module IntHashtbl = Hashtbl.Make (IntHash)
+
+let get_index_of_tile = function
+  | PayTile x -> x.index_tile
+  | TaxesTile x -> x.index_tile
+  | LifeTile x -> x.index_tile
+  | CareerTile x -> x.index_tile
+  | FamilyTile x -> x.index_tile
+  | HouseTile x -> x.index_tile
+  | TakeTile x -> x.index_tile
+  | ActionTile x -> x.index_tile
+  | LawsuitTile x -> x.index_tile
+  | SpinToWinTile x -> x.index_tile
+
+let hashtable = IntHashtbl.create 100
+
+let rec tiles (tiles_lst : tiles list) (hash : tiles IntHashtbl.t) :
+    tiles IntHashtbl.t =
+  match tiles_lst with
+  | [] -> hash
+  | h :: t ->
+      IntHashtbl.add hash (get_index_of_tile h) h;
+      tiles t hash
+
+let int_tile = tiles gold_tiles hashtable
+
 let print_tiles = function
   | PayTile x ->
       Printf.printf "Name: %s\nAccount Change: %i\n \n" x.name
@@ -179,3 +213,19 @@ let print_tiles = function
         x.position_change
   | LawsuitTile x -> Printf.printf "Name: %s\n \n" x.name
   | SpinToWinTile x -> Printf.printf "Name: %s\n \n" x.name
+
+let () = print_endline (IntHashtbl.length int_tile |> string_of_int)
+
+let printer_tiles =
+  IntHashtbl.iter
+    (fun index tile ->
+      print_endline (string_of_int index);
+      print_tiles tile)
+    int_tile
+
+(* let print_test = (* print_endline "128"; print_tiles (IntHashtbl.find
+   int_tile 128); print_endline "129"; print_tiles (IntHashtbl.find
+   int_tile 129); print_endline "130"; print_tiles (IntHashtbl.find
+   int_tile 131); *) print_endline "130"; print_tiles (IntHashtbl.find
+   int_tile 130); print_endline "1"; print_tiles (IntHashtbl.find
+   int_tile 0) *)

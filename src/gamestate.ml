@@ -4,6 +4,7 @@ open Cards
 open Bank
 open Board
 open Printing
+open IntHashtbl
 
 type gamestate = {
   current_player : player;
@@ -23,6 +24,8 @@ let rec print_iter pfun acc cap graphics : unit =
   else print_endline ""
 
 let normalize_text s = String.(s |> trim |> lowercase_ascii)
+
+let rand i = Random.int i
 
 let final_tile_index = 130
 
@@ -74,7 +77,7 @@ let finished player = player.index_on_board >= final_tile_index
 
 (** [get_tile i tiles] returns the tile with index [i]. Raises Failure
     if [tiles] is shorter than [i]. Raises Invalid Argument if [i] < 0 *)
-let get_tile i tiles : tiles = List.nth tiles i
+let get_tile i = IntHashtbl.find int_tile i
 
 (** [has_investment numSpun cards] returns true if [numSpun] matches a
     long term investment card within [cards], else false*)
@@ -131,8 +134,7 @@ let rec share_cards_in_deck (acc : cards list) (deck : cards list) =
 (** [random_share_card deck] returns a random card from [deck]*)
 let random_share_card deck : cards option =
   let share_cards = share_cards_in_deck deck [] in
-  let random_num () = Random.int (List.length share_cards) in
-  List.nth_opt share_cards (random_num ())
+  List.nth_opt share_cards (rand (List.length share_cards))
 
 (** [has_house players] returns a true if a player has a house, else
     false*)
@@ -225,14 +227,13 @@ let choose_career (player : player) (deck : cards list) : cards =
     possible_career_choices player.college deck []
   in
   let first_career =
-    List.nth possible_careers
-      (Random.int (List.length possible_careers))
+    List.nth possible_careers (rand (List.length possible_careers))
   in
   let new_possible =
     remove_from_deck possible_careers first_career []
   in
   let second_career =
-    List.nth new_possible (Random.int (List.length new_possible))
+    List.nth new_possible (rand (List.length new_possible))
   in
   let print_careers () =
     print_career_card first_career;
@@ -306,8 +307,6 @@ let rec print_players = function
       Printf.printf "Player: %s\n" h.name;
       print_players t
 
-(** [has_exemption_card deck] returns Some exemption card if there is an
-    exemption card in [deck], else None *)
 let rec has_exemption_card (deck : cards list) =
   match deck with
   | [] -> None
@@ -471,8 +470,8 @@ let rec guess_lst (num : int) lst player =
   | 0 -> lst
   | _ -> guess_lst (num - 1) (spin_number player :: lst) player
 
-let num_of_guesses spin_card =
-  match spin_card with
+let num_of_guesses_helper card_opt =
+  match card_opt with
   | None -> 1
   | Some x -> (
       match x with
@@ -489,7 +488,8 @@ let player_spintowin (player : player) : player =
     | None -> player
     | Some x -> remove_card x player
   in
-  let num_of_guesses = num_of_guesses spin_card in
+
+  let num_of_guesses = num_of_guesses_helper spin_card in
 
   let player_guesses =
     guess_lst num_of_guesses [] player_removed_card
@@ -622,9 +622,6 @@ let pay gamestate payraise_player player_index =
     payday payraise_player
   else payraise_player
 
-(** [new_deck_helper cards_option gamestate] returns an updated deck by
-    removing cards given to players and inserting cards discarded by
-    players *)
 let new_deck_helper cards_options gamestate =
   match cards_options with
   | None, None -> gamestate.deck
@@ -711,22 +708,27 @@ let career_tile_helper gamestate pay_player =
       ( [ exchange_card pay_player career_chosen h ],
         (Some career_chosen, Some h) )
 
+let rec life_cards_in_deck (acc : cards list) (deck : cards list) =
+  match deck with
+  | [] -> acc
+  | h :: t -> (
+      match h with
+      | Life_Tiles _ -> life_cards_in_deck (h :: acc) t
+      | _ -> life_cards_in_deck acc t)
+
 (** [career_tile_helper gamestate pay_player] returns an updated player
     list after pay_player lands on a life tile and a tuple of cards that
     needs to be added to or removed from the deck. *)
 let life_tile_helper gamestate pay_player =
   print_iter Printing.print_life 0 11 gamestate.graphics;
+  let life_tiles_in_deck = life_cards_in_deck [] gamestate.deck in
   let rand_lf_tile =
-    List.nth life_tiles (Random.int (List.length life_tiles))
+    List.nth_opt life_tiles (rand (List.length life_tiles_in_deck))
   in
-  ([ add_card rand_lf_tile pay_player ], (Some rand_lf_tile, None))
+  match rand_lf_tile with
+  | None -> ([ pay_player ], (None, None))
+  | Some v -> ([ add_card v pay_player ], (Some v, None))
 
-(* [new_player] returns a tuple with an updated players list and a pair
-   of card options. The first entry in the card pair is a card that
-   needs to be removed from the gamedeck. The second entry are cards
-   that need to be added to the gamedeck. If None then the deck remains
-   the same. If Some x, then x is added to of removed from the deck
-   corresponding to its entry. *)
 let new_player_helper tile pay_player gamestate =
   match tile with
   | PayTile c ->
@@ -785,7 +787,7 @@ let rec turn gamestate : unit =
     let pay_player = pay gamestate payraise_player player_index in
 
     (* tile on which [paid_player] is on *)
-    let tile = get_tile pay_player.index_on_board gamestate.tiles in
+    let tile = get_tile pay_player.index_on_board in
     print_tiles tile;
 
     let new_player = new_player_helper tile pay_player gamestate in

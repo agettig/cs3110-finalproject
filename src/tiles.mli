@@ -49,3 +49,19 @@ val gold_tiles : tiles list
 
 val print_tiles : tiles -> unit
 (** [print_tiles t] prints [t]'s name and important information *)
+
+module IntHashtbl : sig
+  type 'a t
+
+  val find : 'a t -> int -> 'a
+end
+
+module IntHash : sig
+  type t = int
+
+  val equal : t -> t -> bool
+
+  val hash : t -> t
+end
+
+val int_tile : tiles IntHashtbl.t
