@@ -1,0 +1,201 @@
+{
+  "type": "object",
+  "properties": {
+    "pay tile": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "account_change": {
+            "type": "integer"
+          },
+          "index_tile": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "account_change",
+          "index_tile"
+        ]
+      }
+    }
+  },
+  "life tile": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "index_tile": {
+          "type": "integer"
+        }
+      }
+    },
+    "required": [
+      "name",
+      "index_tile"
+    ]
+  },
+  "career tile": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "index_tile": {
+          "type": "integer"
+        }
+      }
+    },
+    "required": [
+      "name",
+      "index_tile"
+    ]
+  },
+  "take tile": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "index_tile": {
+          "type": "integer"
+        }
+      }
+    },
+    "required": [
+      "name",
+      "index_tile"
+    ]
+  },
+  "family tile": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "account_change": {
+          "type": "integer"
+        },
+        "index_tile": {
+          "type": "integer"
+        },
+        "children": {
+          "type": "integer"
+        }
+      }
+    },
+    "required": [
+      "name",
+      "account_change",
+      "index_tile",
+      "children"
+    ]
+  },
+  "house tile": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "index_tile": {
+          "type": "integer"
+        }
+      }
+    },
+    "required": [
+      "name",
+      "index_tile"
+    ]
+  },
+  "lawsuit tile": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "index_tile": {
+          "type": "integer"
+        }
+      }
+    },
+    "required": [
+      "name",
+      "index_tile"
+    ]
+  },
+  "spintowin tile": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "index_tile": {
+          "type": "integer"
+        }
+      }
+    },
+    "required": [
+      "name",
+      "index_tile"
+    ]
+  },
+  "action tile": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "index_tile": {
+          "type": "integer"
+        },
+        "position_change": {
+          "type": "integer"
+        }
+      }
+    },
+    "required": [
+      "name",
+      "index_tile",
+      "position_change"
+    ]
+  },
+  "taxes tile": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "index_tile": {
+          "type": "integer"
+        }
+      }
+    },
+    "required": [
+      "name",
+      "index_tile"
+    ]
+  }
+}

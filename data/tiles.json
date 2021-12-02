@@ -1,0 +1,630 @@
+{
+  "pay tile": [
+    {
+      "name": "Initial State!",
+      "account_change": 0,
+      "index_tile": 0
+    },
+    {
+      "name": "START COLLEGE!",
+      "account_change": -100000,
+      "index_tile": 1
+    },
+    {
+      "name": "Scholarship",
+      "account_change": 20000,
+      "index_tile": 2
+    },
+    {
+      "name": "Buy books and supplies",
+      "account_change": -5000,
+      "index_tile": 3
+    },
+    {
+      "name": "Part Time Job",
+      "account_change": 10000,
+      "index_tile": 5
+    },
+    {
+      "name": "Spring Break in Florida",
+      "account_change": -5000,
+      "index_tile": 7
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 12
+    },
+    {
+      "name": "Rent Apartment",
+      "account_change": 5000,
+      "index_tile": 13
+    },
+    {
+      "name": "Inheritance",
+      "account_change": 20000,
+      "index_tile": 14
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 15
+    },
+    {
+      "name": "Snowboarding Accident",
+      "account_change": -5000,
+      "index_tile": 19
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 23
+    },
+    {
+      "name": "Win a Race",
+      "account_change": 10000,
+      "index_tile": 24
+    },
+    {
+      "name": "You won! Collect $10,000",
+      "account_change": 10000,
+      "index_tile": 26
+    },
+    {
+      "name": "Wedding Reception",
+      "account_change": -20000,
+      "index_tile": 27
+    },
+    {
+      "name": "Car Accident",
+      "account_change": -10000,
+      "index_tile": 30
+    },
+    {
+      "name": "Job Relocation",
+      "account_change": -20000,
+      "index_tile": 31
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 32
+    },
+    {
+      "name": "Win Lottery",
+      "account_change": 50000,
+      "index_tile": 34
+    },
+    {
+      "name": "Buy flat-screen plasma TV",
+      "account_change": -5000,
+      "index_tile": 36
+    },
+    {
+      "name": "Furnish baby's room",
+      "account_change": -5000,
+      "index_tile": 38
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 39
+    },
+    {
+      "name": "Win the Ultimate Idol TV Show!",
+      "account_change": 100000,
+      "index_tile": 42
+    },
+    {
+      "name": "Get best seats at the big game!",
+      "account_change": -20000,
+      "index_tile": 44
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 48
+    },
+    {
+      "name": "House Flooded",
+      "account_change": -40000,
+      "index_tile": 55
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 57
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 64
+    },
+    {
+      "name": "Take Family Cruise Vacation!",
+      "account_change": 10000,
+      "index_tile": 66
+    },
+    {
+      "name": "Win On TV Game Show!",
+      "account_change": 100000,
+      "index_tile": 68
+    },
+    {
+      "name": "Art Auction",
+      "account_change": -20000,
+      "index_tile": 70
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 71
+    },
+    {
+      "name": "Sports Camp for the Kids",
+      "account_change": -5000,
+      "index_tile": 74
+    },
+    {
+      "name": "Donate to African Orphans",
+      "account_change": -40000,
+      "index_tile": 75
+    },
+    {
+      "name": "Buy an SUV",
+      "account_change": -40000,
+      "index_tile": 78
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 79
+    },
+    {
+      "name": "TV Dance Show Winner!",
+      "account_change": 100000,
+      "index_tile": 82
+    },
+    {
+      "name": "Summer School!",
+      "account_change": -5000,
+      "index_tile": 84
+    },
+    {
+      "name": "Buy home gym",
+      "account_change": -30000,
+      "index_tile": 85
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 86
+    },
+    {
+      "name": "Buy foreign sports car",
+      "account_change": -30000,
+      "index_tile": 88
+    },
+    {
+      "name": "Find Buried Treasure",
+      "account_change": 500000,
+      "index_tile": 90
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 92
+    },
+    {
+      "name": "Buy lakeside cabin",
+      "account_change": 120000,
+      "index_tile": 93
+    },
+    {
+      "name": "Win Noble Prize!!",
+      "account_change": 100000,
+      "index_tile": 96
+    },
+    {
+      "name": "Tornado hits house!",
+      "account_change": -125000,
+      "index_tile": 98
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 99
+    },
+    {
+      "name": "Write Best Selling Book",
+      "account_change": 200000,
+      "index_tile": 101
+    },
+    {
+      "name": "College",
+      "account_change": -50000,
+      "index_tile": 102
+    },
+    {
+      "name": "Buy Sailboat!",
+      "account_change": -30000,
+      "index_tile": 104
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 105
+    },
+    {
+      "name": "Take family on theme park vacation",
+      "account_change": -22000,
+      "index_tile": 107
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 109
+    },
+    {
+      "name": "Redorate your Home",
+      "account_change": -80000,
+      "index_tile": 111
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 114
+    },
+    {
+      "name": "Sponsor Public Arts Exhibit",
+      "account_change": -125000,
+      "index_tile": 115
+    },
+    {
+      "name": "Hire Maid + Butler Service",
+      "account_change": -65000,
+      "index_tile": 118
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 120
+    },
+    {
+      "name": "Have a life saving Operation",
+      "account_change": -50000,
+      "index_tile": 123
+    },
+    {
+      "name": "Have family website designed",
+      "account_change": -50000,
+      "index_tile": 125
+    },
+    {
+      "name": "PAYDAY!",
+      "account_change": 10000,
+      "index_tile": 127
+    },
+    {
+      "name": "Host Entertainment Awards Party",
+      "account_change": -35000,
+      "index_tile": 128
+    },
+    {
+      "name": "Pension",
+      "account_change": 10000,
+      "index_tile": 129
+    }
+  ],
+  "life tile": [
+    {
+      "name": "Make new friends for life!",
+      "index_tile": 4
+    },
+    {
+      "name": "Semester In London",
+      "index_tile": 6
+    },
+    {
+      "name": "Honor Roll",
+      "index_tile": 8
+    },
+    {
+      "name": "Graduation",
+      "index_tile": 9
+    },
+    {
+      "name": "Adopt a Pet from Animal Shelter",
+      "index_tile": 16
+    },
+    {
+      "name": "Get Engaged!",
+      "index_tile": 18
+    },
+    {
+      "name": "Volunteer at Soup Kitchen",
+      "index_tile": 21
+    },
+    {
+      "name": "Engagement Party!",
+      "index_tile": 22
+    },
+    {
+      "name": "Happy Honeymoon!",
+      "index_tile": 28
+    },
+    {
+      "name": "Baby Girl!",
+      "index_tile": 40
+    },
+    {
+      "name": "Vote",
+      "index_tile": 41
+    },
+    {
+      "name": "Attend Hollywood Movie Premiere!",
+      "index_tile": 45
+    },
+    {
+      "name": "Learn sign language!",
+      "index_tile": 49
+    },
+    {
+      "name": "In-Laws Visit!",
+      "index_tile": 56
+    },
+    {
+      "name": "Coach children's sport team",
+      "index_tile": 58
+    },
+    {
+      "name": "Run for Congress!",
+      "index_tile": 63
+    },
+    {
+      "name": "Visit Grand Canyon!",
+      "index_tile": 72
+    },
+    {
+      "name": "Learn CPR",
+      "index_tile": 87
+    },
+    {
+      "name": "Adopt Pet from Animal Shelter!",
+      "index_tile": 95
+    },
+    {
+      "name": "Visit Pyramids in Egypt",
+      "index_tile": 108
+    },
+    {
+      "name": "Visit Old Soldiers' Home",
+      "index_tile": 110
+    },
+    {
+      "name": "You're a Grandparent!",
+      "index_tile": 112
+    },
+    {
+      "name": "Host Family Reunion!",
+      "index_tile": 116
+    },
+    {
+      "name": "You're a Grandparent!",
+      "index_tile": 117
+    },
+    {
+      "name": "Go Hiking in the European Alps",
+      "index_tile": 119
+    },
+    {
+      "name": "Visit the Great Wall in China",
+      "index_tile": 122
+    },
+    {
+      "name": "Run for Congress!",
+      "index_tile": 63
+    },
+    {
+      "name": "You're a Grandparent!",
+      "index_tile": 126
+    }
+  ],
+  "career tile": [
+    {
+      "name": "Choose College Career",
+      "index_tile": 10
+    },
+    {
+      "name": "START CAREER",
+      "index_tile": 11
+    },
+    {
+      "name": "Lose your job: Take a Career Card",
+      "index_tile": 35
+    },
+    {
+      "name": "Lose your job: Take a Career Card",
+      "index_tile": 52
+    },
+    {
+      "name": "Lose your job: Take a Career Card",
+      "index_tile": 60
+    },
+    {
+      "name": "Lose your job: Take a Career Card",
+      "index_tile": 80
+    }
+  ],
+  "take tile": [
+    {
+      "name": "Take a Share the Wealth card",
+      "index_tile": 17
+    },
+    {
+      "name": "Take a Share the Wealth card",
+      "index_tile": 29
+    },
+    {
+      "name": "Take a Share the Wealth card",
+      "index_tile": 47
+    },
+    {
+      "name": "Take a Share the Wealth card",
+      "index_tile": 67
+    },
+    {
+      "name": "Take a Share the Wealth card",
+      "index_tile": 81
+    },
+    {
+      "name": "Retirement",
+      "index_tile": 130
+    }
+  ],
+  "family tile": [
+    {
+      "name": "Elope",
+      "account_change": 0,
+      "index_tile": 20,
+      "children": 0
+    },
+    {
+      "name": "Get Married",
+      "account_change": 0,
+      "index_tile": 25,
+      "children": 0
+    },
+    {
+      "name": "Baby Boy!",
+      "account_change": 0,
+      "index_tile": 37,
+      "children": 1
+    },
+    {
+      "name": "Twins!",
+      "account_change": 0,
+      "index_tile": 43,
+      "children": 2
+    },
+    {
+      "name": "Baby Girl!",
+      "account_change": 0,
+      "index_tile": 46,
+      "children": 1
+    },
+    {
+      "name": "Adopt Twins!",
+      "account_change": 0,
+      "index_tile": 59,
+      "children": 2
+    },
+    {
+      "name": "Baby Boy!",
+      "account_change": 0,
+      "index_tile": 65,
+      "children": 1
+    },
+    {
+      "name": "Baby Boy!",
+      "account_change": 0,
+      "index_tile": 91,
+      "children": 1
+    }
+  ],
+  "house tile": [
+    {
+      "name": "Buy a Starter Home",
+      "index_tile": 33
+    },
+    {
+      "name": "Choose a House!",
+      "index_tile": 97
+    }
+  ],
+  "lawsuit tile": [
+    {
+      "name": "Lawsuit!",
+      "index_tile": 50
+    },
+    {
+      "name": "Lawsuit!",
+      "index_tile": 54
+    },
+    {
+      "name": "Lawsuit!",
+      "index_tile": 62
+    },
+    {
+      "name": "Lawsuit!",
+      "index_tile": 69
+    },
+    {
+      "name": "Lawsuit!",
+      "index_tile": 76
+    },
+    {
+      "name": "Lawsuit!",
+      "index_tile": 83
+    },
+    {
+      "name": "Lawsuit!",
+      "index_tile": 94
+    },
+    {
+      "name": "Lawsuit!",
+      "index_tile": 103
+    },
+    {
+      "name": "Lawsuit!",
+      "index_tile": 106
+    },
+    {
+      "name": "Lawsuit!",
+      "index_tile": 124
+    }
+  ],
+  "spintowin tile": [
+    {
+      "name": "Spin to Win!",
+      "index_tile": 51
+    },
+    {
+      "name": "Spin to Win!",
+      "index_tile": 77
+    },
+    {
+      "name": "Spin to Win!",
+      "index_tile": 89
+    },
+    {
+      "name": "Spin to Win!",
+      "index_tile": 113
+    },
+    {
+      "name": "Spin to Win!",
+      "index_tile": 121
+    }
+  ],
+  "action tile": [
+    {
+      "name": "Continue On The Path to Life!",
+      "index_tile": 53,
+      "position_change": 54
+    }
+  ],
+  "taxes tile": [
+    {
+      "name": "Taxes",
+      "index_tile": 61
+    },
+    {
+      "name": "Taxes",
+      "index_tile": 73
+    },
+    {
+      "name": "Taxes",
+      "index_tile": 100
+    }
+  ]
+}
