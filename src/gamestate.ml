@@ -471,6 +471,14 @@ let rec guess_lst (num : int) lst player =
   | 0 -> lst
   | _ -> guess_lst (num - 1) (spin_number player :: lst) player
 
+let num_of_guesses spin_card =
+  match spin_card with
+  | None -> 1
+  | Some x -> (
+      match x with
+      | SpinToWin_Card x -> x
+      | _ -> failwith "Illegal")
+
 (** [player_spintowin player] returns [player] with money added or
     subtract to balance depending on how much they invested and if they
     won the spin to win. *)
@@ -481,15 +489,7 @@ let player_spintowin (player : player) : player =
     | None -> player
     | Some x -> remove_card x player
   in
-
-  let num_of_guesses =
-    match spin_card with
-    | None -> 1
-    | Some x -> (
-        match x with
-        | SpinToWin_Card x -> x
-        | _ -> failwith "Illegal")
-  in
+  let num_of_guesses = num_of_guesses spin_card in
 
   let player_guesses =
     guess_lst num_of_guesses [] player_removed_card
