@@ -51,3 +51,5 @@ val player_to_string : player -> unit
 (** [player_to_string player] returns a string containing all info of
     the player including name, deck, balance, debt, payraise, college,
     and index on board *)
+
+val deck_string_helper : cards list -> string -> string

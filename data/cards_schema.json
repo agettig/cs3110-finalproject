@@ -1,0 +1,110 @@
+{
+  "type": "object",
+  "properties": {
+    "house cards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer"
+          },
+          "selling price": {
+            "type": "integer"
+          },
+          "starter": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "price",
+          "selling price",
+          "starter"
+        ]
+      }
+    },
+    "career cards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "salary": {
+            "type": "integer"
+          },
+          "salary max": {
+            "type": "integer"
+          },
+          "taxes due": {
+            "type": "integer"
+          },
+          "college career": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "salary",
+          "salary max",
+          "taxes due",
+          "college career"
+        ]
+      }
+    },
+    "spin to win cards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "number"
+        ]
+      }
+    },
+    "long term investment cards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "spin": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "spin"
+        ]
+      }
+    },
+    "life tile cards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "value"
+        ]
+      }
+    }
+  },
+  "required": [
+    "house cards",
+    "career cards",
+    "spin to win cards",
+    "long term investment cards",
+    "life tile cards"
+  ]
+}

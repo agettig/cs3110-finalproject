@@ -14,6 +14,8 @@ type player = {
   colorblind : colorblind;
 }
 
+(** [taxes_aux lst] will return an int representing the taxes due for
+    the career in [lst]. Requires [lst] has a career.*)
 let rec taxes_aux lst =
   match lst with
   | [] -> raise Not_found
@@ -22,10 +24,10 @@ let rec taxes_aux lst =
       | Career c -> c.taxes_due
       | _ -> taxes_aux t)
 
-(** [get_taxes player] returns the amount of taxes for [player] based on
-    their career. Requires [Player] has a career.*)
 let get_taxes player = taxes_aux player.deck
 
+(** [deck_string_helper deck acc] will return a string containing each
+    card name and what type of card it is*)
 let rec deck_string_helper (deck : cards list) (acc : string) =
   match deck with
   | [] -> acc
@@ -55,6 +57,7 @@ let rec deck_string_helper (deck : cards list) (acc : string) =
             (acc ^ "Spin to Win: " ^ string_of_int x ^ ", ")
       | _ -> deck_string_helper t acc)
 
+
 (** [add_player player_name attended_college] returns a [player] with
     initialized parameters *)
 let add_player
@@ -74,13 +77,9 @@ let add_player
     colorblind = colorblind_op;
   }
 
-(** [add_children player num_children] returns a [player] with
-    [num_children] added to their children count *)
 let add_children (player : player) (num_children : int) =
   { player with children = player.children + num_children }
 
-(** [add_significant_other player] returns a [player] with significant
-    other set to true *)
 let add_significant_other (player : player) = { player with so = true }
 
 let rec remove_from_deck
@@ -93,28 +92,18 @@ let rec remove_from_deck
       if h = card then remove_from_deck t card acc
       else remove_from_deck t card (h :: acc)
 
-(** [add_card player card] returns a [player] with [card] added to their
-    current deck *)
 let add_card (card : cards) (player : player) : player =
   { player with deck = card :: player.deck }
 
-(** [remove_card player card] returns a [player] with [card] removed
-    from their current deck *)
 let remove_card (card : cards) (player : player) : player =
   { player with deck = remove_from_deck player.deck card [] }
 
-(** [exchange_card player card_to_add card_to_remove] returns a [player]
-    with [card_to_add] added to their current deck and [card_to_remove]
-    removed from their current deck *)
 let exchange_card
     (player : player)
     (card_to_add : cards)
     (card_to_remove : cards) =
   player |> add_card card_to_add |> remove_card card_to_remove
 
-(** [player_to_string player] returns a string containing all info of
-    the player including name, deck, balance, debt, payraise, college,
-    and index on board *)
 let player_to_string (player : player) =
   let () = print_endline ("Name: " ^ player.name) in
   let () =

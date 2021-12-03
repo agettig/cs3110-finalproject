@@ -1,4 +1,5 @@
 open Tiles
+open IntHashtbl
 
 let spinner () = Random.int 10 + 1
 
@@ -17,7 +18,7 @@ let pos_to_tuple index_on_board =
   match index_on_board with
   | index ->
       if index > -1 && index < 132 then
-        (index, List.nth gold_tiles index)
+        (index, IntHashtbl.find int_tile index)
       else failwith "out of bounds position"
 
 let empty_board = BoardMap.empty
