@@ -11,6 +11,7 @@ type player = {
   pay_raise : int;
   college : bool;
   index_on_board : int;
+  colorblind : colorblind;
 }
 
 (** [taxes_aux lst] will return an int representing the taxes due for
@@ -56,7 +57,13 @@ let rec deck_string_helper (deck : cards list) (acc : string) =
             (acc ^ "Spin to Win: " ^ string_of_int x ^ ", ")
       | _ -> deck_string_helper t acc)
 
-let add_player (player_name : string) (attended_college : bool) =
+
+(** [add_player player_name attended_college] returns a [player] with
+    initialized parameters *)
+let add_player
+    (player_name : string)
+    (attended_college : bool)
+    (colorblind_op : colorblind) =
   {
     name = player_name;
     children = 0;
@@ -67,6 +74,7 @@ let add_player (player_name : string) (attended_college : bool) =
     pay_raise = 0;
     college = attended_college;
     index_on_board = (if attended_college then 0 else 10);
+    colorblind = colorblind_op;
   }
 
 let add_children (player : player) (num_children : int) =
@@ -121,5 +129,5 @@ let player_to_string (player : player) =
     ("You are on tile "
     ^ string_of_int (player.index_on_board + 1)
     ^ ".");
-  print_color_tile player.index_on_board make_board;
+  print_color_tile player.index_on_board make_board player.colorblind;
   print_endline ""

@@ -5,6 +5,7 @@ open Bank
 open Cards
 open Gamestate
 open Tiles
+open Board
 
 (* TEST PLAN: A large majority of the functions seen in the .mli files,
    such as gamestate.mli, players.mli and bank.mli, are automatically

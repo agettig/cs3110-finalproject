@@ -14,10 +14,6 @@ end
 
 module BoardMap = Map.Make (IntTilesTupl)
 
-let empty_board = BoardMap.empty
-
-(**[pos_to_tuple index_on_board] maps the position index to the specific
-   tile that the player is on *)
 let pos_to_tuple index_on_board =
   match index_on_board with
   | index ->
@@ -25,8 +21,8 @@ let pos_to_tuple index_on_board =
         (index, IntHashtbl.find int_tile index)
       else failwith "out of bounds position"
 
-(**[make_board] maps each position to a specific binding associated with
-   the tile *)
+let empty_board = BoardMap.empty
+
 let make_board =
   empty_board
   |> BoardMap.add (pos_to_tuple 0) " |  1  | "
@@ -161,75 +157,172 @@ let make_board =
   |> BoardMap.add (pos_to_tuple 129) " | 130 | "
   |> BoardMap.add (pos_to_tuple 130) " | 131 | "
 
+type colorblind =
+  | Not
+  | RedGreen
+  | BlueYellow
+
 (**[make_color] prints the board in color based on [pos] and the
    associated binding [board]*)
-let make_color pos board =
-  match pos with
-  | k, v -> (
-      match v with
-      | LifeTile l ->
-          ANSITerminal.(
-            print_string [ yellow ]
-              (BoardMap.find (k, LifeTile l) board))
-      | PayTile p ->
-          ANSITerminal.(
-            print_string [ green ] (BoardMap.find (k, PayTile p) board))
-      | TaxesTile t ->
-          print_string "";
-          ANSITerminal.(
-            print_string [ yellow ]
-              (BoardMap.find (k, TaxesTile t) board))
-      | CareerTile c ->
-          ANSITerminal.(
-            print_string [ red ] (BoardMap.find (k, CareerTile c) board))
-      | HouseTile h ->
-          ANSITerminal.(
-            print_string [ red ] (BoardMap.find (k, HouseTile h) board))
-      | TakeTile take ->
-          ANSITerminal.(
-            print_string [ yellow ]
-              (BoardMap.find (k, TakeTile take) board))
-      | ActionTile a ->
-          ANSITerminal.(
-            print_string [ yellow ]
-              (BoardMap.find (k, ActionTile a) board))
-      | LawsuitTile lawsuit ->
-          ANSITerminal.(
-            print_string [ blue ]
-              (BoardMap.find (k, LawsuitTile lawsuit) board))
-      | FamilyTile f ->
-          ANSITerminal.(
-            print_string [ yellow ]
-              (BoardMap.find (k, FamilyTile f) board))
-      | SpinToWinTile s ->
-          ANSITerminal.(
-            print_string [ yellow ]
-              (BoardMap.find (k, SpinToWinTile s) board)))
+let make_color pos board color_op =
+  match color_op with
+  | Not -> (
+      match pos with
+      | k, v -> (
+          match v with
+          | LifeTile l ->
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, LifeTile l) board))
+          | PayTile p ->
+              ANSITerminal.(
+                print_string [ green ]
+                  (BoardMap.find (k, PayTile p) board))
+          | TaxesTile t ->
+              print_string "";
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, TaxesTile t) board))
+          | CareerTile c ->
+              ANSITerminal.(
+                print_string [ red ]
+                  (BoardMap.find (k, CareerTile c) board))
+          | HouseTile h ->
+              ANSITerminal.(
+                print_string [ red ]
+                  (BoardMap.find (k, HouseTile h) board))
+          | TakeTile take ->
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, TakeTile take) board))
+          | ActionTile a ->
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, ActionTile a) board))
+          | LawsuitTile lawsuit ->
+              ANSITerminal.(
+                print_string [ blue ]
+                  (BoardMap.find (k, LawsuitTile lawsuit) board))
+          | FamilyTile f ->
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, FamilyTile f) board))
+          | SpinToWinTile s ->
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, SpinToWinTile s) board))))
+  | RedGreen -> (
+      match pos with
+      | k, v -> (
+          match v with
+          | LifeTile l ->
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, LifeTile l) board))
+          | PayTile p ->
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, PayTile p) board))
+          | TaxesTile t ->
+              print_string "";
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, TaxesTile t) board))
+          | CareerTile c ->
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, CareerTile c) board))
+          | HouseTile h ->
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, HouseTile h) board))
+          | TakeTile take ->
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, TakeTile take) board))
+          | ActionTile a ->
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, ActionTile a) board))
+          | LawsuitTile lawsuit ->
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, LawsuitTile lawsuit) board))
+          | FamilyTile f ->
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, FamilyTile f) board))
+          | SpinToWinTile s ->
+              ANSITerminal.(
+                print_string [ yellow ]
+                  (BoardMap.find (k, SpinToWinTile s) board))))
+  | BlueYellow -> (
+      match pos with
+      | k, v -> (
+          match v with
+          | LifeTile l ->
+              ANSITerminal.(
+                print_string [ blue ]
+                  (BoardMap.find (k, LifeTile l) board))
+          | PayTile p ->
+              ANSITerminal.(
+                print_string [ blue ]
+                  (BoardMap.find (k, PayTile p) board))
+          | TaxesTile t ->
+              print_string "";
+              ANSITerminal.(
+                print_string [ blue ]
+                  (BoardMap.find (k, TaxesTile t) board))
+          | CareerTile c ->
+              ANSITerminal.(
+                print_string [ blue ]
+                  (BoardMap.find (k, CareerTile c) board))
+          | HouseTile h ->
+              ANSITerminal.(
+                print_string [ blue ]
+                  (BoardMap.find (k, HouseTile h) board))
+          | TakeTile take ->
+              ANSITerminal.(
+                print_string [ blue ]
+                  (BoardMap.find (k, TakeTile take) board))
+          | ActionTile a ->
+              ANSITerminal.(
+                print_string [ blue ]
+                  (BoardMap.find (k, ActionTile a) board))
+          | LawsuitTile lawsuit ->
+              ANSITerminal.(
+                print_string [ blue ]
+                  (BoardMap.find (k, LawsuitTile lawsuit) board))
+          | FamilyTile f ->
+              ANSITerminal.(
+                print_string [ blue ]
+                  (BoardMap.find (k, FamilyTile f) board))
+          | SpinToWinTile s ->
+              ANSITerminal.(
+                print_string [ blue ]
+                  (BoardMap.find (k, SpinToWinTile s) board))))
 
-(**[print_color_tile] prints the tile associated with [pos] in [board]*)
-let print_color_tile pos board = make_color (pos_to_tuple pos) board
+let print_color_tile pos board colorblind_op =
+  make_color (pos_to_tuple pos) board colorblind_op
 
-(**[init_board] initializes each position of the board and prepares them
-   to be printed to the terminal*)
-let rec init_board pos board =
+let rec init_board pos board colorblind_op =
   match pos with
   | pos when pos = 131 -> print_endline ""
   | pos when pos mod 22 = 0 ->
       print_endline "";
       if not (pos > -1 && pos < 132) then failwith "invalid position"
       else if BoardMap.mem (pos_to_tuple pos) board then print_string "";
-      print_color_tile pos board;
-      init_board (pos + 1) board
+      print_color_tile pos board colorblind_op;
+      init_board (pos + 1) board colorblind_op
   | pos ->
       if not (pos > -1 && pos < 132) then failwith "invalid position"
       else if BoardMap.mem (pos_to_tuple pos) board then
-        print_color_tile pos board;
-      init_board (pos + 1) board
+        print_color_tile pos board colorblind_op;
+      init_board (pos + 1) board colorblind_op
 
 let rec update_board board updated_player_lst =
   match updated_player_lst with
   | [] -> board
   | (k, v) :: t -> update_board (BoardMap.add k v board) t
 
-(**[print_board] prints the initialized board [board] to the terminal*)
-let print_board board = init_board 0 board
+let print_board board colorblind_op = init_board 0 board colorblind_op
