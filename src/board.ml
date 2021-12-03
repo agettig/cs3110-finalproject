@@ -221,7 +221,7 @@ let make_color pos board color_op =
                   (BoardMap.find (k, LifeTile l) board))
           | PayTile p ->
               ANSITerminal.(
-                print_string [ yellow ]
+                print_string [ cyan ]
                   (BoardMap.find (k, PayTile p) board))
           | TaxesTile t ->
               print_string "";
@@ -230,11 +230,11 @@ let make_color pos board color_op =
                   (BoardMap.find (k, TaxesTile t) board))
           | CareerTile c ->
               ANSITerminal.(
-                print_string [ yellow ]
+                print_string [ magenta ]
                   (BoardMap.find (k, CareerTile c) board))
           | HouseTile h ->
               ANSITerminal.(
-                print_string [ yellow ]
+                print_string [ magenta ]
                   (BoardMap.find (k, HouseTile h) board))
           | TakeTile take ->
               ANSITerminal.(
@@ -246,7 +246,7 @@ let make_color pos board color_op =
                   (BoardMap.find (k, ActionTile a) board))
           | LawsuitTile lawsuit ->
               ANSITerminal.(
-                print_string [ yellow ]
+                print_string [ blue ]
                   (BoardMap.find (k, LawsuitTile lawsuit) board))
           | FamilyTile f ->
               ANSITerminal.(
@@ -262,44 +262,44 @@ let make_color pos board color_op =
           match v with
           | LifeTile l ->
               ANSITerminal.(
-                print_string [ blue ]
+                print_string [ magenta ]
                   (BoardMap.find (k, LifeTile l) board))
           | PayTile p ->
               ANSITerminal.(
-                print_string [ blue ]
+                print_string [ green ]
                   (BoardMap.find (k, PayTile p) board))
           | TaxesTile t ->
               print_string "";
               ANSITerminal.(
-                print_string [ blue ]
+                print_string [ magenta ]
                   (BoardMap.find (k, TaxesTile t) board))
           | CareerTile c ->
               ANSITerminal.(
-                print_string [ blue ]
+                print_string [ red ]
                   (BoardMap.find (k, CareerTile c) board))
           | HouseTile h ->
               ANSITerminal.(
-                print_string [ blue ]
+                print_string [ red ]
                   (BoardMap.find (k, HouseTile h) board))
           | TakeTile take ->
               ANSITerminal.(
-                print_string [ blue ]
+                print_string [ magenta ]
                   (BoardMap.find (k, TakeTile take) board))
           | ActionTile a ->
               ANSITerminal.(
-                print_string [ blue ]
+                print_string [ magenta ]
                   (BoardMap.find (k, ActionTile a) board))
           | LawsuitTile lawsuit ->
               ANSITerminal.(
-                print_string [ blue ]
+                print_string [ white ]
                   (BoardMap.find (k, LawsuitTile lawsuit) board))
           | FamilyTile f ->
               ANSITerminal.(
-                print_string [ blue ]
+                print_string [ magenta ]
                   (BoardMap.find (k, FamilyTile f) board))
           | SpinToWinTile s ->
               ANSITerminal.(
-                print_string [ blue ]
+                print_string [ magenta ]
                   (BoardMap.find (k, SpinToWinTile s) board))))
 
 let print_color_tile pos board colorblind_op =
