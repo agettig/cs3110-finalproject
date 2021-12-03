@@ -11,6 +11,7 @@ type player = {
   pay_raise : int;
   college : bool;
   index_on_board : int;
+  colorblind : colorblind;
 }
 
 let rec taxes_aux lst =
@@ -56,7 +57,10 @@ let rec deck_string_helper (deck : cards list) (acc : string) =
 
 (** [add_player player_name attended_college] returns a [player] with
     initialized parameters *)
-let add_player (player_name : string) (attended_college : bool) =
+let add_player
+    (player_name : string)
+    (attended_college : bool)
+    (colorblind_op : colorblind) =
   {
     name = player_name;
     children = 0;
@@ -67,6 +71,7 @@ let add_player (player_name : string) (attended_college : bool) =
     pay_raise = 0;
     college = attended_college;
     index_on_board = (if attended_college then 0 else 10);
+    colorblind = colorblind_op;
   }
 
 (** [add_children player num_children] returns a [player] with
@@ -135,5 +140,5 @@ let player_to_string (player : player) =
     ("You are on tile "
     ^ string_of_int (player.index_on_board + 1)
     ^ ".");
-  print_color_tile player.index_on_board make_board;
+  print_color_tile player.index_on_board make_board player.colorblind;
   print_endline ""

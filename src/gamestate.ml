@@ -354,7 +354,7 @@ let change_index_board (player : player) : player * int =
   print_endline ("Spinner: " ^ string_of_int spinner ^ "\n");
   print_endline
     ("You have moved to tile " ^ string_of_int (new_index + 1) ^ ".");
-  print_color_tile new_index make_board;
+  print_color_tile new_index make_board player.colorblind;
   print_endline "";
   print_endline "------------------------------------------";
   ({ player with index_on_board = new_index }, spinner)
@@ -731,7 +731,7 @@ let rec turn gamestate : unit =
     in
     let new_pos_lst = get_players new_play_list in
     let updated_board = update_board make_board new_pos_lst in
-    print_board updated_board;
+    print_board updated_board gamestate.current_player.colorblind;
     (* [new_deck] is the new game deck*)
     let new_deck =
       match snd new_player with

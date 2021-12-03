@@ -1,4 +1,5 @@
 open Cards
+open Board
 
 type player = {
   name : string;
@@ -10,13 +11,14 @@ type player = {
   pay_raise : int;
   college : bool;
   index_on_board : int;
+  colorblind : colorblind;
 }
 
 val get_taxes : player -> int
 (** [get_taxes player] returns the amount of taxes for [player] based on
     their career. Requires [Player] has a career.*)
 
-val add_player : string -> bool -> player
+val add_player : string -> bool -> colorblind -> player
 (** [add_player player_name attended_college] returns a [player] with
     initialized parameters *)
 

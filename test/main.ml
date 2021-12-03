@@ -5,6 +5,7 @@ open Bank
 open Cards
 open Gamestate
 open Tiles
+open Board
 
 let police_officer =
   Career
