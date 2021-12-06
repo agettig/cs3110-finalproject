@@ -271,7 +271,7 @@ let main () =
   in
 
   let print_start () =
-    print_endline "Please enter the number of players (2-6).";
+    print_endline "\nPlease enter the number of players (2-6).";
     print_string "> "
   in
 
