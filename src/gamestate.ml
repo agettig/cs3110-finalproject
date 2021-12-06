@@ -684,7 +684,7 @@ let house_tile_helper gamestate pay_player =
   | None -> ([ pay_player ], (None, None))
 
 (** [family_tile_helper pay_player index children] returns an updated
-    player list after pay_player lands on a familty tile and a tuple of
+    player list after pay_player lands on a family tile and a tuple of
     cards that needs to be added to or removed from the deck. *)
 let family_tile_helper pay_player index children graphics =
   if index = married_index then
