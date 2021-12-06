@@ -21,7 +21,7 @@ open Board
    because the OUnit tests show the functions that assist in running the
    game. Then, by manually testing the actual game extensively through
    'make play,' we are able to catch common errors that a user may
-   experience. *)
+   experience. For accessing manual tests open manualtesting.txt *)
 
 let police_officer =
   Career
