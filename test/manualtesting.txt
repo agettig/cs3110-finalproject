@@ -8,7 +8,13 @@ checked to see how plaayer's account balances changed or if cards were added
 or removed from their deck. We numbered all our tests for specific functions
 and included a description of what we were testing and looking for and a list
 of test cases. For each test case we included the inital condition or input and
-an expected and actual output.
+an expected and actual output. Additionally, we also tested our cards data 
+and tiles data by printing the lists of each to terminal. We checking that
+there were 131 tiles and they had the right constructors. We also made sure 
+that all the career cards, house tiles, share the wealth cards, and long term
+investment cards were included. After testing the JSON extraction of cards
+was correct we commented out the printing of the data to terminal, since it 
+is not needed for playing the game.
 
 1. next_player
 
