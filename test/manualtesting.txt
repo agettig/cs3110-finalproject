@@ -1,4 +1,15 @@
 Manual Testing
+
+Since most of our game uses randomness and user input, we did extensive 
+manual testing by running "make play". For our manual testing we tested the
+helper functions used in the gamestate turn function. For our tests we looked
+at the the state of players before a turn and after a turn. For example, we 
+checked to see how plaayer's account balances changed or if cards were added 
+or removed from their deck. We numbered all our tests for specific functions
+and included a description of what we were testing and looking for and a list
+of test cases. For each test case we included the inital condition or input and
+an expected and actual output.
+
 1. next_player
 
    Description: Test the correct order of players throughout the game.
