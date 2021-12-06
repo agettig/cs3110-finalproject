@@ -529,8 +529,9 @@ let rec get_players lst =
   match lst with
   | [] -> []
   | h :: t ->
+      let h_new_name = h.name ^ "   " in
       ( pos_to_tuple h.index_on_board,
-        " | " ^ String.sub h.name 0 3 ^ " | " )
+        " | " ^ String.sub h_new_name 0 3 ^ " | " )
       :: get_players t
 
 (** [payraise current_player player_moved player_index] increases the
