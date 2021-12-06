@@ -65,7 +65,7 @@ let deck_spin_exemption = [ SpinToWin_Card 2; Exemption_Card ]
 
 let deck_life_tiles_house = [ Life_Tiles 1; dbl_wide_rv ]
 
-let test_player = add_player "test player" false
+let test_player = add_player "test player" false Not
 
 let test_player_add = add_balance test_player 100
 
@@ -196,7 +196,7 @@ let test_gamestate_finished =
     graphics = false;
   }
 
-let test_player2 = add_player "player 2" false
+let test_player2 = add_player "player 2" false Not
 
 (* player on starter home tile *)
 let starter_home_player =
@@ -275,6 +275,7 @@ let vet =
     pay_raise = 0;
     account_balance = 100000;
     index_on_board = 40;
+    colorblind = Not;
   }
 
 let taxes_vet = { vet with account_balance = 65000 }
