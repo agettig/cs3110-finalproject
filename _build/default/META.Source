@@ -1,6 +1,0 @@
-description = ""
-requires = "ANSITerminal yojson"
-archive(byte) = "source.cma"
-archive(native) = "source.cmxa"
-plugin(byte) = "source.cma"
-plugin(native) = "source.cmxs"

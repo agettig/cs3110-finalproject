@@ -1,6 +1,0 @@
-(library
- (name source)
- (public_name Source)
- (libraries ANSITerminal yojson)
- (instrumentation
-  (backend bisect_ppx)))
