@@ -14,14 +14,14 @@ val turn : gamestate -> unit
 (**[turn st] prints the winner of the Game to terminal *)
 
 val player_winner : player list -> player -> player
-(** [player_winner lst] returns the winner of the game. Requires the
-    game is over *)
+(** [player_winner lst player] returns the winner of the game. Requires
+    the game is over *)
 
 val gameover : player list -> bool
 (** [gamover lst] returns true if the game is over else false *)
 
 val normalize_text : string -> string
-(** [normalize_text s] returns s with whitespace trimmed and all
+(** [normalize_text s] returns s with whitespace trimmed and in all
     lowercase *)
 
 val print_iter : (int -> unit) -> int -> int -> bool -> unit
@@ -29,9 +29,8 @@ val print_iter : (int -> unit) -> int -> int -> bool -> unit
     else unit is returned *)
 
 val get_tile : int -> tiles
-(** [get_tile] returns the tile in [tiles] at given index [index].
-    Raises : Failure if list is too short and Invalid Argument if n is
-    negative. *)
+(** [get_tile index] returns the tile in [tiles] at given index [index].
+    Raises : [Not_found] if [tile] does not exist in [int_tiles] *)
 
 val next_player : player -> player list -> player
 (** [next_player current_player players] returns the player whose turn
