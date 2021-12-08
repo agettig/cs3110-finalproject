@@ -143,5 +143,49 @@ is not needed for playing the game.
       Expected: p1 with account balance $615,000
       Actual: p1 with account balance $615,000
 
+7. pay
 
+    Description: Increases the current player's account balance based off their current salary and any 
+    pay raises that they have garnered as well 
+
+    Test Cases:
+      a. p1, who is a salesperson with a salary of $20000 and an account balance of 0. 
+      Expected: p1 with account balance $20000
+      Actual: p1 with account balance $20000
+      b. p2, who is a veterinarian with a salary of $100000, one pay raise, and an account balance of 100000. 
+      Expected: p1 with account balance $210000
+      Actual: p1 with account balance $210000
+
+8. pay_raise
+
+    Description: Increases the amount of money that a player will receive when they land on a payday tile
+
+    Test Cases:
+      a. p1, who is a veterinarian with a salary of $100000, one pay raise, and an account balance of 100000. 
+      Expected: p1 with account balance $210000
+      Actual: p1 with account balance $210000
+      b. p2, who is a mechanic with a salary of 30000, no pay raises, and an account balance of 0.
+      Expected: p2 with account balance $30000
+      Actual: p2 with account balance $30000
+
+
+9. house_tile_helper
+
+    Description: Tests to check if landing on a house tile leads to correct functionality. 
+    The player's deck must be updated with a new home and the chosen home must be removed from the game deck,
+    unless the chosen option is "None"
+
+    Test Cases: (these are sequential)
+      a. p1, who is a veterinarian with an account balance of 100000 and no starter house chooses to not buy a house. 
+      Expected: p1 with deck ["House: None"]
+      Actual: p1 with deck ["House: None"]
+      b. p2, who is a mechanic with an account balance of 0 cannot buy a house.
+      Expected: p2 with deck ["House: None"]
+      Actual: p2 with deck ["House: None"]
+      c. p3, who is an astronaut with an account balance of 200000 and no starter house chooses to buy a condo.
+      Expected: p3 with deck ["House: Condo"]
+      Actual: p3 with deck ["House: Condo"]
+      d. p4, who is an athlete with an account balance of 500000 and a starter house chooses to buy a Modern Victorian.
+      Expected: p4 with deck ["House: Modern Victorian"]
+      Actual: p3 with deck ["House: Modern Victorian"]
 

@@ -2,6 +2,45 @@ Tutorial:
 
 GAME OF LIFE 
 
+COLORBLIND OPTION:
+These are the colors of each tile based off of what colorblind option you inputted:
+
+Not:
+     - LifeTile: yellow
+     - PayTile: green
+     - TaxesTile: yellow
+     - CareerTile: red
+     - HouseTile: red
+     - TakeTile: yellow
+     - ActionTile: yellow
+     - LawsuitTile: blue
+     - FamilyTile: yellow
+     - SpintoWinTile: yellow
+
+RedGreen:
+     - LifeTile: yellow
+     - PayTile: cyan
+     - TaxesTile: yellow
+     - CareerTile: magenta
+     - HouseTile: magenta
+     - TakeTile: yellow
+     - ActionTile: yellow
+     - LawsuitTile: blue
+     - FamilyTile: yellow
+     - SpintoWinTile: yellow 
+
+BlueYellow:
+     - LifeTile: magenta
+     - PayTile: green
+     - TaxesTile: magenta
+     - CareerTile: red
+     - HouseTile: red
+     - TakeTile: magenta
+     - ActionTile: magenta
+     - LawsuitTile: white
+     - FamilyTile: magenta
+     - SpintoWinTile: magenta
+
 GAME PLAY:
 All players will spin the player by pressing any key when it is their turn. Then, you will move yourself the number of spaces spun. On your first turn, decide to either Start a Career or to Start College.
 
