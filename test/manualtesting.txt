@@ -1,0 +1,147 @@
+Manual Testing
+
+Since most of our game uses randomness and user input, we did extensive 
+manual testing by running "make play". For our manual testing we tested the
+helper functions used in the gamestate turn function. For our tests we looked
+at the the state of players before a turn and after a turn. For example, we 
+checked to see how plaayer's account balances changed or if cards were added 
+or removed from their deck. We numbered all our tests for specific functions
+and included a description of what we were testing and looking for and a list
+of test cases. For each test case we included the inital condition or input and
+an expected and actual output. Additionally, we also tested our cards data 
+and tiles data by printing the lists of each to terminal. We checking that
+there were 131 tiles and they had the right constructors. We also made sure 
+that all the career cards, house tiles, share the wealth cards, and long term
+investment cards were included. After testing the JSON extraction of cards
+was correct we commented out the printing of the data to terminal, since it 
+is not needed for playing the game.
+
+1. next_player
+
+   Description: Test the correct order of players throughout the game.
+   Precondition - there are at least 2 players in the game For testing
+   purposes the list of players will be [p1,p2,p3] 
+
+   Test Cases: 
+
+    a. current player [p1] is not on marriage tile, starter
+    home tile, normal home tile, college career tile, or career tile.
+    Expected: p2   Actual:p2
+    b. current player [p2] is not on marriage tile, starter home tile, 
+    normal home tile, college careeer tile, or career tile 
+    Expected: p2  Actual: p2
+
+    c. current player [p3] is not on marriage tile, starter home tile, 
+    normal home tile, college career tile, or career tile
+    Expected: p1   Actual: p1
+
+    d. current player [p1] is on the marriage tile	
+    Expected : p1	  Actual: p1
+
+    e. current player [p1] is on the starter home tile
+    Expected : p1	  Actual: p1
+
+    f. current player [p1] is on the normal home tile
+    Expected : p1	  Actual: p1
+
+    g. current player [p1] is on the college career tile
+    Expected : p1	  Actual: p1
+
+    h. current player [p1] is on the career tile	p1	p1
+    Expected : p1	  Actual: p1
+
+2. life_tile_helper
+
+    Description : Check to see if a life tile was been added to
+    the current players turn during their next turn. Note: given the number
+    of Life Tiles in the game, players will not run out of tiles, and if so
+    error handling is included but can't be tested through manual testing of
+    running the game
+
+    Test Cases: 
+      a. p1 landed on life tile of graduation with 
+      current deck = [Spin to Win: 2, Exemption, Exemption Card] 
+      Expected: p1 with deck = [LifeTile: Spin to Win: 2, Exemption, Exemption Card]
+      Actual: p1 with deck = [LifeTile: Spin to Win: 2, Exemption, Exemption Card]
+
+3. lawsuit_tile_helper
+  
+  Description: Test to check if lawsuit function works properly. Check if
+  correct players list is printed on terminal of all players except the current
+  player. Current player then selects a player to sue from list printed. If 
+  chosen player has an exemption card then their account balance won't change
+  otherwise, the player will lose $100,000. Checks for a decreasing account 
+  balance or if exemption card is removed from player deck.
+  Current game players - [p1,p2,p3]
+
+    Test Cases: 
+    a. p1 lands on lawsuit tile (p2 and p3 are printed to terminal) p1 chooses
+    to sue p2. p2 has no exemption card with a deck = [Career: Doctor] and 
+    has a current balance of $230,000.
+    Expected:  p2 with account balance $130,000 with the same deck
+    Actual:  p2 with account balance $130,000 with the same deck
+
+    b. p1 lands on lawsuit tile (p2 and p3 are printed to terminal) p1 chooses
+    to sue p2. p2 has an exemption card with deck = [Career: Veterinarian; Exemption Card] 
+    and has a current balance of $230,000.
+    Expected:  p2 with account balance $230,000 and deck = [Career: Veterinarian]
+    Actual:  p2 with account balance $230,000 and deck = [Career: Veterinarian]
+
+4. long_term_investments
+
+    Description : Tests to check if long_term_investments are working properly.
+    Check if player balance is adjusted at the beginning of the game when bought.
+    Check that player deck contains the proper long_term_investment tile.
+    Check if player balance is adjusted depending on the number spun.
+
+    Test Cases: 
+      a. p1 chooses not go to college and purchase long term investment tile 1
+      Expected: p1 with account balance $0 and deck = [Long Term Investments: 1]
+      Actual: p1 with account balance $0 and deck = [Long Term Investments: 1]
+
+      b. p1 chooses not go to college and not purchase any long term investment
+      Expected: p1 with account balance $10,000 and deck = []
+      Actual: p1 with account balance $10,000 and deck = []
+
+      c. p1, who has $70,000 and long term investment tile 1, spins a 1
+      Expected: p1 with account balance $75,000
+      Actual: p1 with account balance $75,000
+
+      d. p1, who has $70,000 and long term investment tile 1, spins a 2
+      Expected: p1 with account balance $70,000
+      Actual: p1 with account balance $70,000
+
+5. family_tile_helper
+
+    Description : Tests to check if family tiles are working properly. If a
+    player ends up on the married tile, their significant other field must 
+    set to true. If a player ends up on the elope tile, their significant other
+    field must be set to true and index must be set to the married tile. If
+    a player ends up on a children tile, their number of children must
+    be adjusted.
+
+    Test Cases: 
+      a. p1, who is not married, lands on tile with index 20 (elope)
+      Expected: p1 with index_on_board 25 (married) and married true
+      Actual: p1 with index_on_board 25 (married) and married true
+
+      b. p1, who is not married, lands on tile with index 25 (married)
+      Expected: p1 with married true
+      Actual: p1 with married true
+
+      c. p1, who has no children, lands on tile with index 43 (twins)
+      Expected: p1 with 2 children
+      Actual: p1 with 2 children
+
+6. taxes_tile
+
+    Description : Check if a player is properly taxed based on their current
+    career when they land on a taxes tile.
+
+    Test Cases: 
+      a. p1, who is a salesperson has $620,000, lands on tile with index 74 (taxes)
+      Expected: p1 with account balance $615,000
+      Actual: p1 with account balance $615,000
+
+
+

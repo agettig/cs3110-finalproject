@@ -17,7 +17,7 @@ let new_player () =
   let () = print_string "\nEnter player name: " in
   let name = read_line () in
   let print_q () =
-    print_string "Do you want to go to college? Input yes or no\n> "
+    print_string "\nDo you want to go to college? Input yes or no\n> "
   in
   let rec college () =
     print_q ();
@@ -30,7 +30,7 @@ let new_player () =
           college ())
   in
   let print_q1 () =
-    print_string "\nAre you colorblind? Input yes or no: "
+    print_string "\nAre you colorblind? Input yes or no\n> "
   in
   let color_options () =
     print_string "\nAre you red-green or blue-yellow colorblind?: "
@@ -38,28 +38,33 @@ let new_player () =
   let rec check_colorblind () =
     print_q1 ();
     match read_line () with
-    | x -> (
-        if x |> normalize_text |> String.equal "yes" then
+    | x ->
+        if (x |> normalize_text |> String.equal) "no" then Not
+        else if x |> normalize_text |> String.equal "yes" then (
           color_options ();
-        match read_line () with
-        | c ->
-            if c |> normalize_text |> String.equal "red-green" then
-              RedGreen
-            else if c |> normalize_text |> String.equal "blue-yellow"
-            then BlueYellow
-            else if x |> normalize_text |> String.equal "no" then Not
-            else (
-              print_endline "\nInvalid input";
-              check_colorblind ()))
+          match read_line () with
+          | c ->
+              if c |> normalize_text |> String.equal "red-green" then
+                RedGreen
+              else if c |> normalize_text |> String.equal "blue-yellow"
+              then BlueYellow
+              else (
+                print_endline "\nInvalid input";
+                check_colorblind ()))
+        else (
+          print_endline "\nInvalid input";
+          check_colorblind ())
   in
   let init_player =
     add_player (String.trim name) (college ()) (check_colorblind ())
   in
   let print_q2 () =
     print_string
-      "Do you want to buy a long term investment? Input yes or no \n> "
+      "\n\
+       Do you want to buy a long term investment? Input yes or no \n\
+       > "
   in
-  let print_q3 () = print_string "Enter a number 1 through 10: " in
+  let print_q3 () = print_string "\nEnter a number 1 through 10: " in
   let rec num () =
     print_q3 ();
     match read_line () with
@@ -266,7 +271,7 @@ let main () =
   in
 
   let print_start () =
-    print_endline "Please enter the number of players (2-6).";
+    print_endline "\nPlease enter the number of players (2-6).";
     print_string "> "
   in
 

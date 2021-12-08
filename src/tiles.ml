@@ -216,16 +216,5 @@ let print_tiles = function
 
 let () = print_endline (IntHashtbl.length int_tile |> string_of_int)
 
-let printer_tiles =
-  IntHashtbl.iter
-    (fun index tile ->
-      print_endline (string_of_int index);
-      print_tiles tile)
-    int_tile
-
-(* let print_test = (* print_endline "128"; print_tiles (IntHashtbl.find
-   int_tile 128); print_endline "129"; print_tiles (IntHashtbl.find
-   int_tile 129); print_endline "130"; print_tiles (IntHashtbl.find
-   int_tile 131); *) print_endline "130"; print_tiles (IntHashtbl.find
-   int_tile 130); print_endline "1"; print_tiles (IntHashtbl.find
-   int_tile 0) *)
+(* let printer_tiles = IntHashtbl.iter (fun index tile -> print_endline
+   (string_of_int index); print_tiles tile) int_tile *)

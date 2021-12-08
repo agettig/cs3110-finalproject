@@ -21,7 +21,7 @@ open Board
    because the OUnit tests show the functions that assist in running the
    game. Then, by manually testing the actual game extensively through
    'make play,' we are able to catch common errors that a user may
-   experience. *)
+   experience. To access manual tests open manualtesting.txt *)
 
 let police_officer =
   Career
@@ -61,11 +61,9 @@ let dbl_wide_rv =
       starter = false;
     }
 
-let deck_spin_exemption = [ SpinToWin_Card 2; Exemption_Card ]
-
 let deck_life_tiles_house = [ Life_Tiles 1; dbl_wide_rv ]
 
-let test_player = add_player "test player" false
+let test_player = add_player "test player" false Not
 
 let test_player_add = add_balance test_player 100
 
@@ -122,11 +120,6 @@ let test_player_final_balance3 =
   test_player_tax_debt |> add_card mobile_home |> add_card dbl_wide_rv
   |> add_card (Life_Tiles 40000)
   |> add_card (Life_Tiles 40000)
-
-(* Need to test functions in gamestate - change_index_board -
-   player_turn *)
-
-(* Need to test function in player - add_player *)
 
 let test_tile =
   PayTile
@@ -196,74 +189,6 @@ let test_gamestate_finished =
     graphics = false;
   }
 
-let test_player2 = add_player "player 2" false
-
-(* player on starter home tile *)
-let starter_home_player =
-  { test_player with name = "starter home"; index_on_board = 33 }
-
-(* player on second house tile *)
-let home_player =
-  { test_player with name = "home"; index_on_board = 97 }
-
-(* player on the career tile*)
-let career_player =
-  { test_player with name = "career"; index_on_board = 11 }
-
-(* player on the married tile*)
-let married_player =
-  { test_player with name = "married"; index_on_board = 25 }
-
-(* marriage tile *)
-let married_tile =
-  FamilyTile
-    {
-      name = "Get Married";
-      account_change = 0;
-      index_tile = 25;
-      children = 0;
-    }
-
-(* elope_player *)
-let elope_player =
-  { test_player with name = "elope"; index_on_board = 20 }
-
-(*elope player to marriage*)
-let elope_married_player =
-  { test_player with name = "elope"; index_on_board = 25; so = true }
-
-(* elope tile *)
-let elope_tile =
-  FamilyTile
-    {
-      name = "Elope!";
-      account_change = 0;
-      index_tile = 20;
-      children = 0;
-    }
-
-(* children tile*)
-let baby_tile =
-  FamilyTile
-    {
-      name = "Baby Boy!";
-      account_change = 0;
-      index_tile = 37;
-      children = 1;
-    }
-
-(* player with 1 child *)
-let family_player = { test_player with children = 1 }
-
-(* player who won scholarship of $20000 *)
-let scholarship_player = { test_player with account_balance = 30000 }
-
-let paytile =
-  PayTile
-    { name = "Scholarship"; account_change = 20000; index_tile = 2 }
-
-let tax_tile = TaxesTile { name = "Taxes"; index_tile = 61 }
-
 let vet =
   {
     name = "vet";
@@ -275,19 +200,13 @@ let vet =
     pay_raise = 0;
     account_balance = 100000;
     index_on_board = 40;
+    colorblind = Not;
   }
 
 let taxes_vet = { vet with account_balance = 65000 }
 
-(* let print_terminal = test_player_final_balance3 |>
-   player_to_string *)
-
 let test_int (name : string) (exp_out : int) (act_out : int) =
   name >:: fun _ -> assert_equal exp_out act_out ~printer:string_of_int
-
-(* let test_str (name : string) (exp_out : string) (act_out : string) =
-   name >:: fun _ -> assert_equal exp_out act_out
-   ~printer:String.escaped *)
 
 let test_bool (name : string) (exp_out : bool) (act_out : bool) =
   name >:: fun _ -> assert_equal exp_out act_out ~printer:string_of_bool
@@ -304,21 +223,6 @@ let test_int (name : string) (exp_out : int) (act_out : int) =
 let test_string (name : string) (exp_out : string) (act_out : string) =
   name >:: fun _ -> assert_equal exp_out act_out ~printer:(fun x -> x)
 
-let test_cards_option
-    (name : string)
-    (exp_out : cards option)
-    (act_out : cards option) =
-  name >:: fun _ -> assert_equal exp_out act_out
-
-let test_next_player_stop_tiles
-    (name : string)
-    (expected_and_current : player)
-    (player_lst : player list) =
-  name >:: fun _ ->
-  assert_equal expected_and_current
-    (next_player expected_and_current player_lst) ~printer:(fun x ->
-      x.name)
-
 let test_new_deck_helper
     (name : string)
     (expected : cards list)
@@ -326,25 +230,6 @@ let test_new_deck_helper
     (gamestate : gamestate) =
   name >:: fun _ ->
   assert_equal expected (new_deck_helper card_opt gamestate)
-
-let test_assert_raises (name : string) exp_out act_out =
-  name >:: fun _ -> assert_raises exp_out act_out
-
-let play_str player = player.name ^ string_of_int player.account_balance
-
-let rec print_players = function
-  | [] -> ""
-  | h :: t -> play_str h ^ print_players t
-
-let test_new_player_helper
-    (name : string)
-    expected
-    player
-    tile
-    gamestate =
-  name >:: fun _ ->
-  assert_equal expected (new_player_helper tile player gamestate)
-    ~printer:(fun x -> print_players (fst x))
 
 let tests =
   "test suite for sum"
@@ -434,45 +319,6 @@ let tests =
               test_player_final_balance1);
          test_string "test normalize text" "test"
            (normalize_text "        TesT    ");
-         test_next_player_stop_tiles "test next_player married player"
-           married_player
-           [ married_player; test_player2 ];
-         test_next_player_stop_tiles
-           "test next_player starter home player" starter_home_player
-           [ starter_home_player; test_player2 ];
-         test_next_player_stop_tiles "test next_player home player"
-           home_player
-           [ starter_home_player; test_player2; home_player ];
-         test_next_player_stop_tiles "test next_player career player"
-           career_player
-           [
-             starter_home_player;
-             test_player2;
-             career_player;
-             home_player;
-           ];
-         test_assert_raises "test next player with player not in list"
-           (Failure "Not found") (fun () ->
-             next_player test_player
-               [ starter_home_player; test_player2 ]);
-         test_cards_option "test has_spin_card - no spin card" None
-           (has_spin_card deck_life_tiles_house);
-         test_cards_option "test has_spin_card - spin card"
-           (Some (SpinToWin_Card 2))
-           (has_spin_card deck_spin_exemption);
-         test_cards_option "test has_exemption_card - no exemption card"
-           None
-           (has_exemption_card deck_life_tiles_house);
-         test_cards_option "test has_exemption_card - exemption card"
-           (Some Exemption_Card)
-           (has_exemption_card deck_spin_exemption);
-         test_int "test number of guesses with no spin card" 1
-           (num_of_guesses_helper None);
-         test_int "test number of guesses with spin card 2" 2
-           (num_of_guesses_helper (Some (SpinToWin_Card 2)));
-         test_assert_raises "test number of guesses with career card"
-           (Failure "Illegal") (fun () ->
-             num_of_guesses_helper (Some veterinarian));
          test_new_deck_helper
            "card options (None, None) returns same deck"
            deck_life_tiles_house (None, None) test_gamestate_new_deck;
@@ -492,35 +338,6 @@ let tests =
            (Exemption_Card :: deck_life_tiles_house)
            (None, Some Exemption_Card)
            test_gamestate_new_deck;
-         test_list "life tile cards in list - no life tile cards" []
-           (life_cards_in_deck [] deck_spin_exemption);
-         test_list "life tile cards in list - 1 life tile card"
-           [ Life_Tiles 1 ]
-           (life_cards_in_deck [] deck_life_tiles_house);
-         test_new_player_helper "test new_player_helper for action tile"
-           ([ test_player ], (None, None))
-           test_player
-           (ActionTile
-              { name = ""; position_change = 0; index_tile = 0 })
-           test_gamestate;
-         test_new_player_helper
-           "test new_player_helper for family marriage tile"
-           ([ { married_player with so = true } ], (None, None))
-           married_player married_tile test_gamestate;
-         test_new_player_helper
-           "test new_player_helper for family elope tile"
-           ([ elope_married_player ], (None, None))
-           elope_player elope_tile test_gamestate;
-         test_new_player_helper
-           "test new_player_helper for family children tile"
-           ([ family_player ], (None, None))
-           test_player baby_tile test_gamestate;
-         test_new_player_helper "test new_player_helper for pay tile"
-           ([ scholarship_player ], (None, None))
-           test_player paytile test_gamestate;
-         test_new_player_helper "test new_player_helper for tax tile"
-           ([ taxes_vet ], (None, None))
-           vet tax_tile test_gamestate;
        ]
 
 let _ = run_test_tt_main tests
