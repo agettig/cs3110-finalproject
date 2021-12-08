@@ -30,10 +30,9 @@ let new_player () =
           college ())
   in
   let print_q1 () =
-
     print_string "\nAre you colorblind? Input yes or no \n> "
-
   in
+
   let color_options () =
     print_string "\nAre you red-green or blue-yellow colorblind?: "
   in
@@ -52,11 +51,9 @@ let new_player () =
     print_q1 ();
     match read_line () with
     | x ->
-
         if x |> normalize_text |> String.equal "yes" then
           choose_colorblind ()
         else if x |> normalize_text |> String.equal "no" then Not
-
         else (
           print_endline "\nInvalid input";
           check_colorblind ())
@@ -213,12 +210,50 @@ let main () =
             "\n\
              Tutorial: GAME OF LIFE \n\
             \            \n\
-             GAME PLAY:\n\
+             COLORBLIND OPTION:\n\
+             These are the colors of each tile based off of what \
+             colorblind option you inputted:\n\n\
+             Not:\n\
+            \     - LifeTile: yellow\n\
+            \     - PayTile: green\n\
+            \     - TaxesTile: yellow\n\
+            \     - CareerTile: red\n\
+            \     - HouseTile: red\n\
+            \     - TakeTile: yellow\n\
+            \     - ActionTile: yellow\n\
+            \     - LawsuitTile: blue\n\
+            \     - FamilyTile: yellow\n\
+            \     - SpintoWinTile: yellow\n\n\
+             RedGreen:\n\
+            \     - LifeTile: yellow\n\
+            \     - PayTile: cyan\n\
+            \     - TaxesTile: yellow\n\
+            \     - CareerTile: magenta\n\
+            \     - HouseTile: magenta\n\
+            \     - TakeTile: yellow\n\
+            \     - ActionTile: yellow\n\
+            \     - LawsuitTile: blue\n\
+            \     - FamilyTile: yellow\n\
+            \     - SpintoWinTile: yellow \n\n\
+             BlueYellow:\n\
+            \     - LifeTile: magenta\n\
+            \     - PayTile: green\n\
+            \     - TaxesTile: magenta\n\
+            \     - CareerTile: red\n\
+            \     - HouseTile: red\n\
+            \     - TakeTile: magenta\n\
+            \     - ActionTile: magenta\n\
+            \     - LawsuitTile: white\n\
+            \     - FamilyTile: magenta\n\
+            \     - SpintoWinTile: magenta\n\
+            \             GAME PLAY:\n\
             \ \n\
              All players will spin the player by pressing any key when \
              it is their turn. Then, you will move yourself the number \
              of spaces spun. On your first turn, decide to either \
-             Start a Career or to Start College.\n\
+             Start a Career or to Start College. After your turn is \
+             finished, the board will print the updated board with the \
+             player's new position on the board.\n\
             \            \n\
             \            Career Path: You have the option to pick \
              between two random careers and then will move along that \
