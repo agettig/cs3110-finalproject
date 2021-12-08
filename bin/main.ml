@@ -30,28 +30,34 @@ let new_player () =
           college ())
   in
   let print_q1 () =
-    print_string "\nAre you colorblind? Input yes or no: "
+    print_string "\nAre you colorblind? Input yes or no \n> "
   in
   let color_options () =
     print_string "\nAre you red-green or blue-yellow colorblind?: "
   in
+  let rec choose_colorblind () =
+    color_options ();
+    match read_line () with
+    | c ->
+        if c |> normalize_text |> String.equal "red-green" then RedGreen
+        else if c |> normalize_text |> String.equal "blue-yellow" then
+          BlueYellow
+        else (
+          print_endline "\nInvalid input";
+          choose_colorblind ())
+  in
   let rec check_colorblind () =
     print_q1 ();
     match read_line () with
-    | x -> (
+    | x ->
         if x |> normalize_text |> String.equal "yes" then
-          color_options ();
-        match read_line () with
-        | c ->
-            if c |> normalize_text |> String.equal "red-green" then
-              RedGreen
-            else if c |> normalize_text |> String.equal "blue-yellow"
-            then BlueYellow
-            else if x |> normalize_text |> String.equal "no" then Not
-            else (
-              print_endline "\nInvalid input";
-              check_colorblind ()))
+          choose_colorblind ()
+        else if x |> normalize_text |> String.equal "no" then Not
+        else (
+          print_endline "\nInvalid input";
+          check_colorblind ())
   in
+
   let init_player =
     add_player (String.trim name) (college ()) (check_colorblind ())
   in
