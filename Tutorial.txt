@@ -42,7 +42,7 @@ BlueYellow:
      - SpintoWinTile: magenta
 
 GAME PLAY:
-All players will spin the player by pressing any key when it is their turn. Then, you will move yourself the number of spaces spun. On your first turn, decide to either Start a Career or to Start College.
+All players will spin the player by pressing any key when it is their turn. Then, you will move yourself the number of spaces spun. On your first turn, decide to either Start a Career or to Start College. After your turn is finished, the board will print the updated board with the player's new position on the board.
 
 Career Path: You have the option to pick between two random careers and then will move along that path.
 College Path: Borrow $100,000 from the bank for tuition and you will be in debt for $100,000. 
