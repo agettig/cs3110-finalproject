@@ -6,7 +6,7 @@
  (archives (byte source.cma) (native source.cmxa))
  (plugins (byte source.cma) (native source.cmxs))
  (native_archives source.a)
- (requires ANSITerminal)
+ (requires ANSITerminal yojson)
  (main_module_name Source)
  (modes byte native)
  (modules

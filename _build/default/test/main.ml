@@ -5,6 +5,7 @@ open Bank
 open Cards
 open Gamestate
 open Tiles
+open Board
 
 (* TEST PLAN: A large majority of the functions seen in the .mli files,
    such as gamestate.mli, players.mli and bank.mli, are automatically
@@ -20,7 +21,7 @@ open Tiles
    because the OUnit tests show the functions that assist in running the
    game. Then, by manually testing the actual game extensively through
    'make play,' we are able to catch common errors that a user may
-   experience. *)
+   experience. To access manual tests open manualtesting.txt *)
 
 let police_officer =
   Career
@@ -60,7 +61,11 @@ let dbl_wide_rv =
       starter = false;
     }
 
-let test_player = add_player "test player" false
+let test_deck = [ veterinarian; mobile_home; dbl_wide_rv ]
+
+let deck_life_tiles_house = [ Life_Tiles 1; dbl_wide_rv ]
+
+let test_player = add_player "test player" false Not
 
 let test_player_add = add_balance test_player 100
 
@@ -78,6 +83,9 @@ let test_player_add_card = add_card police_officer test_player
 
 let test_player_remove_card =
   remove_card police_officer test_player_add_card
+
+let test_player_remove_empty_card =
+  remove_card police_officer test_player
 
 let test_player_exchange_card =
   exchange_card test_player_add_card veterinarian police_officer
@@ -117,11 +125,6 @@ let test_player_final_balance3 =
   test_player_tax_debt |> add_card mobile_home |> add_card dbl_wide_rv
   |> add_card (Life_Tiles 40000)
   |> add_card (Life_Tiles 40000)
-
-(* Need to test functions in gamestate - change_index_board -
-   player_turn *)
-
-(* Need to test function in player - add_player *)
 
 let test_tile =
   PayTile
@@ -164,6 +167,15 @@ let test_gamestate =
     graphics = false;
   }
 
+let test_gamestate_new_deck =
+  {
+    current_player = test_player;
+    players = [ test_player ];
+    tiles = [];
+    deck = deck_life_tiles_house;
+    graphics = false;
+  }
+
 let test_gamestate_no_stops =
   {
     current_player = test_player_stop_3;
@@ -182,15 +194,24 @@ let test_gamestate_finished =
     graphics = false;
   }
 
-(* let print_terminal = test_player_final_balance3 |>
-   player_to_string *)
+let vet =
+  {
+    name = "vet";
+    children = 0;
+    deck = [ veterinarian ];
+    so = false;
+    college = true;
+    debt = 0;
+    pay_raise = 0;
+    account_balance = 100000;
+    index_on_board = 40;
+    colorblind = Not;
+  }
+
+let taxes_vet = { vet with account_balance = 65000 }
 
 let test_int (name : string) (exp_out : int) (act_out : int) =
   name >:: fun _ -> assert_equal exp_out act_out ~printer:string_of_int
-
-(* let test_str (name : string) (exp_out : string) (act_out : string) =
-   name >:: fun _ -> assert_equal exp_out act_out
-   ~printer:String.escaped *)
 
 let test_bool (name : string) (exp_out : bool) (act_out : bool) =
   name >:: fun _ -> assert_equal exp_out act_out ~printer:string_of_bool
@@ -207,11 +228,26 @@ let test_int (name : string) (exp_out : int) (act_out : int) =
 let test_string (name : string) (exp_out : string) (act_out : string) =
   name >:: fun _ -> assert_equal exp_out act_out ~printer:(fun x -> x)
 
+let test_new_deck_helper
+    (name : string)
+    (expected : cards list)
+    (card_opt : cards option * cards option)
+    (gamestate : gamestate) =
+  name >:: fun _ ->
+  assert_equal expected (new_deck_helper card_opt gamestate)
+
 let tests =
   "test suite for sum"
   >::: [
-         test_int "Type player intialization" 10000
+         test_int "Type player intialization balance" 10000
            test_player.account_balance;
+         test_int "Type player intialization index_on_board" 10
+           test_player.index_on_board;
+         test_int "Type player intialization children" 0
+           test_player.children;
+         test_bool "Type player intialization so" false test_player.so;
+         test_string "Type player intialization name" "test player"
+           test_player.name;
          test_int "Bank operation add_balance" 10100
            test_player_add.account_balance;
          test_int "Bank operation payraise" 10000
@@ -238,12 +274,26 @@ let tests =
            test_player_tax_debt.debt;
          test_int "Bank operation final balance" 420000
            test_player_final_balance;
+         test_list "Player operation remove_card empty" test_player.deck
+           (remove_card police_officer test_player).deck;
+         test_list "Player operation remove_from_deck"
+           [ mobile_home; veterinarian ]
+           (remove_from_deck test_deck dbl_wide_rv []);
+         test_int "Player operation get_taxes" 15000
+           (get_taxes test_player_add_card);
          test_int "Player operation add_children" 2
            test_player_children.children;
+         test_int "Player operation add_children on non zero number" 5
+           (add_children test_player_children 3).children;
+         test_bool "Player operation add_player initializes with no so"
+           false test_player.so;
          test_bool "Player operation add_significant_other" true
            test_player_so.so;
          test_list "Player operation add_card police_officer"
            [ police_officer ] test_player_add_card.deck;
+         test_list "Player operation add_card second right order"
+           [ veterinarian; police_officer ]
+           (add_card veterinarian test_player_add_card).deck;
          test_list "Player operation remove_card police_officer" []
            test_player_remove_card.deck;
          test_list
@@ -281,9 +331,9 @@ let tests =
          test_bool "Gamestate operation gameover true" true
            (gameover test_gamestate_finished.players);
          test_bool "Gamestate operation get_tile true" true
-           (get_tile 1 gold_tiles = test_tile);
+           (get_tile 1 = test_tile);
          test_bool "Gamestate operation get_tile false" false
-           (get_tile 1 gold_tiles = bad_test_tile);
+           (get_tile 1 = bad_test_tile);
          test_pl "Gamestate operation player_winner"
            test_player_final_balance3
            (player_winner
@@ -293,8 +343,31 @@ let tests =
                 test_player_final_balance3;
               ]
               test_player_final_balance1);
-         test_string "test normalize text" "test"
+         test_string "test normalize text1" "test"
            (normalize_text "        TesT    ");
+         test_string "test normalize text2" "test beep"
+           (normalize_text "tEst beeP  ");
+         test_string "test normalize text3" "test boop"
+           (normalize_text "    tesT bOOp");
+         test_new_deck_helper
+           "card options (None, None) returns same deck"
+           deck_life_tiles_house (None, None) test_gamestate_new_deck;
+         test_new_deck_helper
+           "card options (Some (dbl_wide_rv), None) returns same deck"
+           [ Life_Tiles 1 ]
+           (Some dbl_wide_rv, None)
+           test_gamestate_new_deck;
+         test_new_deck_helper
+           "card options (Some (dbl_wide_rv), Some Exemption Card) \
+            returns same deck"
+           [ Life_Tiles 1; Exemption_Card ]
+           (Some dbl_wide_rv, Some Exemption_Card)
+           test_gamestate_new_deck;
+         test_new_deck_helper
+           "card options (None, Some Exemption Card) returns same deck"
+           (Exemption_Card :: deck_life_tiles_house)
+           (None, Some Exemption_Card)
+           test_gamestate_new_deck;
        ]
 
 let _ = run_test_tt_main tests

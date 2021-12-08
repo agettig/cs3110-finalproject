@@ -214,7 +214,5 @@ let print_tiles = function
   | LawsuitTile x -> Printf.printf "Name: %s\n \n" x.name
   | SpinToWinTile x -> Printf.printf "Name: %s\n \n" x.name
 
-let () = print_endline (IntHashtbl.length int_tile |> string_of_int)
-
 (* let printer_tiles = IntHashtbl.iter (fun index tile -> print_endline
    (string_of_int index); print_tiles tile) int_tile *)

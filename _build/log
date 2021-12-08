@@ -1,10 +1,10 @@
 # dune exec test/main.exe
 # OCAMLPARAM: unset
-# Workspace root: /home/aqg3/3110/cs3110-finalproject
-$ /usr/bin/nproc > /tmp/dunefa7c00.output 2> /dev/null
-# Auto-detected concurrency: 8
+# Workspace root: /home/connorjchen2784/3110/cs3110-finalproject
+$ /usr/bin/nproc > /tmp/dunedca582.output 2> /dev/null
+# Auto-detected concurrency: 12
 # disable binary cache
-$ /home/aqg3/.opam/cs3110-2021fa/bin/ocamlc.opt -config > /tmp/duneed0908.output
+$ /home/connorjchen2784/.opam/cs3110-2021fa/bin/ocamlc.opt -config > /tmp/duneccc3a8.output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -14,37 +14,48 @@ $ /home/aqg3/.opam/cs3110-2021fa/bin/ocamlc.opt -config > /tmp/duneed0908.output
 #  ; fdo_target_exe = None
 #  ; build_dir = "default"
 #  ; toplevel_path =
-#      Some External "/home/aqg3/.opam/cs3110-2021fa/lib/toplevel"
-#  ; ocaml_bin = External "/home/aqg3/.opam/cs3110-2021fa/bin"
-#  ; ocaml = Ok External "/home/aqg3/.opam/cs3110-2021fa/bin/ocaml"
-#  ; ocamlc = External "/home/aqg3/.opam/cs3110-2021fa/bin/ocamlc.opt"
-#  ; ocamlopt = Ok External "/home/aqg3/.opam/cs3110-2021fa/bin/ocamlopt.opt"
-#  ; ocamldep = Ok External "/home/aqg3/.opam/cs3110-2021fa/bin/ocamldep.opt"
+#      Some External "/home/connorjchen2784/.opam/cs3110-2021fa/lib/toplevel"
+#  ; ocaml_bin = External "/home/connorjchen2784/.opam/cs3110-2021fa/bin"
+#  ; ocaml = Ok External "/home/connorjchen2784/.opam/cs3110-2021fa/bin/ocaml"
+#  ; ocamlc =
+#      External "/home/connorjchen2784/.opam/cs3110-2021fa/bin/ocamlc.opt"
+#  ; ocamlopt =
+#      Ok External "/home/connorjchen2784/.opam/cs3110-2021fa/bin/ocamlopt.opt"
+#  ; ocamldep =
+#      Ok External "/home/connorjchen2784/.opam/cs3110-2021fa/bin/ocamldep.opt"
 #  ; ocamlmklib =
-#      Ok External "/home/aqg3/.opam/cs3110-2021fa/bin/ocamlmklib.opt"
+#      Ok
+#        External
+#          "/home/connorjchen2784/.opam/cs3110-2021fa/bin/ocamlmklib.opt"
 #  ; env =
 #      map
-#        { "DUNE_OCAML_HARDCODED" : "/home/aqg3/.opam/cs3110-2021fa/lib"
-#        ; "DUNE_OCAML_STDLIB" : "/home/aqg3/.opam/cs3110-2021fa/lib/ocaml"
-#        ; "DUNE_SOURCEROOT" : "/home/aqg3/3110/cs3110-finalproject"
-#        ; "INSIDE_DUNE" : "/home/aqg3/3110/cs3110-finalproject/_build/default"
+#        { "DUNE_OCAML_HARDCODED" :
+#            "/home/connorjchen2784/.opam/cs3110-2021fa/lib"
+#        ; "DUNE_OCAML_STDLIB" :
+#            "/home/connorjchen2784/.opam/cs3110-2021fa/lib/ocaml"
+#        ; "DUNE_SOURCEROOT" : "/home/connorjchen2784/3110/cs3110-finalproject"
+#        ; "INSIDE_DUNE" :
+#            "/home/connorjchen2784/3110/cs3110-finalproject/_build/default"
 #        ; "OCAMLFIND_IGNORE_DUPS_IN" :
-#            "/home/aqg3/3110/cs3110-finalproject/_build/install/default/lib"
+#            "/home/connorjchen2784/3110/cs3110-finalproject/_build/install/default/lib"
 #        ; "OCAMLPATH" :
-#            "/home/aqg3/3110/cs3110-finalproject/_build/install/default/lib"
+#            "/home/connorjchen2784/3110/cs3110-finalproject/_build/install/default/lib"
 #        ; "OCAMLTOP_INCLUDE_PATH" :
-#            "/home/aqg3/3110/cs3110-finalproject/_build/install/default/lib/toplevel"
+#            "/home/connorjchen2784/3110/cs3110-finalproject/_build/install/default/lib/toplevel"
 #        ; "OCAML_COLOR" : "always"
 #        ; "OPAMCOLOR" : "always"
 #        }
-#  ; findlib_path = [ External "/home/aqg3/.opam/cs3110-2021fa/lib" ]
+#  ; findlib_path =
+#      [ External "/home/connorjchen2784/.opam/cs3110-2021fa/lib" ]
 #  ; arch_sixtyfour = true
 #  ; natdynlink_supported = true
 #  ; supports_shared_libraries = true
 #  ; ocaml_config =
 #      { version = "4.12.0"
-#      ; standard_library_default = "/home/aqg3/.opam/cs3110-2021fa/lib/ocaml"
-#      ; standard_library = "/home/aqg3/.opam/cs3110-2021fa/lib/ocaml"
+#      ; standard_library_default =
+#          "/home/connorjchen2784/.opam/cs3110-2021fa/lib/ocaml"
+#      ; standard_library =
+#          "/home/connorjchen2784/.opam/cs3110-2021fa/lib/ocaml"
 #      ; standard_runtime = "the_standard_runtime_variable_was_deleted"
 #      ; ccomp_type = "cc"
 #      ; c_compiler = "gcc"
@@ -111,7 +122,7 @@ $ /home/aqg3/.opam/cs3110-2021fa/bin/ocamlc.opt -config > /tmp/duneed0908.output
 #      ; windows_unicode = false
 #      }
 #  }
-# Workspace root: /home/aqg3/3110/cs3110-finalproject
-$ (cd _build/default && /home/aqg3/.opam/cs3110-2021fa/bin/ocamlc.opt -w +a-4-6-7-9-27-29-30-32..42-44-45-48-50-60-66-67 -warn-error -a+31 -g -bin-annot -I test/.main.eobjs/byte -I /home/aqg3/.opam/cs3110-2021fa/lib/ANSITerminal -I /home/aqg3/.opam/cs3110-2021fa/lib/bytes -I /home/aqg3/.opam/cs3110-2021fa/lib/ounit2 -I /home/aqg3/.opam/cs3110-2021fa/lib/ounit2/advanced -I /home/aqg3/.opam/cs3110-2021fa/lib/stdlib-shims -I src/.source.objs/byte -no-alias-deps -opaque -o test/.main.eobjs/byte/dune__exe__Main.cmo -c -impl test/main.ml)
-$ (cd _build/default && /home/aqg3/.opam/cs3110-2021fa/bin/ocamlopt.opt -w +a-4-6-7-9-27-29-30-32..42-44-45-48-50-60-66-67 -warn-error -a+31 -g -I test/.main.eobjs/byte -I test/.main.eobjs/native -I /home/aqg3/.opam/cs3110-2021fa/lib/ANSITerminal -I /home/aqg3/.opam/cs3110-2021fa/lib/bytes -I /home/aqg3/.opam/cs3110-2021fa/lib/ounit2 -I /home/aqg3/.opam/cs3110-2021fa/lib/ounit2/advanced -I /home/aqg3/.opam/cs3110-2021fa/lib/stdlib-shims -I src/.source.objs/byte -I src/.source.objs/native -intf-suffix .ml -no-alias-deps -opaque -o test/.main.eobjs/native/dune__exe__Main.cmx -c -impl test/main.ml)
-$ (cd _build/default && /home/aqg3/.opam/cs3110-2021fa/bin/ocamlopt.opt -w +a-4-6-7-9-27-29-30-32..42-44-45-48-50-60-66-67 -warn-error -a+31 -g -o test/main.exe /home/aqg3/.opam/cs3110-2021fa/lib/ocaml/unix.cmxa -I /home/aqg3/.opam/cs3110-2021fa/lib/ocaml /home/aqg3/.opam/cs3110-2021fa/lib/ANSITerminal/ANSITerminal.cmxa -I /home/aqg3/.opam/cs3110-2021fa/lib/ANSITerminal src/source.cmxa /home/aqg3/.opam/cs3110-2021fa/lib/stdlib-shims/stdlib_shims.cmxa /home/aqg3/.opam/cs3110-2021fa/lib/ounit2/advanced/oUnitAdvanced.cmxa /home/aqg3/.opam/cs3110-2021fa/lib/ounit2/oUnit.cmxa test/.main.eobjs/native/dune__exe__Main.cmx)
+# Workspace root: /home/connorjchen2784/3110/cs3110-finalproject
+$ (cd _build/default && /home/connorjchen2784/.opam/cs3110-2021fa/bin/ocamlc.opt -w +a-4-6-7-9-27-29-30-32..42-44-45-48-50-60-66-67 -warn-error -a+31 -g -bin-annot -I test/.main.eobjs/byte -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/ANSITerminal -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/biniou -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/bytes -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/easy-format -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/ounit2 -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/ounit2/advanced -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/stdlib-shims -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/yojson -I src/.source.objs/byte -no-alias-deps -opaque -o test/.main.eobjs/byte/dune__exe__Main.cmo -c -impl test/main.ml)
+$ (cd _build/default && /home/connorjchen2784/.opam/cs3110-2021fa/bin/ocamlopt.opt -w +a-4-6-7-9-27-29-30-32..42-44-45-48-50-60-66-67 -warn-error -a+31 -g -I test/.main.eobjs/byte -I test/.main.eobjs/native -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/ANSITerminal -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/biniou -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/bytes -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/easy-format -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/ounit2 -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/ounit2/advanced -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/stdlib-shims -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/yojson -I src/.source.objs/byte -I src/.source.objs/native -intf-suffix .ml -no-alias-deps -opaque -o test/.main.eobjs/native/dune__exe__Main.cmx -c -impl test/main.ml)
+$ (cd _build/default && /home/connorjchen2784/.opam/cs3110-2021fa/bin/ocamlopt.opt -w +a-4-6-7-9-27-29-30-32..42-44-45-48-50-60-66-67 -warn-error -a+31 -g -o test/main.exe /home/connorjchen2784/.opam/cs3110-2021fa/lib/ocaml/unix.cmxa -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/ocaml /home/connorjchen2784/.opam/cs3110-2021fa/lib/ANSITerminal/ANSITerminal.cmxa -I /home/connorjchen2784/.opam/cs3110-2021fa/lib/ANSITerminal /home/connorjchen2784/.opam/cs3110-2021fa/lib/easy-format/easy_format.cmxa /home/connorjchen2784/.opam/cs3110-2021fa/lib/biniou/biniou.cmxa /home/connorjchen2784/.opam/cs3110-2021fa/lib/yojson/yojson.cmxa src/source.cmxa /home/connorjchen2784/.opam/cs3110-2021fa/lib/stdlib-shims/stdlib_shims.cmxa /home/connorjchen2784/.opam/cs3110-2021fa/lib/ounit2/advanced/oUnitAdvanced.cmxa /home/connorjchen2784/.opam/cs3110-2021fa/lib/ounit2/oUnit.cmxa test/.main.eobjs/native/dune__exe__Main.cmx)

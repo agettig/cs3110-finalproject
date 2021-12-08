@@ -1,1 +1,1 @@
-src/board.ml: ANSITerminal List Map Random Stdlib Tiles
+src/board.ml: ANSITerminal IntHashtbl Map Random Stdlib Tiles

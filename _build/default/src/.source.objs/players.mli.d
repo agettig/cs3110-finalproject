@@ -1,1 +1,1 @@
-src/players.mli: Cards
+src/players.mli: Board Cards
