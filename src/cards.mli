@@ -43,7 +43,7 @@ val houses : cards list
 
 val remove_first_instance :
   cards -> cards list -> cards list -> cards list
-(** [remove_first)instance c deck acc] returns the deck with the first
+(** [remove_first instance c deck acc] returns the deck with the first
     instance of c removed. Returns deck if c is not in deck*)
 
 val extract_house : Yojson.Basic.t -> cards
