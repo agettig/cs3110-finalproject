@@ -529,8 +529,9 @@ let rec get_players lst =
   match lst with
   | [] -> []
   | h :: t ->
+      let h_new_name = h.name ^ "   " in
       ( pos_to_tuple h.index_on_board,
-        " | " ^ String.sub h.name 0 3 ^ " | " )
+        " | " ^ String.sub h_new_name 0 3 ^ " | " )
       :: get_players t
 
 (** [payraise current_player player_moved player_index] increases the
@@ -683,17 +684,18 @@ let house_tile_helper gamestate pay_player =
   | None -> ([ pay_player ], (None, None))
 
 (** [family_tile_helper pay_player index children] returns an updated
-    player list after pay_player lands on a familty tile and a tuple of
+    player list after pay_player lands on a family tile and a tuple of
     cards that needs to be added to or removed from the deck. *)
-let family_tile_helper pay_player index children =
+let family_tile_helper pay_player index children graphics =
   if index = married_index then
     ([ { pay_player with so = true } ], (None, None))
   else if index = elope then
     ( [ { pay_player with so = true; index_on_board = married_index } ],
       (None, None) )
-  else
+  else (
+    print_iter print_children 0 5 graphics;
     ( [ { pay_player with children = pay_player.children + children } ],
-      (None, None) )
+      (None, None) ))
 
 (** [career_tile_helper gamestate pay_player] returns an updated player
     list after pay_player lands on a career tile and a tuple of cards
@@ -738,6 +740,7 @@ let new_player_helper tile pay_player gamestate =
   | CareerTile _ -> career_tile_helper gamestate pay_player
   | FamilyTile { name; account_change; index_tile; children } ->
       family_tile_helper pay_player index_tile children
+        gamestate.graphics
   | HouseTile _ -> house_tile_helper gamestate pay_player
   | TakeTile _ -> take_tile_helper gamestate pay_player
   | ActionTile _ -> ([ pay_player ], (None, None))
