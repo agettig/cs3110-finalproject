@@ -28,7 +28,7 @@ val print_iter : (int -> unit) -> int -> int -> bool -> unit
 (** [print_iter pfun acc cap graphic] prints [pfun] if [graphic] is true
     else unit is returned *)
 
-val get_tile : int -> tiles list -> tiles
+val get_tile : int -> tiles
 (** [get_tile] returns the tile in [tiles] at given index [index].
     Raises : Failure if list is too short and Invalid Argument if n is
     negative. *)
@@ -48,3 +48,9 @@ val change_index_board : player -> player * int
 
 val final_tile_index : int
 (** [ final_tile_index] is the index of the last tile on the board *)
+
+val new_deck_helper :
+  cards option * cards option -> gamestate -> cards list
+(** [new_deck_helper cards_option gamestate] returns an updated deck by
+    removing cards given to players and inserting cards discarded by
+    players *)

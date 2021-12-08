@@ -3,6 +3,7 @@ open Source.Players
 open Source.Bank
 open Source.Cards
 open Source.Tiles
+open Source.Board
 
 open Source.Printing
 (** [play_game f] starts the adventure in file [f]. *)
@@ -28,7 +29,32 @@ let new_player () =
           print_endline "\nInvalid input";
           college ())
   in
-  let init_player = add_player (String.trim name) (college ()) in
+  let print_q1 () =
+    print_string "\nAre you colorblind? Input yes or no: "
+  in
+  let color_options () =
+    print_string "\nAre you red-green or blue-yellow colorblind?: "
+  in
+  let rec check_colorblind () =
+    print_q1 ();
+    match read_line () with
+    | x -> (
+        if x |> normalize_text |> String.equal "yes" then
+          color_options ();
+        match read_line () with
+        | c ->
+            if c |> normalize_text |> String.equal "red-green" then
+              RedGreen
+            else if c |> normalize_text |> String.equal "blue-yellow"
+            then BlueYellow
+            else if x |> normalize_text |> String.equal "no" then Not
+            else (
+              print_endline "\nInvalid input";
+              check_colorblind ()))
+  in
+  let init_player =
+    add_player (String.trim name) (college ()) (check_colorblind ())
+  in
   let print_q2 () =
     print_string
       "Do you want to buy a long term investment? Input yes or no \n> "
@@ -162,6 +188,83 @@ let main () =
   print_iter print_life 0 11 true;
   ANSITerminal.print_string [ ANSITerminal.yellow ]
     "\n\nWelcome to the Game of Life.\n";
+
+  let ask_tutorial () =
+    print_string "\nDo you want a tutorial? Input yes or no\n> "
+  in
+  let rec tut () =
+    ask_tutorial ();
+    match read_line () with
+    | x ->
+        if x |> normalize_text |> String.equal "yes" then
+          print_endline
+            "\n\
+             Tutorial: GAME OF LIFE \n\
+            \            \n\
+             GAME PLAY:\n\
+            \ \n\
+             All players will spin the player by pressing any key when \
+             it is their turn. Then, you will move yourself the number \
+             of spaces spun. On your first turn, decide to either \
+             Start a Career or to Start College.\n\
+            \            \n\
+            \            Career Path: You have the option to pick \
+             between two random careers and then will move along that \
+             path.\n\
+            \ \n\
+            \            College Path: Borrow $100,000 from the bank \
+             for tuition and you will be in debt for $100,000. \n\
+            \            \n\
+             As you go through the game you may run into these tiles: \n\
+            \            \n\
+             Long Term Investments: At the beginning of the game, you \
+             may buy one Long-Term Investment card for $10,000 and \
+             pick a number associated with it. From now on, whenever \
+             any player (including you) spins the number on your \
+             Long-Term Investment card, you collect $5,000 from the \
+             bank!\n\
+            \            \n\
+             Card Deck: At the beginning of the game, you will have 3 \
+             share the wealth cards. \n\
+            \            \n\
+             PAY TILE: If you land on a pay tile, you will collect \
+             from or pay to the bank the amount of money indicated on \
+             the space. \n\
+            \            \n\
+             LIFE TILE: Each LIFE tile carries a dollar amount that \
+             counts towards your total account balance at the end of \
+             the game. \n\
+            \            \n\
+             HOUSE TILE: Take a look at all the available Starter Home \
+             cards. Decide which one you want to buy and pay the bank \
+             the price on the card. Based on you \n\
+            \            \n\
+             SPIN TO WIN TILE: \n\
+            \            \n\
+            \            Land on one of these spaces and you get a \
+             chance to win more money! Pick any number to bet upon. \
+             Then pay your investment (up to $50,000) to the bank. Now \
+             spin the spinner.\n\
+            \            \n\
+            \            If the number spun matches the number you \
+             chose, the bank pays you 10 times the amount you invested.\n\
+            \            \n\
+            \            If the number spun does not match the number \
+             you chose, you lose your investment. Place the token back \
+             in the draw pile\n\
+            \            \n\
+             LAWSUIT TILE: You have the option to sue another player \
+             for $10,000 but if they have an exemption card (share the \
+             wealth card), then that player is able to deny the \
+             lawsuit.\n\
+            \             "
+        else if x |> normalize_text |> String.equal "no" then
+          print_endline ""
+        else (
+          print_endline "\nInvalid input";
+          tut ())
+  in
+
   let print_start () =
     print_endline "Please enter the number of players (2-6).";
     print_string "> "
@@ -194,6 +297,7 @@ let main () =
           graphics ())
   in
 
+  let () = tut () in
   let game_players = get_players (int_players ()) [] in
   let final_games_share_wealth =
     share_players game_players share_wealth_cards []

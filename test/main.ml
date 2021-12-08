@@ -61,6 +61,8 @@ let dbl_wide_rv =
       starter = false;
     }
 
+let test_deck = [ veterinarian; mobile_home; dbl_wide_rv ]
+
 let deck_life_tiles_house = [ Life_Tiles 1; dbl_wide_rv ]
 
 let test_player = add_player "test player" false Not
@@ -81,6 +83,9 @@ let test_player_add_card = add_card police_officer test_player
 
 let test_player_remove_card =
   remove_card police_officer test_player_add_card
+
+let test_player_remove_empty_card =
+  remove_card police_officer test_player
 
 let test_player_exchange_card =
   exchange_card test_player_add_card veterinarian police_officer
@@ -234,8 +239,15 @@ let test_new_deck_helper
 let tests =
   "test suite for sum"
   >::: [
-         test_int "Type player intialization" 10000
+         test_int "Type player intialization balance" 10000
            test_player.account_balance;
+         test_int "Type player intialization index_on_board" 10
+           test_player.index_on_board;
+         test_int "Type player intialization children" 0
+           test_player.children;
+         test_bool "Type player intialization so" false test_player.so;
+         test_string "Type player intialization name" "test player"
+           test_player.name;
          test_int "Bank operation add_balance" 10100
            test_player_add.account_balance;
          test_int "Bank operation payraise" 10000
@@ -262,12 +274,26 @@ let tests =
            test_player_tax_debt.debt;
          test_int "Bank operation final balance" 420000
            test_player_final_balance;
+         test_list "Player operation remove_card empty" test_player.deck
+           (remove_card police_officer test_player).deck;
+         test_list "Player operation remove_from_deck"
+           [ mobile_home; veterinarian ]
+           (remove_from_deck test_deck dbl_wide_rv []);
+         test_int "Player operation get_taxes" 15000
+           (get_taxes test_player_add_card);
          test_int "Player operation add_children" 2
            test_player_children.children;
+         test_int "Player operation add_children on non zero number" 5
+           (add_children test_player_children 3).children;
+         test_bool "Player operation add_player initializes with no so"
+           false test_player.so;
          test_bool "Player operation add_significant_other" true
            test_player_so.so;
          test_list "Player operation add_card police_officer"
            [ police_officer ] test_player_add_card.deck;
+         test_list "Player operation add_card second right order"
+           [ veterinarian; police_officer ]
+           (add_card veterinarian test_player_add_card).deck;
          test_list "Player operation remove_card police_officer" []
            test_player_remove_card.deck;
          test_list
@@ -317,8 +343,12 @@ let tests =
                 test_player_final_balance3;
               ]
               test_player_final_balance1);
-         test_string "test normalize text" "test"
+         test_string "test normalize text1" "test"
            (normalize_text "        TesT    ");
+         test_string "test normalize text2" "test beep"
+           (normalize_text "tEst beeP  ");
+         test_string "test normalize text3" "test boop"
+           (normalize_text "    tesT bOOp");
          test_new_deck_helper
            "card options (None, None) returns same deck"
            deck_life_tiles_house (None, None) test_gamestate_new_deck;

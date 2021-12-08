@@ -1,3 +1,5 @@
+open Yojson.Basic.Util
+
 type cards =
   | House of {
       name : string;
@@ -14,7 +16,6 @@ type cards =
     }
   | Exemption_Card
   | SpinToWin_Card of int
-  | Share_the_Wealth
   | Long_Term_Investment of int
   | Life_Tiles of int
 
@@ -28,197 +29,58 @@ let rec remove_first_instance
       if h = card then acc @ t
       else remove_first_instance card t (h :: acc)
 
-(*These are all the career options in our game*)
+let extract_house json =
+  let name = json |> member "name" |> to_string in
+  let price = json |> member "price" |> to_int in
+  let selling_price = json |> member "selling price" |> to_int in
+  let starter = json |> member "starter" |> to_bool in
+  House { name; price; selling_price; starter }
 
-let police_officer =
-  Career
-    {
-      name = "Police Officer";
-      salary = 40000;
-      salary_max = 70000;
-      taxes_due = 15000;
-      college_career = false;
-    }
+let extract_career json =
+  let name = json |> member "name" |> to_string in
+  let salary = json |> member "salary" |> to_int in
+  let salary_max = json |> member "salary max" |> to_int in
+  let taxes_due = json |> member "taxes due" |> to_int in
+  let college_career = json |> member "college career" |> to_bool in
+  Career { name; salary; salary_max; taxes_due; college_career }
 
-let doctor =
-  Career
-    {
-      name = "Doctor";
-      salary = 100000;
-      salary_max = 1000000;
-      taxes_due = 45000;
-      college_career = true;
-    }
+let extract_spin_to_win json =
+  let number = json |> member "number" |> to_int in
+  SpinToWin_Card number
 
-let astronaut =
-  Career
-    {
-      name = "Astronaut";
-      salary = 80000;
-      salary_max = 600000;
-      taxes_due = 25000;
-      college_career = true;
-    }
+let extract_long_term_investment json =
+  let number = json |> member "spin" |> to_int in
+  Long_Term_Investment number
 
-let lawyer =
-  Career
-    {
-      name = "Lawyer";
-      salary = 90000;
-      salary_max = 1000000;
-      taxes_due = 40000;
-      college_career = true;
-    }
+let extract_life_tile json =
+  let number = json |> member "value" |> to_int in
+  Life_Tiles number
 
-let mechanic =
-  Career
-    {
-      name = "Mechanic";
-      salary = 30000;
-      salary_max = 60000;
-      taxes_due = 10000;
-      college_career = false;
-    }
+let extract_house_lst json =
+  json |> member "house cards" |> to_list |> List.map extract_house
 
-let accountant =
-  Career
-    {
-      name = "Accountant";
-      salary = 70000;
-      salary_max = 110000;
-      taxes_due = 30000;
-      college_career = true;
-    }
+let extract_careers_lst json =
+  json |> member "career cards" |> to_list |> List.map extract_career
 
-let computer_designer =
-  Career
-    {
-      name = "Computer Designer";
-      salary = 50000;
-      salary_max = 80000;
-      taxes_due = 20000;
-      college_career = true;
-    }
+let extract_life_tiles_lst json =
+  json
+  |> member "life tile cards"
+  |> to_list
+  |> List.map extract_life_tile
 
-let hair_stylist =
-  Career
-    {
-      name = "Hair Stylist";
-      salary = 30000;
-      salary_max = 60000;
-      taxes_due = 10000;
-      college_career = false;
-    }
+let extract_spin_to_win_cards_lst json =
+  json
+  |> member "spin to win cards"
+  |> to_list
+  |> List.map extract_spin_to_win
 
-let teacher =
-  Career
-    {
-      name = "Teacher";
-      salary = 40000;
-      salary_max = 70000;
-      taxes_due = 15000;
-      college_career = true;
-    }
+let extract_long_term_investment_cards_lst json =
+  json
+  |> member "long term investment cards"
+  |> to_list
+  |> List.map extract_long_term_investment
 
-let athlete =
-  Career
-    {
-      name = "Athlete";
-      salary = 60000;
-      salary_max = 1000000;
-      taxes_due = 25000;
-      college_career = false;
-    }
-
-let veterinarian =
-  Career
-    {
-      name = "Veterinarian";
-      salary = 100000;
-      salary_max = 120000;
-      taxes_due = 35000;
-      college_career = true;
-    }
-
-let entertainer =
-  Career
-    {
-      name = "Entertainer";
-      salary = 50000;
-      salary_max = 1000000;
-      taxes_due = 20000;
-      college_career = false;
-    }
-
-let salesperson =
-  Career
-    {
-      name = "Salesperson";
-      salary = 20000;
-      salary_max = 50000;
-      taxes_due = 5000;
-      college_career = false;
-    }
-
-let careers =
-  [
-    police_officer;
-    astronaut;
-    salesperson;
-    mechanic;
-    hair_stylist;
-    teacher;
-    computer_designer;
-    accountant;
-    veterinarian;
-    entertainer;
-    lawyer;
-    doctor;
-    athlete;
-  ]
-
-let lg_tm_invt =
-  [
-    Long_Term_Investment 1;
-    Long_Term_Investment 2;
-    Long_Term_Investment 3;
-    Long_Term_Investment 4;
-    Long_Term_Investment 5;
-    Long_Term_Investment 6;
-    Long_Term_Investment 7;
-    Long_Term_Investment 8;
-    Long_Term_Investment 9;
-    Long_Term_Investment 10;
-  ]
-
-let life_tiles =
-  [
-    Life_Tiles 10000;
-    Life_Tiles 10000;
-    Life_Tiles 10000;
-    Life_Tiles 10000;
-    Life_Tiles 10000;
-    Life_Tiles 10000;
-    Life_Tiles 10000;
-    Life_Tiles 20000;
-    Life_Tiles 20000;
-    Life_Tiles 20000;
-    Life_Tiles 20000;
-    Life_Tiles 20000;
-    Life_Tiles 20000;
-    Life_Tiles 30000;
-    Life_Tiles 30000;
-    Life_Tiles 30000;
-    Life_Tiles 30000;
-    Life_Tiles 30000;
-    Life_Tiles 40000;
-    Life_Tiles 40000;
-    Life_Tiles 40000;
-    Life_Tiles 40000;
-    Life_Tiles 50000;
-    Life_Tiles 50000;
-    Life_Tiles 50000;
-  ]
+let card_tree = Yojson.Basic.from_file "data/cards.json"
 
 let exemption_card_lst =
   [
@@ -232,144 +94,34 @@ let exemption_card_lst =
     Exemption_Card;
   ]
 
-let spin_to_win_lst =
-  [
-    SpinToWin_Card 2;
-    SpinToWin_Card 2;
-    SpinToWin_Card 2;
-    SpinToWin_Card 2;
-    SpinToWin_Card 4;
-    SpinToWin_Card 4;
-    SpinToWin_Card 4;
-    SpinToWin_Card 4;
-  ]
+let houses = extract_house_lst card_tree
 
-let share_wealth_cards = spin_to_win_lst @ exemption_card_lst
+let careers = extract_careers_lst card_tree
 
-let mobile_home =
-  House
-    {
-      name = "Mobile Home";
-      price = 80000;
-      selling_price = 80000;
-      starter = true;
-    }
+let spin_to_win_lst = extract_spin_to_win_cards_lst card_tree
 
-let condo =
-  House
-    {
-      name = "Condo";
-      price = 100000;
-      selling_price = 105000;
-      starter = true;
-    }
+let lg_tm_invt = extract_long_term_investment_cards_lst card_tree
 
-let log_cabin =
-  House
-    {
-      name = "Log Cabin";
-      price = 120000;
-      selling_price = 140000;
-      starter = true;
-    }
+let life_tiles = extract_life_tiles_lst card_tree
 
-let ranch_style =
-  House
-    {
-      name = "Ranch Style";
-      price = 140000;
-      selling_price = 160000;
-      starter = true;
-    }
+(* let rec deck_string_helper (deck : cards list) (acc : string) = match
+   deck with | [] -> acc | [ h ] -> ( match h with | House c -> acc ^
+   "House: " ^ c.name | Career c -> acc ^ "Career: " ^ c.name |
+   Long_Term_Investment c -> acc ^ "Long Term Investments: " ^
+   string_of_int c | Life_Tiles _ -> acc ^ "LifeTile " | Exemption_Card
+   -> acc ^ "Exemption Card" | SpinToWin_Card x -> acc ^ "Spin to Win: "
+   ^ string_of_int x | _ -> acc) | h :: t -> ( match h with | House c ->
+   deck_string_helper t (acc ^ "House: " ^ c.name ^ ", ") | Career c ->
+   deck_string_helper t (acc ^ "Career: " ^ c.name ^ ", ") |
+   Long_Term_Investment c -> deck_string_helper t (acc ^ "Long Term
+   Investments: " ^ string_of_int c ^ ", ") | Life_Tiles _ ->
+   deck_string_helper t (acc ^ "LifeTile" ^ ", ") | Exemption_Card ->
+   deck_string_helper t (acc ^ "Exemption Card" ^ ", ") | SpinToWin_Card
+   x -> deck_string_helper t (acc ^ "Spin to Win: " ^ string_of_int x ^
+   ", ") | _ -> deck_string_helper t acc) *)
 
-let small_cape =
-  House
-    {
-      name = "Small Cape";
-      price = 160000;
-      selling_price = 180000;
-      starter = true;
-    }
+let share_wealth_cards = exemption_card_lst @ spin_to_win_lst
 
-let tudor_style =
-  House
-    {
-      name = "Tudor Style";
-      price = 180000;
-      selling_price = 200000;
-      starter = true;
-    }
+let deck = life_tiles @ careers @ houses @ share_wealth_cards
 
-let dbl_wide_rv =
-  House
-    {
-      name = "Double Wide + RV";
-      price = 300000;
-      selling_price = 300000;
-      starter = false;
-    }
-
-let executive_cape =
-  House
-    {
-      name = "Executive Cape";
-      price = 400000;
-      selling_price = 400000;
-      starter = false;
-    }
-
-let modern_victorian =
-  House
-    {
-      name = "Modern Victoria";
-      price = 500000;
-      selling_price = 500000;
-      starter = false;
-    }
-
-let mt_retreat =
-  House
-    {
-      name = "Luxury Mountain Retreat";
-      price = 600000;
-      selling_price = 600000;
-      starter = false;
-    }
-
-let penthouse =
-  House
-    {
-      name = "Penthouse Suite";
-      price = 700000;
-      selling_price = 700000;
-      starter = false;
-    }
-
-let mansion =
-  House
-    {
-      name = "Mansion";
-      price = 800000;
-      selling_price = 800000;
-      starter = false;
-    }
-
-let none =
-  House { name = "None"; price = 0; selling_price = 0; starter = true }
-
-let houses =
-  [
-    none;
-    mobile_home;
-    dbl_wide_rv;
-    condo;
-    executive_cape;
-    log_cabin;
-    modern_victorian;
-    ranch_style;
-    mt_retreat;
-    small_cape;
-    penthouse;
-    tudor_style;
-    mansion;
-  ]
+(* let str = print_endline (Players.deck_string_helper deck "") *)

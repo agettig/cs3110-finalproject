@@ -19,8 +19,8 @@ val get_taxes : player -> int
     their career. Requires [Player] has a career.*)
 
 val add_player : string -> bool -> colorblind -> player
-(** [add_player player_name attended_college] returns a [player] with
-    initialized parameters *)
+(** [add_player player_name attended_college colorblind] returns a
+    [player] with initialized parameters *)
 
 val add_children : player -> int -> player
 (** [add_children player num_children] returns a [player] with
@@ -51,5 +51,3 @@ val player_to_string : player -> unit
 (** [player_to_string player] returns a string containing all info of
     the player including name, deck, balance, debt, payraise, college,
     and index on board *)
-
-val deck_string_helper : cards list -> string -> string

@@ -10,7 +10,10 @@ module IntTilesTupl : sig
   val compare : 'a -> 'a -> int
 end
 
-(**Creating and printing the board to the terminal*)
+type colorblind =
+  | Not
+  | RedGreen
+  | BlueYellow
 
 val spinner : unit -> int
 (**Creates the spinner value at the beginning of a turn*)
@@ -26,14 +29,14 @@ val make_board : string BoardMap.t
 (**[make_board] maps each position to a specific binding associated with
    the tile*)
 
-val make_color : int * tiles -> string BoardMap.t -> unit
-(**[make_color] prints the board in color based on [pos] and the
-   associated binding on the board[board]*)
+val make_color : int * tiles -> string BoardMap.t -> colorblind -> unit
+(**[make_color] prints the board in the color setting [color_op] based
+   on [pos] and the associated binding on the board[board]*)
 
-val print_color_tile : int -> string BoardMap.t -> unit
+val print_color_tile : int -> string BoardMap.t -> colorblind -> unit
 (**[print_color_tile] prints the tile associated with [pos] in [board]*)
 
-val init_board : int -> string BoardMap.t -> unit
+val init_board : int -> string BoardMap.t -> colorblind -> unit
 (**[init_board] initializes each position of the board and prepares them
    to be printed to the terminal*)
 
@@ -43,5 +46,5 @@ val update_board :
    list[updated_player_lst] onto the current board [board] and prepares
    the new board to be printed to the terminal*)
 
-val print_board : string BoardMap.t -> unit
+val print_board : string BoardMap.t -> colorblind -> unit
 (**[print_board] prints the current board [board] to the terminal*)
