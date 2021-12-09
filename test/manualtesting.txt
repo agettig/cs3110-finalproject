@@ -189,3 +189,58 @@ is not needed for playing the game.
       Expected: p4 with deck ["House: Modern Victorian"]
       Actual: p3 with deck ["House: Modern Victorian"]
 
+10. action_tile
+
+  Description: Tests to check if the game continues and path does not diverge
+  Test Cases: 
+  a. p1 is on tile 50, spinner rolls a 3 to move to action tile 53: Continue On The Path to Life!
+    Expected: p1 with player_index = 54
+    Actual: p1 with player_index = 54
+  a. p1 is on tile 47, spinner rolls a 6 to move to action tile 53: Continue On The Path to Life!
+    Expected: p1 with player_index = 54
+    Actual: p1 with player_index = 54
+    
+
+11. take_tile_helper
+
+  Description: Tests to check if landing on a take tile leads to the correct 
+  cards being placed in the deck. The player's deck must be updated with the 
+  random share the wealth card associated with the take tile. 
+
+  Test Cases: 
+    a. p1 who is a Lawyer with current deck having [LifeTile, Career: Lawyer, 
+    LifeTile, Long Term Investments: 5, Spin to Win: 4, Spin to Win: 2, Spin to 
+    Win: 2] lands on Take Tile but card is already present
+    Expected: p1 with deck [LifeTile, Career: Lawyer, 
+    LifeTile, Long Term Investments: 5, Spin to Win: 4, Spin to Win: 2, Spin to 
+    Win: 2]
+    Actual: p1 with deck [LifeTile, Career: Lawyer, 
+    LifeTile, Long Term Investments: 5, Spin to Win: 4, Spin to Win: 2, Spin to 
+    Win: 2]
+    b. p2 who is an Accountant having [LifeTile, LifeTile, House: None, 
+    Career: Accountant, Long Term Investments: 6, Spin to Win: 4, Spin to Win: 
+    2, Exemption Card] skips a Take Tile 
+    Expected: p2 with deck [LifeTile, House: None, Career: Accountant, 
+    Long Term Investments: 6, Spin to Win: 4, Spin to Win: 2, Exemption Card]
+    Actual: p2 with deck [LifeTile, House: None, Career: Accountant, 
+    Long Term Investments: 6, Spin to Win: 4, Spin to Win: 2, Exemption Card]
+
+  
+12. player_spintowin
+
+    Description: Tests to ensure that if a player lands on the spin to win 
+    tile, the account_balance associated with each player will either increase 
+    or decrease depending on the amount invested and if spin_to_win was won. If 
+    the spinner value matches the number the player picked, their account balance
+    increases by 10 times the amount that they chose to invest. 
+
+    Test Cases: 
+    a. p1 with account_balance = 185000 invests 6000 and chooses 9, but
+     spinner_value is 5
+    Expected: p1 with account_balance = 185000 
+    Actual: p1 with account_balance = 185000 
+    b. p2 with account_balance = 200000 invests 5000 and chooses 5 and 
+    spinner_value is also 5
+    Expected: p1 with account_balance = 225000 
+    Actual: p1 with account_balance = 225000 
+  
