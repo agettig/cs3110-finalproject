@@ -42,14 +42,17 @@ BlueYellow:
      - SpintoWinTile: magenta
 
 GAME PLAY:
-All players will spin the player by pressing any key when it is their turn. Then, you will move yourself the number of spaces spun. On your first turn, decide to either Start a Career or to Start College. After your turn is finished, the board will print the updated board with the player's new position on the board.
+All players will spin the player by pressing any key when it is their turn. 
+Then, you will move yourself the number of spaces spun. On your first turn, decide to either Start a Career or to Start College. 
+After your turn is finished, the board will print the updated board with the player's new position on the board.
 
 Career Path: You have the option to pick between two random careers and then will move along that path.
 College Path: Borrow $100,000 from the bank for tuition and you will be in debt for $100,000. 
 
 As you go through the game you may run into these tiles: 
 
-     Long Term Investments: At the beginning of the game, you may buy one Long-Term Investment card for $10,000 and pick a number associated with it. From now on, whenever any player (including you) spins the number on your Long-Term Investment card, you collect $5,000 from the bank!
+     Long Term Investments: At the beginning of the game, you may buy one Long-Term Investment card for $10,000 and pick a number associated with it. 
+     From now on, whenever any player (including you) spins the number on your Long-Term Investment card, you collect $5,000 from the bank!
 
      Card Deck: At the beginning of the game, you will have 3 share the wealth cards. 
 
@@ -68,3 +71,7 @@ As you go through the game you may run into these tiles:
           If the number spun does not match the number you chose, you lose your investment. Place the token back in the draw pile
 
      LAWSUIT TILE: You have the option to sue another player for $10,000 but if they have an exemption card (share the wealth card), then that player is able to deny the lawsuit.
+
+How a winner is chosen:
+Once all players have reached the end of the game, the sum of their respective account balances, value of their houses, and life tiles they have accumulated will be calculated.
+The player with the highest sum will have won the game.

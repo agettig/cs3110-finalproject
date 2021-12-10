@@ -246,7 +246,8 @@ let main () =
             \     - LawsuitTile: white\n\
             \     - FamilyTile: magenta\n\
             \     - SpintoWinTile: magenta\n\
-            \             GAME PLAY:\n\
+            \ \n\
+             GAME PLAY:\n\
             \ \n\
              All players will spin the player by pressing any key when \
              it is their turn. Then, you will move yourself the number \
